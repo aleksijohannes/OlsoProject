@@ -12,6 +12,7 @@ public class Asiakas {
 	private int id;
 	private static int i = 1;
 	private static long sum = 0;
+	//tekstimuutos
 	
 	public Asiakas(){
 	    id = i++;
