@@ -46,13 +46,13 @@ public abstract class Moottori {
 		
 	}
 	
-	private void suoritaBTapahtumat(){
+	protected void suoritaBTapahtumat(){
 		while (tapahtumalista.getSeuraavanAika() == kello.getAika()){
 			suoritaTapahtuma(tapahtumalista.poista());
 		}
 	}
 
-	private void yritaCTapahtumat(){
+	protected void yritaCTapahtumat(){
 		for (Palvelupiste p: palvelupisteet){
 			if (!p.onVarattu() && p.onJonossa()){
 				p.aloitaPalvelu();

@@ -6,38 +6,54 @@ import simu.framework.Kello;
 import simu.framework.Moottori;
 import simu.framework.Saapumisprosessi;
 import simu.framework.Tapahtuma;
+import simu.framework.Trace;
 
 public class OmaMoottori extends Moottori {
 
 	private Saapumisprosessi saapumisprosessi;
-	protected Palvelupiste[] ovihenkilot;
-	protected Palvelupiste[] ilmoittautumistiskit;
-	protected Palvelupiste[] rokottajat;
-	protected Palvelupiste[] jalkiseurannat;
+	private Palvelupiste[] ovihenkilot;
+	private Palvelupiste[] ilmoittautumistiskit;
+	private Palvelupiste[] rokottajat;
+	private Palvelupiste[] jalkiseurannat;
+	
+	private int ovihenkiloMaara = 1;
+	
+	private int ilmotiskiMaara = 2;
+	
+	private int rokottajaMaara = 4;
+	
+	private int seurantaMaara = 1;
+	
+	// Muut palvelupisteiden parametrimuuttujat lisätään myöhemmin
 
 	public OmaMoottori() {
-
-		ovihenkilot = new Palvelupiste[2];
-		ilmoittautumistiskit = new Palvelupiste[3];
-		rokottajat = new Palvelupiste[5];
-		jalkiseurannat = new Palvelupiste[2];
-
-		ovihenkilot[1] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP1, 1,
-				PalvelupisteenTyyppi.OVI);
-		ilmoittautumistiskit[1] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP2, 1,
-				PalvelupisteenTyyppi.ILMO);
-		ilmoittautumistiskit[2] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP2, 1,
-				PalvelupisteenTyyppi.ILMO);
-		rokottajat[1] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP3, 1,
-				PalvelupisteenTyyppi.ROK);
-		rokottajat[2] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP3, 1,
-				PalvelupisteenTyyppi.ROK);
-		rokottajat[3] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP3, 1,
-				PalvelupisteenTyyppi.ROK);
-		rokottajat[4] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP3, 1,
-				PalvelupisteenTyyppi.ROK);
-		jalkiseurannat[1] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP4, 1,
-				PalvelupisteenTyyppi.SEUR);
+		
+		ovihenkilot = new Palvelupiste[ovihenkiloMaara];
+		ilmoittautumistiskit = new Palvelupiste[ilmotiskiMaara];
+		rokottajat = new Palvelupiste[rokottajaMaara];
+		jalkiseurannat = new Palvelupiste[seurantaMaara];
+		
+		// Erityyppisten palvelupisteiden luonti
+		
+		for (int i = 0; i < ovihenkiloMaara; i++) {
+			ovihenkilot[i] = new Palvelupiste(new Normal(3, 2), tapahtumalista, TapahtumanTyyppi.DEP1, i + 1,
+					PalvelupisteenTyyppi.OVI);
+		}
+		
+		for (int i = 0; i < ilmotiskiMaara; i++) {
+			ilmoittautumistiskit[i] = new Palvelupiste(new Normal(5, 3), tapahtumalista, TapahtumanTyyppi.DEP2, i +1,
+					PalvelupisteenTyyppi.ILMO);
+		}
+		
+		for (int i = 0; i < rokottajaMaara; i++) {
+			rokottajat[i] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP3, i + 1,
+					PalvelupisteenTyyppi.ROK);
+		}
+		
+		for (int i = 0; i < seurantaMaara; i++) {
+			jalkiseurannat[i] = new Palvelupiste(new Normal(15, 1), tapahtumalista, TapahtumanTyyppi.DEP4,  i + 1,
+					PalvelupisteenTyyppi.SEUR);
+		}
 
 		saapumisprosessi = new Saapumisprosessi(new Negexp(15, 5), tapahtumalista, TapahtumanTyyppi.ARR1);
 
@@ -59,27 +75,71 @@ public class OmaMoottori extends Moottori {
 			saapumisprosessi.generoiSeuraava();
 			break;
 		case DEP1:
-			a = palvelupisteet[0].otaJonosta();
+			a = etsiValmis(ovihenkilot, t).otaJonosta();
 			pieninJono(ilmoittautumistiskit).lisaaJonoon(a);
 			break;
 		case DEP2:
-			a = palvelupisteet[1].otaJonosta();
+			a = etsiValmis(ilmoittautumistiskit, t).otaJonosta();
 			pieninJono(rokottajat).lisaaJonoon(a);
 			break;
 		case DEP3:
-			a = palvelupisteet[1].otaJonosta();
+			a = etsiValmis(rokottajat, t).otaJonosta();
 			pieninJono(jalkiseurannat).lisaaJonoon(a);
 			break;
 		case DEP4:
-			a = palvelupisteet[2].otaJonosta();
+			a = etsiValmis(jalkiseurannat, t).otaJonosta();
 			a.setPoistumisaika(Kello.getInstance().getAika());
 			a.raportti();
 		}
 	}
+	
+	protected Palvelupiste etsiValmis(Palvelupiste[] taulukko, Tapahtuma t) {
+		for (int i = 0; i < taulukko.length; i++) {
+			if (taulukko[i].getPoistumisAika() == t.getAika()) {
+				return taulukko[i];
+			}
+				
+		}
+		return null;
+	}
+	
+	@Override
+	protected void suoritaBTapahtumat(){
+		while (tapahtumalista.getSeuraavanAika() == Kello.getInstance().getAika()){
+			suoritaTapahtuma(tapahtumalista.poista());
+		}
+	}
+
+	@Override
+	protected void yritaCTapahtumat(){
+		for (Palvelupiste p: ovihenkilot){
+			if (!p.onVarattu() && p.onJonossa()){
+				p.aloitaPalvelu();
+			}
+		}
+		
+		for (Palvelupiste p: ilmoittautumistiskit){
+			if (!p.onVarattu() && p.onJonossa()){
+				p.aloitaPalvelu();
+			}
+		}
+		
+		for (Palvelupiste p: rokottajat){
+			if (!p.onVarattu() && p.onJonossa()){
+				p.aloitaPalvelu();
+			}
+		}
+		
+		for (Palvelupiste p: jalkiseurannat){
+			if (!p.onVarattu() && p.onJonossa()){
+				p.aloitaPalvelu();
+			}
+		}
+	}
 
 	protected Palvelupiste pieninJono(Palvelupiste[] taulukko) {
-		Palvelupiste pienin = taulukko[1];
-		for (int i = 2; i < taulukko.length; i++) {
+		Palvelupiste pienin = taulukko[0];
+		for (int i = 0; i < taulukko.length; i++) {
 			if (taulukko[i].jononKoko() < pienin.jononKoko()) {
 				pienin = taulukko[i];
 			}

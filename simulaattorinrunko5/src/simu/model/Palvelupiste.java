@@ -19,6 +19,7 @@ public class Palvelupiste {
 	private TapahtumanTyyppi skeduloitavanTapahtumanTyyppi;
 	private int id;
 	private PalvelupisteenTyyppi palvelupisteenTyyppi;
+	private double poistumisaika;
 
 	// JonoStartegia strategia; //optio: asiakkaiden järjestys
 
@@ -47,7 +48,15 @@ public class Palvelupiste {
 		jono.add(a);
 
 	}
-
+	
+	public void lisaaPoistumisAika(Tapahtuma t) {
+		poistumisaika = t.getAika();
+	}
+	
+	public double getPoistumisAika() {
+		return poistumisaika;
+	}
+	
 	public Asiakas otaJonosta() { // Poistetaan palvelussa ollut
 		varattu = false;
 		return jono.poll();
@@ -55,11 +64,13 @@ public class Palvelupiste {
 
 	public void aloitaPalvelu() { // Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
 
-		Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + jono.peek().getId());
+		Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + jono.peek().getId() + " palvelupisteessä " + palvelupisteenTyyppi + id);
 
 		varattu = true;
 		double palveluaika = generator.sample();
-		tapahtumalista.lisaa(new Tapahtuma(skeduloitavanTapahtumanTyyppi, Kello.getInstance().getAika() + palveluaika));
+		poistumisaika = Kello.getInstance().getAika() + palveluaika;
+		
+		tapahtumalista.lisaa(new Tapahtuma(skeduloitavanTapahtumanTyyppi, poistumisaika));
 	}
 
 	public boolean onVarattu() {
@@ -69,5 +80,5 @@ public class Palvelupiste {
 	public boolean onJonossa() {
 		return jono.size() != 0;
 	}
-
+	
 }
