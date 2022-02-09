@@ -7,9 +7,14 @@ public class Simulaattori { //Tekstipohjainen
 
 	public static void main(String[] args) {
 		
+		// EI TOIMI JAVAFX-PÄIVITYKSEN JÄLKEEN TÄLLAISENAAN
+		
+		/*
 		Trace.setTraceLevel(Level.INFO);
 		Moottori m = new OmaMoottori();
 		m.setSimulointiaika(1000);
 		m.aja();
+		
+		*/
 	}
 }

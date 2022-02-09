@@ -1,12 +1,12 @@
 package simu.model;
 
+import controller.IKontrolleriMtoV;
 import eduni.distributions.Negexp;
 import eduni.distributions.Normal;
 import simu.framework.Kello;
 import simu.framework.Moottori;
 import simu.framework.Saapumisprosessi;
 import simu.framework.Tapahtuma;
-import simu.framework.Trace;
 
 public class OmaMoottori extends Moottori {
 
@@ -26,7 +26,9 @@ public class OmaMoottori extends Moottori {
 	
 	// Muut palvelupisteiden parametrimuuttujat lisätään myöhemmin
 
-	public OmaMoottori() {
+	public OmaMoottori(IKontrolleriMtoV kontrolleri) {
+		
+		super(kontrolleri); 
 		
 		ovihenkilot = new Palvelupiste[ovihenkiloMaara];
 		ilmoittautumistiskit = new Palvelupiste[ilmotiskiMaara];
@@ -149,8 +151,7 @@ public class OmaMoottori extends Moottori {
 
 	@Override
 	protected void tulokset() {
-		System.out.println("Simulointi päättyi kello " + Kello.getInstance().getAika());
-		System.out.println("Tulokset ... puuttuvat vielä");
+		kontrolleri.naytaLoppuaika(Kello.getInstance().getAika());
 	}
 
 }
