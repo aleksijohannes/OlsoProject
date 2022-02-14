@@ -1,5 +1,8 @@
 package simu.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import controller.IKontrolleriMtoV;
 import eduni.distributions.Negexp;
 import eduni.distributions.Normal;
@@ -15,6 +18,8 @@ public class OmaMoottori extends Moottori {
 	private Palvelupiste[] ilmoittautumistiskit;
 	private Palvelupiste[] rokottajat;
 	private Palvelupiste[] jalkiseurannat;
+	
+	private List<Double> lapimenoajat = new ArrayList<Double>();
 	
 	private int ovihenkiloMaara = 1;
 	
@@ -148,10 +153,20 @@ public class OmaMoottori extends Moottori {
 		}
 		return pienin;
 	}
-
+	
+	protected double avgLapimeno() {
+		double avg = lapimenoajat.stream().mapToDouble(Double::doubleValue).sum() / lapimenoajat.size();
+		return avg;
+	}
+	
 	@Override
 	protected void tulokset() {
 		kontrolleri.naytaLoppuaika(Kello.getInstance().getAika());
+		lapimenoajat.add(Kello.getInstance().getAika());
 	}
+	
 
+
+	
+	
 }

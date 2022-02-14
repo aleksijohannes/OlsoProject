@@ -1,6 +1,8 @@
 package simu.model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import eduni.distributions.ContinuousGenerator;
 import simu.framework.Kello;
@@ -20,6 +22,12 @@ public class Palvelupiste {
 	private int id;
 	private PalvelupisteenTyyppi palvelupisteenTyyppi;
 	private double poistumisaika;
+	private List<Double> palveluajat = new ArrayList<Double>();
+	private double jonotuksenAlku;
+	private List<Double> jonotusajat = new ArrayList<Double>();
+	private List<Double> vasteajat = new ArrayList<Double>();
+	private int asiakkaat = 0;
+	
 
 	// JonoStartegia strategia; //optio: asiakkaiden järjestys
 
@@ -46,7 +54,8 @@ public class Palvelupiste {
 
 	public void lisaaJonoon(Asiakas a) { // Jonon 1. asiakas aina palvelussa
 		jono.add(a);
-
+		jonotuksenAlku = (Kello.getInstance().getAika());
+		
 	}
 	
 	public void lisaaPoistumisAika(Tapahtuma t) {
@@ -59,6 +68,8 @@ public class Palvelupiste {
 	
 	public Asiakas otaJonosta() { // Poistetaan palvelussa ollut
 		varattu = false;
+		double jonotusaika = Kello.getInstance().getAika()-jonotuksenAlku;
+		jonotusajat.add(jonotusaika);
 		return jono.poll();
 	}
 
@@ -71,6 +82,9 @@ public class Palvelupiste {
 		poistumisaika = Kello.getInstance().getAika() + palveluaika;
 		
 		tapahtumalista.lisaa(new Tapahtuma(skeduloitavanTapahtumanTyyppi, poistumisaika));
+		palveluajat.add(palveluaika);
+		asiakkaat++;
+		
 	}
 
 	public boolean onVarattu() {
@@ -81,4 +95,41 @@ public class Palvelupiste {
 		return jono.size() != 0;
 	}
 	
+	public double palvelutYht() {
+		double summa = 0;
+	    for (int i = 0; i < palveluajat.size(); i++) {
+	        double aika = palveluajat.get(i);
+	        summa += aika;
+	    }
+	    return summa;
+	}
+	
+	public double kayttoaste() {
+		double kayttoaste = palvelutYht()/Kello.getInstance().getAika();
+		return kayttoaste;	
+	}
+	
+	public double suoritusteho() {
+		double suoritusteho = Kello.getInstance().getAika()/asiakkaat;
+		return suoritusteho;
+	}
+	
+	public void vasteaikaTestaus() {
+		double palv;
+		double jono;
+		double vast = 0;
+		
+		for (int i = 0; i < palveluajat.size(); i++) {
+			for (i = 0; i < palveluajat.size(); i++) {
+				palv = palveluajat.get(i);
+				vast =+ palv;
+				for (i = 0; i < jonotusajat.size(); i++) {
+					jono = jonotusajat.get(i);
+					vast=+ jono;
+					}
+				}
+			vasteajat.add(vast);
+		}	
+	}
+
 }
