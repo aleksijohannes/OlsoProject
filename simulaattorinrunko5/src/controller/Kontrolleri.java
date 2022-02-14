@@ -9,6 +9,7 @@ import eduni.distributions.Uniform;
 import javafx.application.Platform;
 import simu.framework.IMoottori;
 import simu.model.OmaMoottori;
+import simu.model.PalvelupisteenTyyppi;
 import view.ISimulaattorinUI;
 
 public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUSI
@@ -214,6 +215,24 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUS
 		saapumisJakaumat.put("uniform", saapumisUniform);
 		saapumisJakaumat.put("normal", saapumisNormal);
 		saapumisJakaumat.put("negexp", saapumisExp);
+		
+	}
+
+	@Override
+	public void naytaAvgLapimeno(double aika) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void naytaKayttoaste(int id, PalvelupisteenTyyppi tyyppi, double kayttoaste) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void naytaSuoritusteho(int id, PalvelupisteenTyyppi tyyppi, double suoritusteho) {
+		// TODO Auto-generated method stub
 		
 	}
 	
