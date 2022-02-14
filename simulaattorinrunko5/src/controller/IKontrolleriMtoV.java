@@ -12,7 +12,6 @@ public interface IKontrolleriMtoV {
 		public int getOviMaara();
 		public int getIlmoMaara();
 		public int getRokMaara();
-		public int getSeurMaara();
 		
 		public Generator getOviJakauma();
 		public Generator getIlmoJakauma();
