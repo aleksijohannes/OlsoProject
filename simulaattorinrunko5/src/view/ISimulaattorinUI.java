@@ -21,7 +21,6 @@ public interface ISimulaattorinUI {
 	public String getRokJakauma();
 	public int getRokPalvelunopeus();
 	
-	public int getSeurMaara();
 	public String getSeurJakauma();
 	public int getSeurPalvelunopeus();
 	
