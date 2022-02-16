@@ -2,14 +2,13 @@ package controller;
 
 import java.util.HashMap;
 
-import eduni.distributions.Generator;
+import eduni.distributions.ContinuousGenerator;
 import eduni.distributions.Negexp;
 import eduni.distributions.Normal;
 import eduni.distributions.Uniform;
 import javafx.application.Platform;
 import simu.framework.IMoottori;
 import simu.model.OmaMoottori;
-import simu.model.PalvelupisteenTyyppi;
 import view.ISimulaattorinUI;
 
 public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUSI
@@ -71,8 +70,26 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUS
 			}
 		});
 	}
+	
+	@Override
+	public void naytaAvgLapimeno(double aika) {
+		Platform.runLater(() -> ui.setLapimenoaika(aika));
+		
+	}
 
+	@Override
+	public void naytaKayttoaste(HashMap<String, Double> palvelupisteet) {
+		Platform.runLater(() -> ui.setKayttoasteet(palvelupisteet));
+	}
 
+	@Override
+	public void naytaSuoritusteho(HashMap<String, Double> palvelupisteet) {
+		Platform.runLater(() -> ui.setSuoritustehot(palvelupisteet));	
+	}
+
+	
+	// Getterit parametreja varten
+	
 	@Override
 	public int getOviMaara() {
 		return ui.getOviMaara();
@@ -91,7 +108,7 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUS
 	}
 
 	
-	public Generator valitseJakauma(HashMap<String, HashMap<Integer, double[]>> jakaumataulu, String jakauma, int nopeus) {
+	public ContinuousGenerator valitseJakauma(HashMap<String, HashMap<Integer, double[]>> jakaumataulu, String jakauma, int nopeus) {
 		double[] taulukko = jakaumataulu.get(jakauma).get(nopeus);
 		switch (jakauma) {
 		case "uniform":
@@ -105,27 +122,27 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUS
 	}
 
 	@Override
-	public Generator getOviJakauma() {
+	public ContinuousGenerator getOviJakauma() {
 		return valitseJakauma(oviJakaumat, ui.getOviJakauma(), ui.getOviPalvelunopeus());
 	}
 
 	@Override
-	public Generator getIlmoJakauma() {
+	public ContinuousGenerator getIlmoJakauma() {
 		return valitseJakauma(ilmoJakaumat, ui.getIlmoJakauma(), ui.getIlmoPalvelunopeus());
 	}
 
 	@Override
-	public Generator getRokJakauma() {
+	public ContinuousGenerator getRokJakauma() {
 		return valitseJakauma(rokJakaumat, ui.getRokJakauma(), ui.getRokPalvelunopeus());
 	}
 
 	@Override
-	public Generator getSeurJakauma() {
+	public ContinuousGenerator getSeurJakauma() {
 		return valitseJakauma(seurJakaumat, ui.getSeurJakauma(), ui.getSeurPalvelunopeus());
 	}
 
 	@Override
-	public Generator getSaapumisjakauma() {
+	public ContinuousGenerator getSaapumisjakauma() {
 		return valitseJakauma(saapumisJakaumat, ui.getSaapumisjakauma(), ui.getSaapumistiheys());
 	}
 	
@@ -218,23 +235,7 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUS
 		
 	}
 
-	@Override
-	public void naytaAvgLapimeno(double aika) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void naytaKayttoaste(int id, PalvelupisteenTyyppi tyyppi, double kayttoaste) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void naytaSuoritusteho(int id, PalvelupisteenTyyppi tyyppi, double suoritusteho) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 
 

@@ -1,5 +1,7 @@
 package view;
 
+import java.util.HashMap;
+
 public interface ISimulaattorinUI {
 	
 	// Syötteet, jotka kontrolleri hakee käyttöliittymästä ja välittää model-tasolle
@@ -26,6 +28,9 @@ public interface ISimulaattorinUI {
 	
 	// Model tason tuottamat syötteet, jotka kontrolleri vie käyttöliittymään 
 	public void setLoppuaika(double aika);
+	public void setLapimenoaika(double aika);
+	public void setKayttoasteet(HashMap<String, Double> palvelupisteet);
+	public void setSuoritustehot(HashMap<String, Double> palvelupisteet);
 	
 	// Kontrolleri tarvitsee  
 	public IVisualisointi getVisualisointi();
