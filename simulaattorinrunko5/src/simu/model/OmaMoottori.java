@@ -21,19 +21,23 @@ public class OmaMoottori extends Moottori {
 	
 	private List<Double> lapimenoajat = new ArrayList<Double>();
 	
-	private int ovihenkiloMaara = 1;
+	private int ovihenkiloMaara;
 	
-	private int ilmotiskiMaara = 2;
+	private int ilmotiskiMaara;
 	
-	private int rokottajaMaara = 4;
+	private int rokottajaMaara;
 	
-	private int seurantaMaara = 1;
+	private int seurantaMaara;
 	
 	// Muut palvelupisteiden parametrimuuttujat lisätään myöhemmin
 
 	public OmaMoottori(IKontrolleriMtoV kontrolleri) {
 		
 		super(kontrolleri); 
+		ovihenkiloMaara = kontrolleri.getOviMaara();
+		ilmotiskiMaara = kontrolleri.getIlmoMaara();
+		rokottajaMaara = kontrolleri.getRokMaara();
+		seurantaMaara = 1;
 		
 		ovihenkilot = new Palvelupiste[ovihenkiloMaara];
 		ilmoittautumistiskit = new Palvelupiste[ilmotiskiMaara];
@@ -43,22 +47,22 @@ public class OmaMoottori extends Moottori {
 		// Erityyppisten palvelupisteiden luonti
 		
 		for (int i = 0; i < ovihenkiloMaara; i++) {
-			ovihenkilot[i] = new Palvelupiste(new Normal(3, 2), tapahtumalista, TapahtumanTyyppi.DEP1, i + 1,
+			ovihenkilot[i] = new Palvelupiste(kontrolleri.getOviJakauma(), tapahtumalista, TapahtumanTyyppi.DEP1, i + 1,
 					PalvelupisteenTyyppi.OVI);
 		}
 		
 		for (int i = 0; i < ilmotiskiMaara; i++) {
-			ilmoittautumistiskit[i] = new Palvelupiste(new Normal(5, 3), tapahtumalista, TapahtumanTyyppi.DEP2, i +1,
+			ilmoittautumistiskit[i] = new Palvelupiste(kontrolleri.getIlmoJakauma(), tapahtumalista, TapahtumanTyyppi.DEP2, i +1,
 					PalvelupisteenTyyppi.ILMO);
 		}
 		
 		for (int i = 0; i < rokottajaMaara; i++) {
-			rokottajat[i] = new Palvelupiste(new Normal(10, 6), tapahtumalista, TapahtumanTyyppi.DEP3, i + 1,
+			rokottajat[i] = new Palvelupiste(kontrolleri.getRokJakauma(), tapahtumalista, TapahtumanTyyppi.DEP3, i + 1,
 					PalvelupisteenTyyppi.ROK);
 		}
 		
 		for (int i = 0; i < seurantaMaara; i++) {
-			jalkiseurannat[i] = new Palvelupiste(new Normal(15, 1), tapahtumalista, TapahtumanTyyppi.DEP4,  i + 1,
+			jalkiseurannat[i] = new Palvelupiste(kontrolleri.getSeurJakauma(), tapahtumalista, TapahtumanTyyppi.DEP4,  i + 1,
 					PalvelupisteenTyyppi.SEUR);
 		}
 
