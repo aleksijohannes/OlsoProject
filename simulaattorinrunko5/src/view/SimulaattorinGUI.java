@@ -1,6 +1,8 @@
 package view;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+
 import controller.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -29,6 +31,8 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private TextField aika;
 	private TextField viive;
 	private Label tulos;
+	private Label lapimenoaika;
+	private Label lapimenoaikaLabel;
 	private Label aikaLabel;
 	private Label viiveLabel;
 	private Label tulosLabel;
@@ -63,78 +67,75 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private RadioButton saapuminenNorm;
 	private RadioButton saapuminenTasa;
 	private RadioButton saapuminenExp;
-	private Label saapuminenJakaumaLabel;
 
 	private TilePane jakaumatOvi;
 	private ToggleGroup oviGroup;
 	private RadioButton oviNorm;
 	private RadioButton oviTasa;
 	private RadioButton oviExp;
-	private Label oviJakaumaLabel;
 
 	private TilePane jakaumatIlm;
 	private ToggleGroup ilmGroup;
 	private RadioButton ilmNorm;
 	private RadioButton ilmTasa;
 	private RadioButton ilmExp;
-	private Label ilmJakaumaLabel;
 
 	private TilePane jakaumatRokottaja;
 	private ToggleGroup rokottajaGroup;
 	private RadioButton rokottajaNorm;
 	private RadioButton rokottajaTasa;
 	private RadioButton rokottajaExp;
-	private Label rokottajaJakaumaLabel;
 
 	private TilePane jakaumatSeuranta;
 	private ToggleGroup seurantaGroup;
 	private RadioButton seurantaNorm;
 	private RadioButton seurantaTasa;
 	private RadioButton seurantaExp;
-	private Label seurantaJakaumaLabel;
 
 	private TilePane saapuminenNopeus;
-	private Label saapuminenNopeusLabel;
 	private ToggleGroup saapuminenNopeusGroup;
 	private RadioButton saapuminenHidas;
 	private RadioButton saapuminenNormaali;
 	private RadioButton saapuminenNopea;
 
 	private TilePane oviNopeus;
-	private Label oviNopeusLabel;
 	private ToggleGroup oviNopeusGroup;
 	private RadioButton oviHidas;
 	private RadioButton oviNormaali;
 	private RadioButton oviNopea;
 
 	private TilePane ilmNopeus;
-	private Label ilmNopeusLabel;
 	private ToggleGroup ilmNopeusGroup;
 	private RadioButton ilmHidas;
 	private RadioButton ilmNormaali;
 	private RadioButton ilmNopea;
 
 	private TilePane rokottajaNopeus;
-	private Label rokottajaNopeusLabel;
 	private ToggleGroup rokottajaNopeusGroup;
 	private RadioButton rokottajaHidas;
 	private RadioButton rokottajaNormaali;
 	private RadioButton rokottajaNopea;
 
 	private TilePane seurantaNopeus;
-	private Label seurantaNopeusLabel;
 	private ToggleGroup seurantaNopeusGroup;
 	private RadioButton seurantaHidas;
 	private RadioButton seurantaNormaali;
 	private RadioButton seurantaNopea;
 
-	private Label ovihenkiloLabel;
 	private Slider ovihenkiloMaara;
-	private Label ilmoittautuminenLabel;
 	private Slider ilmoittautuminenMaara;
-	private Label rokottajaLabel;
 	private Slider rokottajaMaara;
-
+	
+	private Label saapuminenLabel;
+	private Label oviLabel;
+	private Label ilmLabel;
+	private Label rokotusLabel;
+	private Label seurantaLabel;
+	private Label maaraLabel;
+	private Label nopeusLabel;
+	private Label jakaumaLabel;
+	private Label palvelupisteetLabel;
+	
 	@Override
 	public void init() {
 
@@ -193,8 +194,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			saapuminenExp.setToggleGroup(saapuminenGroup);
 			saapuminenExp.setUserData("negexp");
 
-			saapuminenJakaumaLabel = new Label("Valitse jakauma:");
-			jakaumatSaapuminen.getChildren().add(saapuminenJakaumaLabel);
 			jakaumatSaapuminen.getChildren().add(saapuminenNorm);
 			jakaumatSaapuminen.getChildren().add(saapuminenTasa);
 			jakaumatSaapuminen.getChildren().add(saapuminenExp);
@@ -228,8 +227,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			oviExp.setToggleGroup(oviGroup);
 			oviExp.setUserData("negexp");
 
-			oviJakaumaLabel = new Label("Valitse jakauma:");
-			jakaumatOvi.getChildren().add(oviJakaumaLabel);
 			jakaumatOvi.getChildren().add(oviNorm);
 			jakaumatOvi.getChildren().add(oviTasa);
 			jakaumatOvi.getChildren().add(oviExp);
@@ -263,8 +260,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			ilmExp.setToggleGroup(ilmGroup);
 			ilmExp.setUserData("negexp");
 
-			ilmJakaumaLabel = new Label("Valitse jakauma:");
-			jakaumatIlm.getChildren().add(ilmJakaumaLabel);
 			jakaumatIlm.getChildren().add(ilmNorm);
 			jakaumatIlm.getChildren().add(ilmTasa);
 			jakaumatIlm.getChildren().add(ilmExp);
@@ -298,8 +293,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			rokottajaExp.setToggleGroup(rokottajaGroup);
 			rokottajaExp.setUserData("negexp");
 
-			rokottajaJakaumaLabel = new Label("Valitse jakauma:");
-			jakaumatRokottaja.getChildren().add(rokottajaJakaumaLabel);
 			jakaumatRokottaja.getChildren().add(rokottajaNorm);
 			jakaumatRokottaja.getChildren().add(rokottajaTasa);
 			jakaumatRokottaja.getChildren().add(rokottajaExp);
@@ -333,8 +326,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			seurantaExp.setToggleGroup(seurantaGroup);
 			seurantaExp.setUserData("negexp");
 
-			seurantaJakaumaLabel = new Label("Valitse jakauma:");
-			jakaumatSeuranta.getChildren().add(seurantaJakaumaLabel);
 			jakaumatSeuranta.getChildren().add(seurantaNorm);
 			jakaumatSeuranta.getChildren().add(seurantaTasa);
 			jakaumatSeuranta.getChildren().add(seurantaExp);
@@ -353,7 +344,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			saapuminenNopeus = new TilePane();
 
-			saapuminenNopeusLabel = new Label("Valitse saapumisnopeus:");
 			saapuminenNopeusGroup = new ToggleGroup();
 
 			saapuminenHidas = new RadioButton("Hidas");
@@ -369,7 +359,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			saapuminenNopea.setToggleGroup(saapuminenNopeusGroup);
 			saapuminenNopea.setUserData(3);
 
-			saapuminenNopeus.getChildren().add(saapuminenNopeusLabel);
 			saapuminenNopeus.getChildren().add(saapuminenHidas);
 			saapuminenNopeus.getChildren().add(saapuminenNormaali);
 			saapuminenNopeus.getChildren().add(saapuminenNopea);
@@ -388,7 +377,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			oviNopeus = new TilePane();
 
-			oviNopeusLabel = new Label("Valitse oven nopeus:");
 			oviNopeusGroup = new ToggleGroup();
 
 			oviHidas = new RadioButton("Hidas");
@@ -404,7 +392,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			oviNopea.setToggleGroup(oviNopeusGroup);
 			oviNopea.setUserData(3);
 
-			oviNopeus.getChildren().add(oviNopeusLabel);
 			oviNopeus.getChildren().add(oviHidas);
 			oviNopeus.getChildren().add(oviNormaali);
 			oviNopeus.getChildren().add(oviNopea);
@@ -423,7 +410,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			ilmNopeus = new TilePane();
 
-			ilmNopeusLabel = new Label("Valitse ilmoittautumisen nopeus:");
 			ilmNopeusGroup = new ToggleGroup();
 
 			ilmHidas = new RadioButton("Hidas");
@@ -439,7 +425,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			ilmNopea.setToggleGroup(ilmNopeusGroup);
 			ilmNopea.setUserData(3);
 
-			ilmNopeus.getChildren().add(ilmNopeusLabel);
 			ilmNopeus.getChildren().add(ilmHidas);
 			ilmNopeus.getChildren().add(ilmNormaali);
 			ilmNopeus.getChildren().add(ilmNopea);
@@ -458,7 +443,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			rokottajaNopeus = new TilePane();
 
-			rokottajaNopeusLabel = new Label("Valitse rokottajan nopeus:");
 			rokottajaNopeusGroup = new ToggleGroup();
 
 			rokottajaHidas = new RadioButton("Hidas");
@@ -474,7 +458,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			rokottajaNopea.setToggleGroup(rokottajaNopeusGroup);
 			rokottajaNopea.setUserData(3);
 
-			rokottajaNopeus.getChildren().add(rokottajaNopeusLabel);
 			rokottajaNopeus.getChildren().add(rokottajaHidas);
 			rokottajaNopeus.getChildren().add(rokottajaNormaali);
 			rokottajaNopeus.getChildren().add(rokottajaNopea);
@@ -493,7 +476,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			seurantaNopeus = new TilePane();
 
-			seurantaNopeusLabel = new Label("Valitse seurannan nopeus:");
 			seurantaNopeusGroup = new ToggleGroup();
 
 			seurantaHidas = new RadioButton("Hidas");
@@ -506,10 +488,9 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			seurantaNormaali.setUserData(2);
 
 			seurantaNopea = new RadioButton("Nopea");
-			seurantaNopea.setToggleGroup(rokottajaNopeusGroup);
+			seurantaNopea.setToggleGroup(seurantaNopeusGroup);
 			seurantaNopea.setUserData(3);
 
-			seurantaNopeus.getChildren().add(seurantaNopeusLabel);
 			seurantaNopeus.getChildren().add(seurantaHidas);
 			seurantaNopeus.getChildren().add(seurantaNormaali);
 			seurantaNopeus.getChildren().add(seurantaNopea);
@@ -526,7 +507,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 				}
 			});
 
-			ovihenkiloLabel = new Label("Ovihenkilöiden määrä: ");
 
 			ovihenkiloMaara = new Slider(1, 10, 1);
 
@@ -537,8 +517,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			ovihenkiloMaara.setMinorTickCount(1);
 			ovihenkiloMaara.setShowTickLabels(true);
 
-			ilmoittautuminenLabel = new Label("Ilmoittautumispisteiden määrä: ");
-
 			ilmoittautuminenMaara = new Slider(1, 10, 1);
 
 			ilmoittautumispisteet = (int) ilmoittautuminenMaara.getValue();
@@ -548,7 +526,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			ilmoittautuminenMaara.setMinorTickCount(1);
 			ilmoittautuminenMaara.setShowTickLabels(true);
 
-			rokottajaLabel = new Label("Rokottajien määrä: ");
 			rokottajaMaara = new Slider(1, 10, 1);
 
 			rokottajat = (int) rokottajaMaara.getValue();
@@ -575,7 +552,62 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			tulos = new Label();
 			tulos.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 			tulos.setPrefWidth(150);
+			
+			lapimenoaikaLabel = new Label("Läpimenoaika");
+			lapimenoaikaLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+			lapimenoaikaLabel.setPrefWidth(150);
+			lapimenoaika = new Label();
+			lapimenoaika.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+			lapimenoaika.setPrefWidth(150);
 
+			saapuminenLabel = new Label("Saapuminen");
+			oviLabel = new Label("Ovihenkilöt");
+			ilmLabel = new Label("Ilmoittautumispisteet");
+			rokotusLabel = new Label("Rokottajat");
+			seurantaLabel = new Label("Jälkiseurannat");
+			maaraLabel = new Label("Määrä");
+			nopeusLabel = new Label("Nopeus");
+			jakaumaLabel = new Label("Jakauma");
+			palvelupisteetLabel = new Label("Palvelupisteet");
+			
+			saapuminenLabel.setMaxWidth(Double.MAX_VALUE);
+			oviLabel.setMaxWidth(Double.MAX_VALUE);
+			ilmLabel.setMaxWidth(Double.MAX_VALUE);
+			rokotusLabel.setMaxWidth(Double.MAX_VALUE);
+			seurantaLabel.setMaxWidth(Double.MAX_VALUE);
+			
+			GridPane valinnat = new GridPane();
+			valinnat.setAlignment(Pos.CENTER);
+			valinnat.setVgap(20);
+			valinnat.setHgap(20);
+			valinnat.add(palvelupisteetLabel, 0, 0);
+			valinnat.add(maaraLabel, 1, 0);
+			valinnat.add(nopeusLabel, 2, 0);
+			valinnat.add(jakaumaLabel, 3, 0);
+			valinnat.add(saapuminenLabel, 0, 1);
+			valinnat.add(oviLabel, 0, 2);
+			valinnat.add(ilmLabel, 0, 3);
+			valinnat.add(rokotusLabel, 0, 4);
+			valinnat.add(seurantaLabel, 0, 5);
+			
+			valinnat.add(ovihenkiloMaara, 1, 2);
+			valinnat.add(ilmoittautuminenMaara, 1, 3);
+			valinnat.add(rokottajaMaara, 1, 4);
+			
+			valinnat.add(saapuminenNopeus, 2, 1);
+			valinnat.add(oviNopeus, 2, 2);
+			valinnat.add(ilmNopeus, 2, 3);
+			valinnat.add(rokottajaNopeus, 2, 4);
+			valinnat.add(seurantaNopeus, 2, 5);
+			
+			valinnat.add(jakaumatSaapuminen, 3, 1);
+			valinnat.add(jakaumatOvi, 3, 2);
+			valinnat.add(jakaumatIlm, 3, 3);
+			valinnat.add(jakaumatRokottaja, 3, 4);
+			valinnat.add(jakaumatSeuranta, 3, 5);
+
+			
+			
 			HBox hBox = new HBox();
 			hBox.setPadding(new Insets(15, 12, 15, 12)); // marginaalit ylä, oikea, ala, vasen
 			hBox.setSpacing(10); // noodien välimatka 10 pikseliä
@@ -593,29 +625,12 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			grid.add(kaynnistaButton, 0, 3); // sarake, rivi
 			grid.add(nopeutaButton, 0, 4); // sarake, rivi
 			grid.add(hidastaButton, 1, 4); // sarake, rivi
-			grid.add(ovihenkiloLabel, 2, 0);
-			grid.add(ovihenkiloMaara, 3, 0);
-			grid.add(ilmoittautuminenLabel, 2, 1);
-			grid.add(ilmoittautuminenMaara, 3, 1);
-			grid.add(rokottajaLabel, 2, 2);
-			grid.add(rokottajaMaara, 3, 2);
+			//grid.add(valinnat, 6, 0);
 
-			grid.add(jakaumatSaapuminen, 4, 0);
-			grid.add(jakaumatOvi, 4, 1);
-			grid.add(jakaumatIlm, 4, 2);
-			grid.add(jakaumatRokottaja, 4, 3);
-			grid.add(jakaumatSeuranta, 4, 4);
-
-			grid.add(saapuminenNopeus, 4, 5);
-			grid.add(oviNopeus, 4, 6);
-			grid.add(ilmNopeus, 4, 7);
-			grid.add(rokottajaNopeus, 4, 8);
-			grid.add(seurantaNopeus, 4, 9);
-
-			naytto = new Visualisointi(400, 200);
+			naytto = new Visualisointi(400, 300);
 
 			// Täytetään boxi:
-			hBox.getChildren().addAll(grid, (Canvas) naytto);
+			hBox.getChildren().addAll(grid, valinnat, (Canvas) naytto);
 
 			Scene scene = new Scene(hBox);
 			primaryStage.setScene(scene);
@@ -701,11 +716,27 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public int getSeurPalvelunopeus() {
 		return nopeusSeuranta;
 	}
+	
 
+	@Override
+	public void setLapimenoaika(double aika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.lapimenoaika.setText(formatter.format(aika));
+	}
+
+	@Override
+	public void setKayttoasteet(HashMap<String, Double> palvelupisteet) {
+
+	}
+
+	@Override
+	public void setSuoritustehot(HashMap<String, Double> palvelupisteet) {
+
+	}
+	
 	// JavaFX-sovelluksen (käyttöliittymän) käynnistäminen
 
 	public static void main(String[] args) {
 		launch(args);
 	}
-
 }
