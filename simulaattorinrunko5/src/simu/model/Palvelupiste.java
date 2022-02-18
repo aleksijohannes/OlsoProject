@@ -114,6 +114,13 @@ public class Palvelupiste {
 		return suoritusteho;
 	}
 	
+	
+	public String haeNimi() {
+		String nimi = this.id + " " + this.palvelupisteenTyyppi;
+		return nimi;
+	}
+	
+	
 	public void vasteaikaTestaus() {
 		double palv;
 		double jono;
