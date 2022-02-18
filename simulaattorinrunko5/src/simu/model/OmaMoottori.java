@@ -1,6 +1,7 @@
 package simu.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import controller.IKontrolleriMtoV;
@@ -22,12 +23,12 @@ public class OmaMoottori extends Moottori {
 	private List<Double> lapimenoajat = new ArrayList<Double>();
 	
 	private int ovihenkiloMaara;
-	
 	private int ilmotiskiMaara;
-	
 	private int rokottajaMaara;
-	
 	private int seurantaMaara;
+	
+	private HashMap<String, Double> suoritustehot = new HashMap<String, Double>();
+	private HashMap<String, Double> kayttoasteet = new HashMap<String, Double>();
 	
 	// Muut palvelupisteiden parametrimuuttujat lisätään myöhemmin
 
@@ -163,8 +164,53 @@ public class OmaMoottori extends Moottori {
 		return avg;
 	}
 	
+	public void laskeSuoritustehot() {
+		for (int i = 0; i < ovihenkiloMaara; i++) {
+			suoritustehot.put(ovihenkilot[i].haeNimi(), ovihenkilot[i].suoritusteho());
+			}
+		for (int i = 0; i < ilmotiskiMaara; i++) {
+			suoritustehot.put(ilmoittautumistiskit[i].haeNimi(), ilmoittautumistiskit[i].suoritusteho());
+			}
+		for (int i = 0; i < rokottajaMaara; i++) {
+			suoritustehot.put(rokottajat[i].haeNimi(), rokottajat[i].suoritusteho()); 
+			}
+		for (int i = 0; i < seurantaMaara; i++) {
+			suoritustehot.put(jalkiseurannat[i].haeNimi(), jalkiseurannat[i].suoritusteho());
+			}	
+	}
+	
+	
+	public HashMap getSuoritustehot() {
+		return suoritustehot;
+	}
+	
+	
+	public void laskeKayttoasteet() {
+		for (int i = 0; i < ovihenkiloMaara; i++) {
+			kayttoasteet.put(ovihenkilot[i].haeNimi(), ovihenkilot[i].kayttoaste());
+			}
+		for (int i = 0; i < ilmotiskiMaara; i++) {
+			kayttoasteet.put(ilmoittautumistiskit[i].haeNimi(), ilmoittautumistiskit[i].kayttoaste());
+			}
+		for (int i = 0; i < rokottajaMaara; i++) {
+			kayttoasteet.put(rokottajat[i].haeNimi(), rokottajat[i].kayttoaste()); 
+			}
+		for (int i = 0; i < seurantaMaara; i++) {
+			kayttoasteet.put(jalkiseurannat[i].haeNimi(), jalkiseurannat[i].kayttoaste());
+			}	
+	}
+	
+	
+	public HashMap getKayttoasteet() {
+		return kayttoasteet;
+	}
+	
+	
+	
 	@Override
 	protected void tulokset() {
+		laskeSuoritustehot();
+		laskeKayttoasteet();
 		kontrolleri.naytaLoppuaika(Kello.getInstance().getAika());
 		lapimenoajat.add(Kello.getInstance().getAika());
 	}
