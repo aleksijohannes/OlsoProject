@@ -200,6 +200,7 @@ public class OmaMoottori extends Moottori {
 			}	
 	}
 	
+	//tekstiä lalalalalalalalalalala
 	
 	public HashMap getKayttoasteet() {
 		return kayttoasteet;
