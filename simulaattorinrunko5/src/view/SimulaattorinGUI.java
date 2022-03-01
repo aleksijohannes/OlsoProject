@@ -164,8 +164,18 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			kaynnistaButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
+					System.out.println(getOviMaara());
 					kontrolleri.kaynnistaSimulointi();
 					kaynnistaButton.setDisable(true);
+					setOviMaara();
+					setIlmoMaara();
+					setRokMaara();
+					System.out.println(getOviMaara());
+					System.out.println(getIlmoMaara());
+					System.out.println(getRokMaara());
+					ovihenkiloMaara.setDisable(true);
+					ilmoittautuminenMaara.setDisable(true);
+					rokottajaMaara.setDisable(true);
 				}
 			});
 
@@ -510,8 +520,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			ovihenkiloMaara = new Slider(1, 10, 1);
 
-			ovihenkilot = (int) ovihenkiloMaara.getValue();
-
 			ovihenkiloMaara.setSnapToTicks(true);
 			ovihenkiloMaara.setMajorTickUnit(1);
 			ovihenkiloMaara.setMinorTickCount(1);
@@ -519,16 +527,12 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			ilmoittautuminenMaara = new Slider(1, 10, 1);
 
-			ilmoittautumispisteet = (int) ilmoittautuminenMaara.getValue();
-
 			ilmoittautuminenMaara.setSnapToTicks(true);
 			ilmoittautuminenMaara.setMajorTickUnit(1);
 			ilmoittautuminenMaara.setMinorTickCount(1);
 			ilmoittautuminenMaara.setShowTickLabels(true);
 
 			rokottajaMaara = new Slider(1, 10, 1);
-
-			rokottajat = (int) rokottajaMaara.getValue();
 
 			rokottajaMaara.setSnapToTicks(true);
 			rokottajaMaara.setMajorTickUnit(1);
@@ -673,6 +677,10 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 		return nopeusSaapuminen;
 	}
 
+	public void setOviMaara() {
+		ovihenkilot = (int) ovihenkiloMaara.getValue();
+	}
+	
 	public int getOviMaara() {
 		return ovihenkilot;
 	}
@@ -685,6 +693,10 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 		return nopeusOvi;
 	}
 
+	public void setIlmoMaara() {
+		ilmoittautumispisteet = (int) ilmoittautuminenMaara.getValue();
+	}
+	
 	public int getIlmoMaara() {
 		return ilmoittautumispisteet;
 	}
@@ -696,11 +708,17 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public int getIlmoPalvelunopeus() {
 		return nopeusIlm;
 	}
-
+	
+	public void setRokMaara() {
+		rokottajat = (int) rokottajaMaara.getValue();
+	}
+	
 	public int getRokMaara() {
 		return rokottajat;
 	}
 
+
+	
 	public String getRokJakauma() {
 		return jakaumaRokottaja;
 	}
