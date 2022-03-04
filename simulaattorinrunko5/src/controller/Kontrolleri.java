@@ -1,5 +1,10 @@
 package controller;
 
+/**
+ * 
+ * @author Jenni Javanainen
+ */
+
 import java.util.HashMap;
 
 import eduni.distributions.ContinuousGenerator;
@@ -15,6 +20,7 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUS
 	
 	private IMoottori moottori; 
 	private ISimulaattorinUI ui;
+	private ISimulaatioDAO dao;
 	
 	private HashMap<String, HashMap<Integer, double[]>> oviJakaumat;
 	private HashMap<String, HashMap<Integer, double[]>> ilmoJakaumat;
@@ -24,9 +30,11 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUS
 	
 	private long seed;
 	
+	private Simulaatio simu;
+	
 	public Kontrolleri(ISimulaattorinUI ui) {
 		this.ui = ui;
-		seed = System.currentTimeMillis();
+		dao = new SimulaatioDAO();
 		alustaJakaumat();
 	}
 		
@@ -34,7 +42,12 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUS
 		
 	@Override
 	public void kaynnistaSimulointi() {
-		moottori = new OmaMoottori(this); // luodaan uusi moottorisäie jokaista simulointia varten
+		seed = System.currentTimeMillis();
+		
+		simu = new Simulaatio();
+		System.out.println("Ovijakauma: " + ui.getOviJakauma());
+		System.out.println("Ovinopeus: " + ui.getOviPalvelunopeus());
+		moottori = new OmaMoottori(this); 
 		moottori.setSimulointiaika(ui.getAika());
 		moottori.setViive(ui.getViive());
 		ui.getVisualisointi().tyhjennaNaytto();
@@ -109,7 +122,8 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{   // UUS
 
 	
 	public ContinuousGenerator valitseJakauma(HashMap<String, HashMap<Integer, double[]>> jakaumataulu, String jakauma, int nopeus) {
-		double[] taulukko = jakaumataulu.get(jakauma).get(nopeus);
+		HashMap<Integer, double[]> taulu = jakaumataulu.get(jakauma);
+		double[] taulukko = taulu.get(nopeus);
 		switch (jakauma) {
 		case "uniform":
 			return new Uniform(taulukko[0], taulukko[1], seed);
