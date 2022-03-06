@@ -165,6 +165,10 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 				@Override
 				public void handle(ActionEvent event) {
 					
+					setOviMaara();
+					setIlmoMaara();
+					setRokMaara();
+					
 					kontrolleri.kaynnistaSimulointi();
 					kaynnistaButton.setDisable(true);
 							
@@ -173,11 +177,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 					System.out.println(getIlmoJakauma());
 					System.out.println(getRokJakauma());
 					System.out.println(getSeurJakauma());
-					
-					setOviMaara();
-					setIlmoMaara();
-					setRokMaara();
-					
+										
 					System.out.println(getOviMaara());
 					System.out.println(getIlmoMaara());
 					System.out.println(getRokMaara());
