@@ -164,12 +164,20 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			kaynnistaButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					System.out.println(getOviMaara());
+					
 					kontrolleri.kaynnistaSimulointi();
 					kaynnistaButton.setDisable(true);
+							
+					System.out.println(getSaapumisjakauma());
+					System.out.println(getOviJakauma());
+					System.out.println(getIlmoJakauma());
+					System.out.println(getRokJakauma());
+					System.out.println(getSeurJakauma());
+					
 					setOviMaara();
 					setIlmoMaara();
 					setRokMaara();
+					
 					System.out.println(getOviMaara());
 					System.out.println(getIlmoMaara());
 					System.out.println(getRokMaara());
@@ -207,18 +215,16 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			jakaumatSaapuminen.getChildren().add(saapuminenNorm);
 			jakaumatSaapuminen.getChildren().add(saapuminenTasa);
 			jakaumatSaapuminen.getChildren().add(saapuminenExp);
-
+			
 			saapuminenGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-					if (saapuminenGroup.getSelectedToggle().getUserData() == "normal") {
-						jakaumaSaapuminen = "normal";
-					} else if (saapuminenGroup.getSelectedToggle().getUserData() == "unoform") {
-						jakaumaSaapuminen = "uniform";
-					} else if (saapuminenGroup.getSelectedToggle().getUserData() == "negexp") {
-						jakaumaSaapuminen = "negexp";
-					}
-				}
-			});
+			      public void changed(ObservableValue<? extends Toggle> ov,
+			          Toggle old_toggle, Toggle new_toggle) {
+			        if (saapuminenGroup.getSelectedToggle() != null) {
+			          jakaumaSaapuminen = saapuminenGroup.getSelectedToggle().getUserData().toString();
+			          System.out.println(jakaumaSaapuminen + "testi 1");
+			        }
+			      }
+			    });
 
 			jakaumatOvi = new TilePane();
 
@@ -240,18 +246,16 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			jakaumatOvi.getChildren().add(oviNorm);
 			jakaumatOvi.getChildren().add(oviTasa);
 			jakaumatOvi.getChildren().add(oviExp);
-
+			
 			oviGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-					if (oviGroup.getSelectedToggle().getUserData() == "normal") {
-						jakaumaOvi = "normal";
-					} else if (oviGroup.getSelectedToggle().getUserData() == "unoform") {
-						jakaumaOvi = "uniform";
-					} else if (oviGroup.getSelectedToggle().getUserData() == "negexp") {
-						jakaumaOvi = "negexp";
-					}
-				}
-			});
+			      public void changed(ObservableValue<? extends Toggle> ov,
+			          Toggle old_toggle, Toggle new_toggle) {
+			        if (oviGroup.getSelectedToggle() != null) {
+			          jakaumaOvi = oviGroup.getSelectedToggle().getUserData().toString();
+			          System.out.println(jakaumaOvi + "testi 1");
+			        }
+			      }
+			    });
 
 			jakaumatIlm = new TilePane();
 
@@ -273,18 +277,16 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			jakaumatIlm.getChildren().add(ilmNorm);
 			jakaumatIlm.getChildren().add(ilmTasa);
 			jakaumatIlm.getChildren().add(ilmExp);
-
+			
 			ilmGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-					if (ilmGroup.getSelectedToggle().getUserData() == "normal") {
-						jakaumaIlm = "normal";
-					} else if (oviGroup.getSelectedToggle().getUserData() == "unoform") {
-						jakaumaIlm = "uniform";
-					} else if (ilmGroup.getSelectedToggle().getUserData() == "negexp") {
-						jakaumaIlm = "negexp";
-					}
-				}
-			});
+			      public void changed(ObservableValue<? extends Toggle> ov,
+			          Toggle old_toggle, Toggle new_toggle) {
+			        if (ilmGroup.getSelectedToggle() != null) {
+			          jakaumaIlm = ilmGroup.getSelectedToggle().getUserData().toString();
+			          System.out.println(jakaumaIlm + "testi 1");
+			        }
+			      }
+			    });
 
 			jakaumatRokottaja = new TilePane();
 
@@ -306,18 +308,16 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			jakaumatRokottaja.getChildren().add(rokottajaNorm);
 			jakaumatRokottaja.getChildren().add(rokottajaTasa);
 			jakaumatRokottaja.getChildren().add(rokottajaExp);
-
+			
 			rokottajaGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-					if (rokottajaGroup.getSelectedToggle().getUserData() == "normal") {
-						jakaumaRokottaja = "normal";
-					} else if (oviGroup.getSelectedToggle().getUserData() == "unoform") {
-						jakaumaRokottaja = "uniform";
-					} else if (ilmGroup.getSelectedToggle().getUserData() == "negexp") {
-						jakaumaRokottaja = "negexp";
-					}
-				}
-			});
+			      public void changed(ObservableValue<? extends Toggle> ov,
+			          Toggle old_toggle, Toggle new_toggle) {
+			        if (rokottajaGroup.getSelectedToggle() != null) {
+			          jakaumaRokottaja = rokottajaGroup.getSelectedToggle().getUserData().toString();
+			          System.out.println(jakaumaRokottaja + "testi 1");
+			        }
+			      }
+			    });
 
 			jakaumatSeuranta = new TilePane();
 
@@ -339,18 +339,16 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			jakaumatSeuranta.getChildren().add(seurantaNorm);
 			jakaumatSeuranta.getChildren().add(seurantaTasa);
 			jakaumatSeuranta.getChildren().add(seurantaExp);
-
+			
 			seurantaGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-					if (seurantaGroup.getSelectedToggle().getUserData() == "normal") {
-						jakaumaSeuranta = "normal";
-					} else if (oviGroup.getSelectedToggle().getUserData() == "unoform") {
-						jakaumaSeuranta = "uniform";
-					} else if (ilmGroup.getSelectedToggle().getUserData() == "negexp") {
-						jakaumaSeuranta = "negexp";
-					}
-				}
-			});
+			      public void changed(ObservableValue<? extends Toggle> ov,
+			          Toggle old_toggle, Toggle new_toggle) {
+			        if (seurantaGroup.getSelectedToggle() != null) {
+			          jakaumaSeuranta = seurantaGroup.getSelectedToggle().getUserData().toString();
+			          System.out.println(jakaumaSeuranta + "testi 1");
+			        }
+			      }
+			    });
 
 			saapuminenNopeus = new TilePane();
 
@@ -667,8 +665,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public IVisualisointi getVisualisointi() {
 		return naytto;
 	}
-
-	// Jennin metodit
+	
 	public String getSaapumisjakauma() {
 		return jakaumaSaapuminen;
 	}
@@ -700,7 +697,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public int getIlmoMaara() {
 		return ilmoittautumispisteet;
 	}
-
+	
 	public String getIlmoJakauma() {
 		return jakaumaIlm;
 	}
@@ -716,8 +713,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public int getRokMaara() {
 		return rokottajat;
 	}
-
-
 	
 	public String getRokJakauma() {
 		return jakaumaRokottaja;
@@ -726,7 +721,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public int getRokPalvelunopeus() {
 		return nopeusRokottaja;
 	}
-
+	
 	public String getSeurJakauma() {
 		return jakaumaSeuranta;
 	}
