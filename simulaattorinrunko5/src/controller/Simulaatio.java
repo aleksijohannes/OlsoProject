@@ -3,14 +3,14 @@ package controller;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 
+ * Simulaatio-olio sisältää yhtä simulaatio-ajoa koskettavat tiedot. Simulaatiolla on oliomuuttujina päiväys, kaikki ajoparametrit, sekä
+ * simulaation tulokset.
  * 
  * @author Jenni Javanainen
  *
@@ -57,6 +57,8 @@ public class Simulaatio {
 	public Simulaatio() {
 		this.aika = new Date(System.currentTimeMillis());
 	}
+	
+	// Getterit ja setterit
 	
 	public Date getAika() {
 		return aika;
