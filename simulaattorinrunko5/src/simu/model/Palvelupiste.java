@@ -1,6 +1,8 @@
 package simu.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,6 +29,8 @@ public class Palvelupiste {
 	private List<Double> jonotusajat = new ArrayList<Double>();
 	private List<Double> vasteajat = new ArrayList<Double>();
 	private int asiakkaat = 0;
+	private double jonotusaika;
+
 	
 
 	// JonoStartegia strategia; //optio: asiakkaiden järjestys
@@ -68,9 +72,12 @@ public class Palvelupiste {
 	
 	public Asiakas otaJonosta() { // Poistetaan palvelussa ollut
 		varattu = false;
-		double jonotusaika = Kello.getInstance().getAika()-jonotuksenAlku;
-		jonotusajat.add(jonotusaika);
 		return jono.poll();
+	}
+	
+	public double tallennaJonotus() {
+		jonotusaika = Kello.getInstance().getAika()-jonotuksenAlku;
+		return jonotusaika;
 	}
 
 	public void aloitaPalvelu() { // Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
@@ -86,7 +93,12 @@ public class Palvelupiste {
 		asiakkaat++;
 		
 	}
-
+	
+	public double getJonotusaika() {
+		return jonotusaika;
+	}
+	
+	
 	public boolean onVarattu() {
 		return varattu;
 	}
@@ -119,8 +131,8 @@ public class Palvelupiste {
 		String nimi = this.id + " " + this.palvelupisteenTyyppi;
 		return nimi;
 	}
-	
-	
+
+
 	public void vasteaikaTestaus() {
 		double palv;
 		double jono;
