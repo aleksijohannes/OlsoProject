@@ -139,9 +139,9 @@ public class OmaMoottori extends Moottori {
 			pieninJono(jalkiseurannat).lisaaJonoon(a);
 			break;
 		case DEP4:
-			jonotusaika = etsiValmis(jalkiseurannat, t).tallennaJonotus();
+			//jonotusaika = etsiValmis(jalkiseurannat, t).tallennaJonotus();
 			a = etsiValmis(jalkiseurannat, t).otaJonosta();
-			seurJonotukset.add(jonotusaika);
+			//seurJonotukset.add(jonotusaika);
 			a.setPoistumisaika(Kello.getInstance().getAika());
 			asiakkaidenLapimenoajat.add(a.asiakkaanLapimeno());
 			a.raportti();
@@ -222,7 +222,7 @@ public class OmaMoottori extends Moottori {
 		}
 	}
 
-	public HashMap getSuoritustehot() {
+	public HashMap<String, Double>getSuoritustehot() {
 		return suoritustehot;
 	}
 
@@ -241,7 +241,7 @@ public class OmaMoottori extends Moottori {
 		}
 	}
 
-	public HashMap getKayttoasteet() {
+	public HashMap<String, Double> getKayttoasteet() {
 		return kayttoasteet;
 	}
 	
@@ -277,11 +277,16 @@ public class OmaMoottori extends Moottori {
 		System.out.println("Min rok: " + rokJonotukset.get(0));
 		System.out.println("Max rok: " + rokJonotukset.get(rokJonotukset.size() - 1));
 
-		seurPieninJono = seurJonotukset.get(0);
-		seurSuurinJono = seurJonotukset.get(seurJonotukset.size() - 1);
-		System.out.println("Min seur: " + seurJonotukset.get(0));
-		System.out.println("Max seur: " + seurJonotukset.get(seurJonotukset.size() - 1));
-
+		if (seurJonotukset.isEmpty()) {
+			System.out.println("Seurannassa ei jonoa");
+			
+		}
+		else {
+			seurPieninJono = seurJonotukset.get(0);
+			seurSuurinJono = seurJonotukset.get(seurJonotukset.size() - 1);
+			System.out.println("Min seur: " + seurJonotukset.get(0));
+			System.out.println("Max seur: " + seurJonotukset.get(seurJonotukset.size() - 1));	
+		}
 	}
 	
 	protected void laskeJonojenKeskiarvot() {
@@ -311,12 +316,16 @@ public class OmaMoottori extends Moottori {
 		System.out.println("Avg rok: " + rokKeskiarvo);
 		
 		
-		for (int i = 0; i < seurJonotukset.size(); i++) {
+		if (seurJonotukset.isEmpty()) {
+			System.out.println("Seurannassa ei jonoa");
+		}
+		else {
+			for (int i = 0; i < seurJonotukset.size(); i++) {
 			seurSumma += seurJonotukset.get(i);
 		}
-		seurKeskiarvo = seurSumma / seurJonotukset.size();
-		System.out.println("Avg seur: " + seurKeskiarvo);
-		
+			seurKeskiarvo = seurSumma / seurJonotukset.size();
+			System.out.println("Avg seur: " + seurKeskiarvo);
+		}	
 	}
 
 	
