@@ -37,7 +37,21 @@ public class Visualisointi2 extends Canvas implements IVisualisointi{
 
 
 	@Override
-	public void visualisoiPalvelupisteet() {
+	public void uusiAsiakas(int jono) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void visualisoiPalvelupisteet(int oviMaara, int ilmMaara, int rokMaara) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void poistaAsiakasJonosta(int poista) {
 		// TODO Auto-generated method stub
 		
 	}
