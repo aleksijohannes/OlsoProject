@@ -21,6 +21,8 @@ public class OmaMoottori extends Moottori {
 	private Palvelupiste[] rokottajat;
 	private Palvelupiste[] jalkiseurannat;
 
+	private int asiakasmaara = 0;
+	
 	private List<Double> lapimenoajat = new ArrayList<Double>();
 	private List<Double> asiakkaidenLapimenoajat = new ArrayList<Double>();
 
@@ -28,13 +30,21 @@ public class OmaMoottori extends Moottori {
 	private int ilmotiskiMaara;
 	private int rokottajaMaara;
 	private int seurantaMaara;
+	
+	private double seurJonotus;
+	private double seurJonotusAloitus;
+	private double ilmoJonotus;
+	private double ilmoJonotusAloitus;
+	private double rokJonotus;
+	private double rokJonotusAloitus;
+	private double oviJonotus;
+	private double oviJonotusAloitus;
+	
 
 	private List<Double> oviJonotukset = new ArrayList<Double>();
 	private List<Double> ilmoJonotukset = new ArrayList<Double>();
 	private List<Double> rokJonotukset = new ArrayList<Double>();
 	private List<Double> seurJonotukset = new ArrayList<Double>();
-
-	private double jonotusaika;
 
 	private double oviPieninJono;
 	private double oviSuurinJono;
@@ -58,10 +68,9 @@ public class OmaMoottori extends Moottori {
 
 		super(kontrolleri);
 		ovihenkiloMaara = kontrolleri.getOviMaara();
-		System.out.println("ovihenkilömäärä: " + ovihenkiloMaara);
 		ilmotiskiMaara = kontrolleri.getIlmoMaara();
 		rokottajaMaara = kontrolleri.getRokMaara();
-		seurantaMaara = 1;
+		seurantaMaara = 75;
 
 		ovihenkilot = new Palvelupiste[ovihenkiloMaara];
 		ilmoittautumistiskit = new Palvelupiste[ilmotiskiMaara];
@@ -92,22 +101,16 @@ public class OmaMoottori extends Moottori {
 
 		saapumisprosessi = new Saapumisprosessi(kontrolleri.getSaapumisjakauma(), tapahtumalista, TapahtumanTyyppi.ARR1);
 		
-		
-		
-		System.out.println(ilmoittautumistiskit);
-		
 		for (int i = 0; i < rokottajaMaara; i++) {
 			System.out.println("rokottaja: " + rokottajat[i].haeNimi());
 		}
 		
-		System.out.println(ovihenkilot);
-		System.out.println(jalkiseurannat);
+		System.out.println("jälkiseurantojen määrä" + jalkiseurannat.length);
 	}
 
 	@Override
 	protected void alustukset() {
-
-	saapumisprosessi.generoiSeuraava(); // Ensimmäinen saapuminen järjestelmään
+		saapumisprosessi.generoiSeuraava(); // Ensimmäinen saapuminen järjestelmään
 	}
 
 	@Override
@@ -119,32 +122,31 @@ public class OmaMoottori extends Moottori {
 		case ARR1:
 			pieninJono(ovihenkilot).lisaaJonoon(new Asiakas());
 			saapumisprosessi.generoiSeuraava();
+			oviJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP1:
-			jonotusaika = etsiValmis(ovihenkilot, t).tallennaJonotus();
 			a = etsiValmis(ovihenkilot, t).otaJonosta();
-			oviJonotukset.add(jonotusaika);
 			pieninJono(ilmoittautumistiskit).lisaaJonoon(a);
+			ilmoJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP2:
-			jonotusaika = etsiValmis(ilmoittautumistiskit, t).tallennaJonotus();
 			a = etsiValmis(ilmoittautumistiskit, t).otaJonosta();
-			ilmoJonotukset.add(jonotusaika);
 			pieninJono(rokottajat).lisaaJonoon(a);
+			rokJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP3:
-			jonotusaika = etsiValmis(rokottajat, t).tallennaJonotus();
 			a = etsiValmis(rokottajat, t).otaJonosta();
-			rokJonotukset.add(jonotusaika);
 			pieninJono(jalkiseurannat).lisaaJonoon(a);
+			seurJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP4:
-			//jonotusaika = etsiValmis(jalkiseurannat, t).tallennaJonotus();
 			a = etsiValmis(jalkiseurannat, t).otaJonosta();
-			//seurJonotukset.add(jonotusaika);
 			a.setPoistumisaika(Kello.getInstance().getAika());
 			asiakkaidenLapimenoajat.add(a.asiakkaanLapimeno());
+			
+			
 			a.raportti();
+			asiakasmaara++;
 		}
 	}
 
@@ -170,24 +172,34 @@ public class OmaMoottori extends Moottori {
 		for (Palvelupiste p : ovihenkilot) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
+				oviJonotus = (Kello.getInstance().getAika()) - oviJonotusAloitus;
+				oviJonotukset.add(oviJonotus);
 			}
 		}
 
 		for (Palvelupiste p : ilmoittautumistiskit) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
+				ilmoJonotus = (Kello.getInstance().getAika()) - ilmoJonotusAloitus;
+				ilmoJonotukset.add(ilmoJonotus);
 			}
 		}
 
 		for (Palvelupiste p : rokottajat) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
+				rokJonotus = (Kello.getInstance().getAika()) - rokJonotusAloitus;
+				rokJonotukset.add(rokJonotus);
 			}
 		}
 
 		for (Palvelupiste p : jalkiseurannat) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
+				seurJonotus = (Kello.getInstance().getAika()) - seurJonotusAloitus;
+				seurJonotukset.add(seurJonotus);
+				
+				
 			}
 		}
 	}
@@ -201,6 +213,7 @@ public class OmaMoottori extends Moottori {
 		}
 		return pienin;
 	}
+	
 
 	protected double avgLapimeno() {
 		double avg = lapimenoajat.stream().mapToDouble(Double::doubleValue).sum() / lapimenoajat.size();
@@ -327,8 +340,6 @@ public class OmaMoottori extends Moottori {
 			System.out.println("Avg seur: " + seurKeskiarvo);
 		}	
 	}
-
-	
 	
 	// Pienimmät jonot:
 	
@@ -385,6 +396,9 @@ public class OmaMoottori extends Moottori {
 		return seurKeskiarvo;
 	}
 	
+	protected int getAsiakasmaara() {
+		return asiakasmaara;
+	}
 
 	@Override
 	protected void tulokset() {
@@ -392,6 +406,9 @@ public class OmaMoottori extends Moottori {
 		laskeKayttoasteet();
 		sorttaaJonot();
 		laskeJonojenKeskiarvot();
+		System.out.println("pienin asiakas" + pieninAsiakas());
+		System.out.println("suurin asiakas" + suurinAsiakas());
+		System.out.println("Simulaation läpi meni " + getAsiakasmaara() + " asiakasta");
 		kontrolleri.naytaLoppuaika(Kello.getInstance().getAika());
 		lapimenoajat.add(Kello.getInstance().getAika());
 	}
