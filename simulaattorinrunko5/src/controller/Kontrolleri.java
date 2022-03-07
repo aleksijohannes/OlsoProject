@@ -1,32 +1,26 @@
 package controller;
 
-/**
- * Toimii linkkinä ja tiedonvälittäjänä käyttöliittymän, moottorin sekä tietokannan välillä.
- * 
- * @author Jenni Javanainen
- */
-
 import java.util.ArrayList;
-
-/**
- * 
- * @author Jenni Javanainen
- */
-
 import java.util.HashMap;
-
 import eduni.distributions.ContinuousGenerator;
 import eduni.distributions.Negexp;
 import eduni.distributions.Normal;
 import eduni.distributions.Uniform;
 import javafx.application.Platform;
 import simu.framework.IMoottori;
+import simu.model.IOmaMoottori;
 import simu.model.OmaMoottori;
 import view.ISimulaattorinUI;
 
+/**
+ * Toimii linkkinä ja tiedonvälittäjänä käyttöliittymän, moottorin sekä tietokannan välillä.
+ * @author Jenni Javanainen
+ */
+
+
 public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{  
 	
-	private IMoottori moottori; 
+	private IOmaMoottori moottori; 
 	private ISimulaattorinUI ui;
 	private ISimulaatioDAO dao;
 	
@@ -62,6 +56,7 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	
 	/**
 	 * Luo uuden Simulaatio-olion viimeisimmästä simulaatiosta, ja antaa sen SimulaatioDAO-luokalle tietokantaan tallennettavaksi.
+	 * Simulaation ajoparametrit haetaan käyttöliittymästä. Simulaation tulokset haetaan moottorista.
 	 */
     @Override	
 	public void tallennaSimulaatio() {
@@ -83,7 +78,21 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		simu.setSaapJakauma(ui.getSaapumisjakauma());
 		
 		//Tulokset
-		
+		simu.setLoppuaika(moottori.getLoppuaika());
+		simu.setAvgLapimeno(moottori.getAvgLapimeno());
+		simu.setPalvellutAsiakkaat(moottori.getAsiakasmaara());
+		simu.setPieninAsiakas(moottori.getPieninAsiakas());
+		simu.setSuurinAsiakas(moottori.getSuurinAsiakas());
+		simu.setKayttoasteet(moottori.getKayttoasteet());
+		simu.setTehot(moottori.getSuoritustehot());
+		simu.setSuurinOviJono(moottori.getSuurinOviJono());
+		simu.setSuurinIlmoJono(moottori.getSuurinIlmoJono());
+		simu.setSuurinRokJono(moottori.getSuurinRokJono());
+		simu.setSuurinSeurJono(moottori.getSuurinSeurJono());
+		simu.setAvgOvijono(moottori.getOviKeskiarvo());
+		simu.setAvgIlmoJono(moottori.getIlmoKeskiarvo());
+		simu.setAvgRokJono(moottori.getRokKeskiarvo());
+		simu.setAvgSeurJono(moottori.getSeurKeskiarvo());
 		
 		dao.tallenna(simu);
 	}
@@ -113,54 +122,35 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		moottori.setViive((long)(moottori.getViive()*0.9));
 	}
 	
-	/**
-	 * Vie simulaation loppuajan käyttöliittymään	
-	 * @param aika simulaation loppuaika/kesto
-	 */
-	@Override
-	public void naytaLoppuaika(double aika) {
-		Platform.runLater(()->ui.setLoppuaika(aika)); 
-	}
-
+	private int jono;
+    private int poista;
+    
 	/**
 	 * Aloittaa uuden asiakkaan visualisoinnin käyttöliittymässä
+	 * @author Aleksi Alanko
 	 */
 	@Override
-	public void visualisoiAsiakas() {
-		Platform.runLater(new Runnable(){
-			public void run(){
-				ui.getVisualisointi().uusiAsiakas();
-			}
-		});
-	}
-	
+    public void visualisoiAsiakas(int jono) {
+        Platform.runLater(new Runnable(){
+            public void run(){
+                ui.getVisualisointi().uusiAsiakas(jono);
+            }
+        });
+    }
+
 	/**
-	 * 
-	 * @param aika
+	 * Lopettaa uuden asiakkaan visualisoinnin käyttöliittymässä
+	 * @author Aleksi Alanko
 	 */
-	@Override
-	public void naytaAvgLapimeno(double aika) {
-		Platform.runLater(() -> ui.setLapimenoaika(aika));
-		
-	}
-	
-	/**
-	 * Vie palvelupistekohtaiset käyttöasteet käyttöliittymään
-	 * @param palvelupisteet sisältää palvelupisteiden käyttöasteet palvelupisteen tunnus-käyttöaste -pareina
-	 */
-	@Override
-	public void naytaKayttoaste(HashMap<String, Double> palvelupisteet) {
-		Platform.runLater(() -> ui.setKayttoasteet(palvelupisteet));
-	}
-	
-	/**
-	 * Vie palvelupistekohtaiset suoritustehot käyttöliittymään
-	 * @param palvelupisteet sisältää palvelupisteiden suoritustehot palvelupisteen tunnus-teho -pareina
-	 */
-	@Override
-	public void naytaSuoritusteho(HashMap<String, Double> palvelupisteet) {
-		Platform.runLater(() -> ui.setSuoritustehot(palvelupisteet));	
-	}
+    @Override
+    public void poistaAsiakas(int poista) {
+        Platform.runLater(new Runnable(){
+            public void run(){
+                ui.getVisualisointi().poistaAsiakasJonosta(poista);
+            }
+        });
+    }
+
 	
 	/**
 	 * Paluttaa käyttäliittymästä haetun ovihenkilöiden lukumäärän
@@ -265,12 +255,12 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 	 */
 	public void alustaJakaumat() {
 		HashMap<Integer, double[]> oviUniform = new HashMap<>();
-		oviUniform.put(1, new double[] {3, 4});
-		oviUniform.put(2, new double[] {1.5, 3});
-		oviUniform.put(3, new double[] {1, 1.5});
+		oviUniform.put(1, new double[] {2.5, 3.5});
+		oviUniform.put(2, new double[] {1.5, 2.5});
+		oviUniform.put(3, new double[] {1, 2});
 		HashMap<Integer, double[]> oviNormal = new HashMap<>();
-		oviNormal.put(1, new double[] {3, 1});
-		oviNormal.put(2, new double[] {2.5, 1});
+		oviNormal.put(1, new double[] {4, 1});
+		oviNormal.put(2, new double[] {3, 1});
 		oviNormal.put(3, new double[] {2, 1});
 		HashMap<Integer, double[]> oviExp = new HashMap<>();
 		oviExp.put(1, new double[] {3});
@@ -282,15 +272,15 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		oviJakaumat.put("negexp", oviExp);
 		
 		HashMap<Integer, double[]> ilmoUniform = new HashMap<>();
-		ilmoUniform.put(1, new double[] {3.5, 5});
-		ilmoUniform.put(2, new double[] {2, 3.5});
-		ilmoUniform.put(3, new double[] {1, 2});
+		ilmoUniform.put(1, new double[] {4, 6});
+		ilmoUniform.put(2, new double[] {3, 4.5});
+		ilmoUniform.put(3, new double[] {2.5, 3.5});
 		HashMap<Integer, double[]> ilmoNormal = new HashMap<>();
-		ilmoNormal.put(1, new double[] {5, 1});
-		ilmoNormal.put(2, new double[] {3.5, 1});
-		ilmoNormal.put(3, new double[] {2.5, 1});
+		ilmoNormal.put(1, new double[] {7, 1});
+		ilmoNormal.put(2, new double[] {4, 1});
+		ilmoNormal.put(3, new double[] {3, 1});
 		HashMap<Integer, double[]> ilmoExp = new HashMap<>();
-		ilmoExp.put(1, new double[] {4});
+		ilmoExp.put(1, new double[] {5});
 		ilmoExp.put(2, new double[] {3});
 		ilmoExp.put(3, new double[] {2});
 		ilmoJakaumat = new HashMap<>();
@@ -299,17 +289,17 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		ilmoJakaumat.put("negexp", ilmoExp);
 		
 		HashMap<Integer, double[]> rokUniform = new HashMap<>();
-		rokUniform.put(1, new double[] {7, 12});
-		rokUniform.put(2, new double[] {5, 8});
-		rokUniform.put(3, new double[] {3, 6});
+		rokUniform.put(1, new double[] {12, 20});
+		rokUniform.put(2, new double[] {9, 12});
+		rokUniform.put(3, new double[] {7, 10});
 		HashMap<Integer, double[]> rokNormal = new HashMap<>();
-		rokNormal.put(1, new double[] {10, 3});
-		rokNormal.put(2, new double[] {8, 2});
-		rokNormal.put(3, new double[] {6, 2});
+		rokNormal.put(1, new double[] {19, 3});
+		rokNormal.put(2, new double[] {12, 2});
+		rokNormal.put(3, new double[] {10, 2});
 		HashMap<Integer, double[]> rokExp = new HashMap<>();
-		rokExp.put(1, new double[] {9});
-		rokExp.put(2, new double[] {7});
-		rokExp.put(3, new double[] {5});
+		rokExp.put(1, new double[] {6});
+		rokExp.put(2, new double[] {5});
+		rokExp.put(3, new double[] {4});
 		rokJakaumat = new HashMap<>();
 		rokJakaumat.put("uniform", rokUniform);
 		rokJakaumat.put("normal", rokNormal);
@@ -323,55 +313,176 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		seurNormal.put(1, new double[] {15.5, 1});
 		seurNormal.put(2, new double[] {15, 1});
 		seurNormal.put(3, new double[] {14.5, 1});
-		HashMap<Integer, double[]> seurExp = new HashMap<>();
-		seurExp.put(1, new double[] {16});
-		seurExp.put(2, new double[] {15});
-		seurExp.put(3, new double[] {14});
 		seurJakaumat = new HashMap<>();
 		seurJakaumat.put("uniform", seurUniform);
 		seurJakaumat.put("normal", seurNormal);
-		seurJakaumat.put("negexp", seurExp);
 		
 		HashMap<Integer, double[]> saapumisUniform = new HashMap<>();
-		saapumisUniform.put(1, new double[] {6, 10});
-		saapumisUniform.put(2, new double[] {4, 7});
-		saapumisUniform.put(3, new double[] {2, 5});
+		saapumisUniform.put(1, new double[] {3, 6});
+		saapumisUniform.put(2, new double[] {1.5, 3});
+		saapumisUniform.put(3, new double[] {0.5, 1.5});
 		HashMap<Integer, double[]> saapumisNormal = new HashMap<>();
-		saapumisNormal.put(1, new double[] {8, 2});
-		saapumisNormal.put(2, new double[] {6, 2});
-		saapumisNormal.put(3, new double[] {4, 2});
+		saapumisNormal.put(1, new double[] {4, 2});
+		saapumisNormal.put(2, new double[] {3.5, 1.5});
+		saapumisNormal.put(3, new double[] {2, 1});
 		HashMap<Integer, double[]> saapumisExp = new HashMap<>();
-		saapumisExp.put(1, new double[] {7});
-		saapumisExp.put(2, new double[] {5});
-		saapumisExp.put(3, new double[] {3});
+		saapumisExp.put(1, new double[] {3});
+		saapumisExp.put(2, new double[] {2});
+		saapumisExp.put(3, new double[] {1});
 		saapumisJakaumat = new HashMap<>();
 		saapumisJakaumat.put("uniform", saapumisUniform);
 		saapumisJakaumat.put("normal", saapumisNormal);
 		saapumisJakaumat.put("negexp", saapumisExp);
 		
 	}
-	/*
-	private int jono;
-    private int poista;
-
+	
+	/**
+	 * Vie simulaation loppuajan käyttöliittymään	
+	 * @param aika simulaation loppuaika/kesto
+	 */
 	@Override
-    public void visualisoiAsiakas(int jono) {
-        Platform.runLater(new Runnable(){
-            public void run(){
-                ui.getVisualisointi().uusiAsiakas(jono);
-            }
-        });
-    }
+	public void naytaLoppuaika(double aika) {
+		Platform.runLater(()->ui.setLoppuaika(aika)); 
+	}
+	
+	/**
+	 * Vie läpimenoaikojen keskiarvon käyttöliittymään
+	 * @param aika simulaation läpi kulkeneiden asiakkaiden läpimenoaikojen keskiarvo
+	 */
+	@Override
+	public void naytaAvgLapimeno(double aika) {
+		Platform.runLater(() -> ui.setLapimenoaika(aika));
+		
+	}
+	
+	/**
+	 * Vie palvelupistekohtaiset käyttöasteet käyttöliittymään
+	 * @param palvelupisteet sisältää palvelupisteiden käyttöasteet palvelupisteen tunnus-käyttöaste -pareina
+	 */
+	@Override
+	public void naytaKayttoaste(HashMap<String, Double> palvelupisteet) {
+		Platform.runLater(() -> ui.setKayttoasteet(palvelupisteet));
+	}
+	
+	/**
+	 * Vie palvelupistekohtaiset suoritustehot käyttöliittymään
+	 * @param palvelupisteet sisältää palvelupisteiden suoritustehot palvelupisteen tunnus-teho -pareina
+	 */
+	@Override
+	public void naytaSuoritusteho(HashMap<String, Double> palvelupisteet) {
+		Platform.runLater(() -> ui.setSuoritustehot(palvelupisteet));	
+	}
 
-    @Override
-    public void poistaAsiakas(int poista) {
-        Platform.runLater(new Runnable(){
-            public void run(){
-                ui.getVisualisointi().poistaAsiakasJonosta(poista);
-            }
-        });
-    }
-    */
+	/**
+	 * Vie pienimmän läpimenoajan käyttöliittymään
+	 * @param lapimenoaika pienin yksittäisen asiakkaan läpimenoaika
+	 */
+	@Override
+	public void naytaPieninAsiakas(double lapimenoaika) {
+		Platform.runLater(() -> ui.setPieninAsiakas(lapimenoaika));
+		
+	}
+	
+	/**
+	 * Vie suurimman läpimenoajan käyttöliittymään
+	 * @param lapimenoaika suurin yksittäisen asiakkaan läpimenoaika
+	 */
+	@Override
+	public void naytaSuurinAsiakas(double lapimenoaika) {
+		Platform.runLater(() -> ui.setSuurinAsiakas(lapimenoaika));
+		
+	}
+	
+	/**
+	 * Vie suurimman ovihenkilöiden jonotusajan käyttöliittymään
+	 * @param jonotusaika suurin jonotusaika ovihenkilöille
+	 */
+	@Override
+	public void naytaSuurinOviJono(double jonotusaika) {
+		Platform.runLater(() -> ui.setSuurinOviJono(jonotusaika));
+		
+	}
+
+	/**
+	 * Vie suurimman ilmoittautumistiskien jonotusajan käyttöliittymään
+	 * @param jonotusaika suurin jonotusaika ilmoittautumistiskeille
+	 */
+	@Override
+	public void naytaSuurinIlmoJono(double jonotusaika) {
+		Platform.runLater(() -> ui.setSuurinIlmoJono(jonotusaika));
+		
+	}
+
+	/**
+	 * Vie suurimman rokottajien jonotusajan käyttöliittymään
+	 * @param jonotusaika suurin jonotusaika rokottajille
+	 */
+	@Override
+	public void naytaSuurinRokJono(double jonotusaika) {
+		Platform.runLater(() -> ui.setSuurinRokJono(jonotusaika));
+		
+	}
+
+	/**
+	 * Vie suurimman seurantapisteen jonotusajan käyttöliittymään
+	 * @param jonotusaika suurin jonotusaika seurantapisteeseen
+	 */
+	@Override
+	public void naytaSuurinSeurJono(double jonotusaika) {
+		Platform.runLater(() -> ui.setSuurinSeurJono(jonotusaika));
+		
+	}
+	
+	/**
+	 * Vie palveltujen asiakkaiden määrän käyttäliittymään
+	 * @param kpl simulaation aikana kokonaan palveltujen asiakkaiden lukumäärä
+	 */
+	@Override
+	public void naytaPalvellutAsiakkaat(int kpl) {
+		Platform.runLater(() -> ui.setPalvellutAsiakkaat(kpl));
+		
+	}
+
+	/**
+	 * Vie ovihenkilöiden jonotusaikajoen keskiarvon käyttöliittymään
+	 * @param jonotusaika ovihenkilöiden jonotusaikojen keskiarvo
+	 */
+	@Override
+	public void naytaAvgOviJono(double jonotusaika) {
+		Platform.runLater(() -> ui.setAvgOviJono(jonotusaika));
+		
+	}
+	
+	/**
+	 * Vie ilmoittautumistiskien jonotusaikajoen keskiarvon käyttöliittymään
+	 * @param jonotusaika ilmoittautumistiskien jonotusaikojen keskiarvo
+	 */
+	@Override
+	public void naytaAvgIlmoJono(double jonotusaika) {
+		Platform.runLater(() -> ui.setAvgIlmoJono(jonotusaika));
+		
+	}
+	
+	/**
+	 * Vie rokotuspisteiden jonotusaikajoen keskiarvon käyttöliittymään
+	 * @param jonotusaika rokotuspisteiden jonotusaikojen keskiarvo
+	 */
+	@Override
+	public void naytaAvgRokJono(double jonotusaika) {
+		Platform.runLater(() -> ui.setAvgRokJono(jonotusaika));
+		
+	}
+	
+	/**
+	 * Vie seurantapisteen jonotusaikajoen keskiarvon käyttöliittymään
+	 * @param jonotusaika seurantapisteen jonotusaikojen keskiarvo
+	 */
+	@Override
+	public void naytaAvgSeurJono(double jonotusaika) {
+		Platform.runLater(() -> ui.setAvgSeurJono(jonotusaika));
+		
+	}
+
 
 
 	

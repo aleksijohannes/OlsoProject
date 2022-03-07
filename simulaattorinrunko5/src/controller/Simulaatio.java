@@ -45,12 +45,21 @@ public class Simulaatio {
 	private String saapJakauma;
 	
 	// Tulokset
-	
 	private double loppuaika;
 	private double avgLapimeno;
 	private HashMap<String, Double> kayttoasteet; 
 	private HashMap<String, Double> tehot;
-	
+	private double pieninAsiakas;
+	private double suurinAsiakas;
+	private double suurinOviJono;
+	private double suurinIlmoJono;
+	private double suurinRokJono;
+	private double suurinSeurJono;
+	private int palvellutAsiakkaat;
+	private double avgOvijono;
+	private double avgIlmoJono;
+	private double avgRokJono;
+	private double avgSeurJono;
 	
 	
 	
@@ -202,6 +211,94 @@ public class Simulaatio {
 
 	public void setKayttoasteet(HashMap<String, Double> kayttoasteet) {
 		this.kayttoasteet = kayttoasteet;
+	}
+
+	public double getPieninAsiakas() {
+		return pieninAsiakas;
+	}
+
+	public void setPieninAsiakas(double pieninAsiakas) {
+		this.pieninAsiakas = pieninAsiakas;
+	}
+
+	public double getSuurinSeurJono() {
+		return suurinSeurJono;
+	}
+
+	public void setSuurinSeurJono(double suurinSeurJono) {
+		this.suurinSeurJono = suurinSeurJono;
+	}
+
+	public double getSuurinAsiakas() {
+		return suurinAsiakas;
+	}
+
+	public void setSuurinAsiakas(double suurinAsiakas) {
+		this.suurinAsiakas = suurinAsiakas;
+	}
+
+	public double getSuurinOviJono() {
+		return suurinOviJono;
+	}
+
+	public void setSuurinOviJono(double suurinOviJono) {
+		this.suurinOviJono = suurinOviJono;
+	}
+
+	public double getSuurinIlmoJono() {
+		return suurinIlmoJono;
+	}
+
+	public void setSuurinIlmoJono(double suurinIlmoJono) {
+		this.suurinIlmoJono = suurinIlmoJono;
+	}
+
+	public double getSuurinRokJono() {
+		return suurinRokJono;
+	}
+
+	public void setSuurinRokJono(double suurinRokJono) {
+		this.suurinRokJono = suurinRokJono;
+	}
+
+	public int getPalvellutAsiakkaat() {
+		return palvellutAsiakkaat;
+	}
+
+	public void setPalvellutAsiakkaat(int palvellutAsiakkaat) {
+		this.palvellutAsiakkaat = palvellutAsiakkaat;
+	}
+
+	public double getAvgOvijono() {
+		return avgOvijono;
+	}
+
+	public void setAvgOvijono(double avgOvijono) {
+		this.avgOvijono = avgOvijono;
+	}
+
+	public double getAvgIlmoJono() {
+		return avgIlmoJono;
+	}
+
+	public void setAvgIlmoJono(double avgIlmoJono) {
+		this.avgIlmoJono = avgIlmoJono;
+	}
+
+	public double getAvgRokJono() {
+		return avgRokJono;
+	}
+
+	public void setAvgRokJono(double avgRokJono) {
+		this.avgRokJono = avgRokJono;
+	}
+
+	public double getAvgSeurJono() {
+		return avgSeurJono;
+	}
+
+	public void setAvgSeurJono(double avgSeurJono) {
+		this.avgSeurJono = avgSeurJono;
 	}
 
 

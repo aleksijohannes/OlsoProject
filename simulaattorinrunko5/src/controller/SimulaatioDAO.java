@@ -14,6 +14,13 @@ import java.util.List;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
+/**
+ * Hoitaa yhteydenpidon tietokannan ja kontrollerin välillä.
+ * 
+ * @author Jenni Javanainen
+ *
+ */
+
 public class SimulaatioDAO implements ISimulaatioDAO {
 
 	private SessionFactory istuntotehdas = null;
