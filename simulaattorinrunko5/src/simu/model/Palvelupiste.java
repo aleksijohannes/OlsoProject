@@ -24,8 +24,8 @@ public class Palvelupiste {
 	private int id;
 	private PalvelupisteenTyyppi palvelupisteenTyyppi;
 	private double poistumisaika;
-	private List<Double> palveluajat = new ArrayList<Double>();
 	private double jonotuksenAlku;
+	private List<Double> palveluajat = new ArrayList<Double>();
 	private List<Double> jonotusajat = new ArrayList<Double>();
 	private List<Double> vasteajat = new ArrayList<Double>();
 	private int asiakkaat = 0;
@@ -62,6 +62,7 @@ public class Palvelupiste {
 		
 	}
 	
+	
 	public void lisaaPoistumisAika(Tapahtuma t) {
 		poistumisaika = t.getAika();
 	}
@@ -75,10 +76,10 @@ public class Palvelupiste {
 		return jono.poll();
 	}
 	
-	public double tallennaJonotus() {
+	/*public double tallennaJonotus() {
 		jonotusaika = Kello.getInstance().getAika()-jonotuksenAlku;
 		return jonotusaika;
-	}
+	}*/
 
 	public void aloitaPalvelu() { // Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
 
@@ -87,12 +88,14 @@ public class Palvelupiste {
 		varattu = true;
 		double palveluaika = generator.sample();
 		poistumisaika = Kello.getInstance().getAika() + palveluaika;
+		jonotusaika = Kello.getInstance().getAika() - jonotuksenAlku;
 		
 		tapahtumalista.lisaa(new Tapahtuma(skeduloitavanTapahtumanTyyppi, poistumisaika));
 		palveluajat.add(palveluaika);
 		asiakkaat++;
 		
 	}
+	
 	
 	public double getJonotusaika() {
 		return jonotusaika;
@@ -133,7 +136,7 @@ public class Palvelupiste {
 	}
 
 
-	public void vasteaikaTestaus() {
+	/*public void vasteaikaTestaus() {
 		double palv;
 		double jono;
 		double vast = 0;
@@ -148,7 +151,6 @@ public class Palvelupiste {
 					}
 				}
 			vasteajat.add(vast);
-		}	
-	}
+		}*/	
 
 }
