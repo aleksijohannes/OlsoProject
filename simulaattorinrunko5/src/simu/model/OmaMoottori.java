@@ -14,7 +14,7 @@ import simu.framework.Moottori;
 import simu.framework.Saapumisprosessi;
 import simu.framework.Tapahtuma;
 
-public class OmaMoottori extends Moottori {
+public class OmaMoottori extends Moottori implements IOmaMoottori{
 
 	private Saapumisprosessi saapumisprosessi;
 	private Palvelupiste[] ovihenkilot;
@@ -40,6 +40,11 @@ public class OmaMoottori extends Moottori {
 	private double rokJonotusAloitus;
 	private double oviJonotus;
 	private double oviJonotusAloitus;
+	
+	private double loppuaika;
+	private double avgLapimeno;
+	private double suurinAsiakas;
+	private double pieninAsiakas;
 	
 
 	private List<Double> oviJonotukset = new ArrayList<Double>();
@@ -379,41 +384,41 @@ public class OmaMoottori extends Moottori {
 	
 	// Suurimmat jonot:
 	
-	protected double getSuurinOviJono() {
+	public double getSuurinOviJono() {
 		return oviSuurinJono;
 	}
 	
-	protected double getSuurinIlmoJono() {
+	public double getSuurinIlmoJono() {
 		return ilmoSuurinJono;
 	}
 	
-	protected double getSuurinRokJono() {
+	public double getSuurinRokJono() {
 		return rokSuurinJono;
 	}
 	
-	protected double getSuurinSeurJono() {
+	public double getSuurinSeurJono() {
 		return seurSuurinJono;
 	}
 	
 	//Keskiarvot 
 	
-	protected double getOviKeskiarvo() {
+	public double getOviKeskiarvo() {
 		return oviKeskiarvo;
 	}
 	
-	protected double getIlmoKeskiarvo() {
+	public double getIlmoKeskiarvo() {
 		return ilmoKeskiarvo;
 	}
 	
-	protected double getRokKeskiarvo() {
+	public double getRokKeskiarvo() {
 		return rokKeskiarvo;
 	}
 	
-	protected double getSeurKeskiarvo() {
+	public double getSeurKeskiarvo() {
 		return seurKeskiarvo;
 	}
 	
-	protected int getAsiakasmaara() {
+	public int getAsiakasmaara() {
 		return asiakasmaara;
 	}
 
@@ -432,8 +437,32 @@ public class OmaMoottori extends Moottori {
 		System.out.println("pienin asiakas" + pieninAsiakas());
 		System.out.println("suurin asiakas" + suurinAsiakas());
 		System.out.println("Simulaation läpi meni " + getAsiakasmaara() + " asiakasta");
-		kontrolleri.naytaLoppuaika(Kello.getInstance().getAika());
+		kontrolleri.naytaLoppuaika(getLoppuaika());
 		lapimenoajat.add(Kello.getInstance().getAika());
+	}
+
+	@Override
+	public double getLoppuaika() {
+		loppuaika = Kello.getInstance().getAika();
+		return loppuaika;
+	}
+
+	@Override
+	public double getAvgLapimeno() {
+		avgLapimeno = avgLapimeno();
+		return avgLapimeno;
+	}
+
+	@Override
+	public double getPieninAsiakas() {
+		pieninAsiakas = pieninAsiakas();
+		return pieninAsiakas;
+	}
+
+	@Override
+	public double getSuurinAsiakas() {
+		suurinAsiakas = suurinAsiakas();
+		return suurinAsiakas;
 	}
 
 }
