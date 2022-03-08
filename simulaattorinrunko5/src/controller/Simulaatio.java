@@ -6,6 +6,7 @@ import java.util.HashMap;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -47,7 +48,9 @@ public class Simulaatio {
 	// Tulokset
 	private double loppuaika;
 	private double avgLapimeno;
+	@Lob
 	private HashMap<String, Double> kayttoasteet; 
+	@Lob
 	private HashMap<String, Double> tehot;
 	private double pieninAsiakas;
 	private double suurinAsiakas;
