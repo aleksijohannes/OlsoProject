@@ -1,6 +1,7 @@
 package view;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import controller.*;
@@ -19,6 +20,7 @@ import simu.framework.Trace.Level;
 import javafx.scene.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
@@ -136,6 +138,50 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private Label jakaumaLabel;
 	private Label palvelupisteetLabel;
 	private Label seurantaMaara;
+	
+	private Text kayttoasteet;
+	private Text suoritustehot;
+	private Label palvellutAsiakkaat;
+	private Text loppuaika;
+	private Text suurin;
+	private Text pienin;
+	private Text saap;
+	private Text ovi;
+	private Text ilm;
+	private Text rok;
+	private Text seur;
+	private Text avg;
+	private Text max;
+	private Text maara;
+	private Text nopeus;
+	private Text jakauma;
+	
+	private Text saapKesk;
+	private Text ilmKesk;
+	private Text oviKesk;
+	private Text rokKesk;
+	private Text seurKesk;
+	private Text saapSuur;
+	private Text ilmSuur;
+	private Text oviSuur;
+	private Text rokSuur;
+	private Text seurSuur;
+	
+	private Text saapMaara;
+	private Text saapNopeus;
+	private Text saapJakauma;
+	private Text ovMaara;
+	private Text ovNopeus;
+	private Text ovJakauma;
+	private Text ilmoMaara;
+	private Text ilmoNopeus;
+	private Text ilmoJakauma;
+	private Text rokMaara;
+	private Text rokNopeus;
+	private Text rokJakauma;
+	private Text seurMaara;
+	private Text seurNopeus;
+	private Text seurJakauma;
 	
 	@Override
 	public void init() {
@@ -606,7 +652,243 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			valinnat.add(jakaumatRokottaja, 3, 4);
 			valinnat.add(jakaumatSeuranta, 3, 5);
 
+			/*
+			 * Tulokset
+			 */
 			
+			Label tuloksetLabel = new Label();
+			tuloksetLabel.setText("Tulokset");
+			tuloksetLabel.setStyle("-fx-font: 24 arial;");
+			
+			//suoritustehot
+			suoritustehot = new Text();
+			Label suoritustehotLabel = new Label();
+			suoritustehotLabel.setText("Suoritustehot:");
+			ScrollPane suoritustehotScrollPane = new ScrollPane();
+			suoritustehotScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			suoritustehotScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			suoritustehotScrollPane.setContent(suoritustehot);
+			suoritustehotScrollPane.setPrefSize(400, 200);
+			
+			//käyttöasteet
+			kayttoasteet = new Text();
+			Label kayttoasteetLabel = new Label();
+			kayttoasteetLabel.setText("Käyttöasteet:");
+			ScrollPane kayttoasteetScrollPane = new ScrollPane();
+			kayttoasteetScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			kayttoasteetScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			kayttoasteetScrollPane.setContent(kayttoasteet);
+			kayttoasteetScrollPane.setPrefSize(400, 200);
+			
+			//keskimääräinen jonotusaika
+			Label keskimLabel = new Label();
+			keskimLabel.setText("Keskimääräinen jonotusaika:");
+			ScrollPane keskimScrollPane = new ScrollPane();
+			keskimScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			keskimScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			//keskimScrollPane.setContent();
+			keskimScrollPane.setPrefSize(400, 200);
+		
+			//Loppuaika
+			loppuaika = new Text();
+			Label loppuaikaLabel = new Label();
+			loppuaikaLabel.setText("Loppuaika:");
+			
+			//Suurin asiakas
+			Label suurinLabel = new Label();
+			suurinLabel.setText("Pisin aika:");
+			suurin = new Text();
+			
+			//Pienin asiakas
+			Label pieninLabel = new Label();
+			pieninLabel.setText("Lyhin aika:");
+			pienin = new Text();
+			
+			//Tallenna nappi
+			Button tallennaButton = new Button();
+			tallennaButton.setText("Tallenna tulokset");
+			//tallennaButton.setOnAction(e -> kontrolleri.tallennaSimulaatio());
+
+			//Simulaation parametrit
+			Label parametritLabel = new Label();
+			parametritLabel.setText("Parametrit");
+			parametritLabel.setStyle("-fx-font: 24 arial;");
+			
+			//Jonotusajat
+			Label jonotusajatLabel = new Label();
+			//jonotusajatLabel.setText("Jonotusajat");
+			jonotusajatLabel.setStyle("-fx-font: 24 arial;");
+			
+			palvellutAsiakkaat = new Label();
+			
+			saap = new Text("Saapuminen");
+			ovi = new Text("Ovi");
+			ilm = new Text("Ilmoittautuminen");
+			rok = new Text("Rokottajat");
+			seur = new Text("Seurannat");
+			avg = new Text("Keskim. jonotusaika");
+			max = new Text("Suurin jonotusaika");
+			maara = new Text("Määrä");
+			nopeus = new Text("Nopeus");
+			jakauma = new Text("Jakauma");
+			
+			//saapKesk = new Text();
+			oviKesk = new Text();
+			
+			ilmKesk = new Text();
+			rokKesk = new Text();
+			seurKesk = new Text();
+			
+			//saapSuur = new Text();
+			oviSuur = new Text();
+			ilmSuur = new Text();
+			rokSuur = new Text();
+			seurSuur = new Text();
+			
+			saapMaara = new Text("1");
+			ovMaara = new Text();
+			ilmoMaara = new Text();
+			rokMaara = new Text();
+			seurMaara = new Text("1");
+			
+			//testi
+			oviKesk.setText("11");
+			oviSuur.setText("21");
+			
+			GridPane tulokset = new GridPane();
+			tulokset.setAlignment(Pos.CENTER);
+			tulokset.setVgap(20);
+			tulokset.setHgap(20);
+			tulokset.add(tuloksetLabel, 0, 0);
+			tulokset.add(loppuaikaLabel, 0, 1);
+			tulokset.add(loppuaika, 0, 2);
+			tulokset.add(suurinLabel, 1, 1);
+			tulokset.add(suurin, 1, 2);
+			tulokset.add(pieninLabel, 2, 1);
+			tulokset.add(pienin, 2, 2);
+			tulokset.add(suoritustehotLabel, 0,3);
+			tulokset.add(kayttoasteetLabel, 1, 3);
+			tulokset.add(keskimLabel, 2, 3);
+			tulokset.add(suoritustehotScrollPane, 0, 4);
+			tulokset.add(kayttoasteetScrollPane, 1, 4);
+			tulokset.add(keskimScrollPane, 2, 4);
+			tulokset.add(tallennaButton, 1, 0);
+			tulokset.add(palvellutAsiakkaat, 2, 0);
+			
+			GridPane tulokset1 = new GridPane();
+			tulokset1.setVgap(20);
+			tulokset1.setHgap(100);
+			//tulokset1.add(jonotusajatLabel, 0, 0);
+			tulokset1.add(avg, 1, 1);
+			tulokset1.add(max, 2, 1);
+			tulokset1.add(maara, 3, 1);
+			tulokset1.add(nopeus, 4, 1);
+			tulokset1.add(jakauma, 5, 1);
+			tulokset1.add(saap, 0, 2);
+			tulokset1.add(ovi, 0, 3);
+			tulokset1.add(ilm, 0, 4);
+			tulokset1.add(rok, 0, 5);
+			tulokset1.add(seur, 0, 6);
+			
+			//tulokset1.add(saapKesk, 1, 2);
+			tulokset1.add(oviKesk, 1, 3);
+			tulokset1.add(ilmKesk, 1, 4);
+			tulokset1.add(rokKesk, 1, 5);
+			tulokset1.add(seurKesk, 1, 6);
+			
+			//tulokset1.add(saapSuur, 2, 2);
+			tulokset1.add(oviSuur, 2, 3);
+			tulokset1.add(ilmSuur, 2, 4);
+			tulokset1.add(rokSuur, 2, 5);
+			tulokset1.add(seurSuur, 2, 6);
+			
+			tulokset1.add(saapMaara, 3, 2);
+			tulokset1.add(ovMaara, 3, 3);
+			tulokset1.add(ilmoMaara, 3, 4);
+			tulokset1.add(rokMaara, 3, 5);
+			tulokset1.add(seurMaara, 3, 6);
+			//tulokset1.add(rokMaara, 1, 4);
+			//tulokset1.add(seurMaara, 1, 5);
+		
+			VBox tuloksetHBox = new VBox();
+			tuloksetHBox.setPadding(new Insets(15, 12, 15, 12));
+			tuloksetHBox.setSpacing(10);
+			tuloksetHBox.getChildren().addAll(tulokset);
+			tuloksetHBox.getChildren().addAll(tulokset1);
+			tuloksetHBox.setPrefSize(1000, 600);
+			
+			ScrollPane tuloksetScrollPane = new ScrollPane();
+			tuloksetScrollPane.setContent(tuloksetHBox);
+			
+			/*
+			 * Menu
+			 */
+			final Menu menu = new Menu("Simulaatiot");
+			final Menu tuloksetMenu = new Menu("Tulokset");
+			
+			//tulokset
+			MenuItem tuloksetItem = new MenuItem("Näytä tulokset");
+			tuloksetItem.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override 
+		    public void handle(ActionEvent e) {
+
+				Scene secondScene = new Scene(tuloksetScrollPane, 1050, 600);
+
+				Stage newWindow = new Stage();
+				newWindow.setTitle("Tulokset");
+				newWindow.setScene(secondScene);
+
+				newWindow.setX(primaryStage.getX() + 100);
+				newWindow.setY(primaryStage.getY() - 50);
+
+				newWindow.show();
+		    	} 
+			});
+			
+			tuloksetMenu.getItems().add(tuloksetItem);
+		    
+			ListView<String> simulaatiotList = new ListView<String>();
+			
+			ArrayList<String> testi = new ArrayList<String>();
+			testi.add("mirri");
+			testi.add("mouku");
+			testi.add("matti");
+			
+			for (int i = 0; i < testi.size(); i++) {
+				simulaatiotList.getItems().add(testi.get(i));
+			    }
+			      
+			//tietokanta
+			MenuItem simulaatiot = new MenuItem("Tallennetut simulaatiot");
+			simulaatiot.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent e) {
+
+					ScrollPane simulaatiotLayout = new ScrollPane();
+
+					simulaatiotLayout.setContent(simulaatiotList);
+						
+					
+					
+					Scene secondScene = new Scene(simulaatiotLayout, 600, 400);
+
+					Stage simulaatiotWindow = new Stage();
+					simulaatiotWindow.setTitle("Simulaatiot");
+					simulaatiotWindow.setScene(secondScene);
+
+					simulaatiotWindow.setX(primaryStage.getX() + 200);
+					simulaatiotWindow.setY(primaryStage.getY() + 100);
+
+					simulaatiotWindow.show();
+				}
+
+			});
+
+			menu.getItems().add(simulaatiot);
+			
+			MenuBar menuBar = new MenuBar();
+			menuBar.getMenus().addAll(tuloksetMenu);
+			menuBar.getMenus().addAll(menu);
 			
 			HBox hBox = new HBox();
 			hBox.setPadding(new Insets(15, 12, 15, 12)); // marginaalit ylä, oikea, ala, vasen
@@ -725,12 +1007,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	}
 
 	@Override
-	public void setLoppuaika(double aika) {
-		DecimalFormat formatter = new DecimalFormat("#0.00");
-		this.tulos.setText(formatter.format(aika));
-	}
-
-	@Override
 	public IVisualisointi getVisualisointi() {
 		return naytto;
 	}
@@ -798,22 +1074,73 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public int getSeurPalvelunopeus() {
 		return nopeusSeuranta;
 	}	
+	
 
+	@Override
+	public void setLoppuaika(double aika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.tulos.setText(formatter.format(aika));
+	}
 	@Override
 	public void setLapimenoaika(double aika) {
 		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.lapimenoaika.setText(formatter.format(aika));
 	}
-
 	@Override
 	public void setKayttoasteet(HashMap<String, Double> palvelupisteet) {
-
+		for (String i : palvelupisteet.keySet()) {
+			this.kayttoasteet.setText(i + " " + palvelupisteet.get(i));
+			}
 	}
-
 	@Override
 	public void setSuoritustehot(HashMap<String, Double> palvelupisteet) {
-
+		for (String i : palvelupisteet.keySet()) {
+			this.suoritustehot.setText(i + " " + palvelupisteet.get(i));
+			}
 	}
+    public void setPieninAsiakas(double lapimenoaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.pienin.setText(formatter.format(aika));
+    }
+    public void setSuurinAsiakas(double lapimenoaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.suurin.setText(formatter.format(aika));
+    }
+    public void setSuurinOviJono(double jonotusaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.oviSuur.setText(formatter.format(jonotusaika));
+    }
+    public void setSuurinIlmoJono(double jonotusaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.ilmSuur.setText(formatter.format(jonotusaika));
+    }
+    public void setSuurinRokJono(double jonotusaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.rokSuur.setText(formatter.format(jonotusaika));
+    }
+    public void setSuurinSeurJono(double jonotusaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.seurSuur.setText(formatter.format(jonotusaika));
+    }
+    public void setPalvellutAsiakkaat(int kpl) {
+    	palvellutAsiakkaat.setText("Palvellut asiakkaat: " + kpl);
+    }
+    public void setAvgOviJono(double jonotusaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.oviKesk.setText(formatter.format(jonotusaika));
+    }
+    public void setAvgIlmoJono(double jonotusaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.ilmKesk.setText(formatter.format(jonotusaika));
+    }
+    public void setAvgRokJono(double jonotusaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.rokKesk.setText(formatter.format(jonotusaika));;
+    }
+    public void setAvgSeurJono(double jonotusaika) {
+    	DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.seurKesk.setText(formatter.format(jonotusaika));
+    }
 	
 	// JavaFX-sovelluksen (käyttöliittymän) käynnistäminen
 
