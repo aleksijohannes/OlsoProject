@@ -27,6 +27,7 @@ public class Palvelupiste {
 	private PalvelupisteenTyyppi palvelupisteenTyyppi;
 	private double poistumisaika;
 	private double jonotuksenAlku;
+	private double generoitu;
 	private List<Double> palveluajat = new ArrayList<Double>();
 	private List<Double> vasteajat = new ArrayList<Double>();
 	
@@ -105,36 +106,21 @@ public class Palvelupiste {
 		Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + jono.peek().getId() + " palvelupisteessä " + palvelupisteenTyyppi + id);
 
 		varattu = true;
-		double palveluaika = generator.sample();
+		double palveluaika;
+		generoitu = generator.sample();
+		while (generoitu < 0) {
+			generoitu = generator.sample();
+		}
+		palveluaika = generoitu;
 		poistumisaika = Kello.getInstance().getAika() + palveluaika;
 		jonotusaika = (Kello.getInstance().getAika()) - alkuajat.poll();
 		jonotusajat.add(jonotusaika);
-		
-		//jonotusaika = Kello.getInstance().getAika() - jonotuksenAlku;
-		
-		/*if (palvelupisteenTyyppi == PalvelupisteenTyyppi.OVI) {
-			oviJonotukset.add(jonotusaika);
-		}
-		if (palvelupisteenTyyppi == PalvelupisteenTyyppi.ILMO) {
-			ilmoJonotukset.add(jonotusaika);
-		}
-		if (palvelupisteenTyyppi == PalvelupisteenTyyppi.ROK) {
-			rokJonotukset.add(jonotusaika);
-		}
-		if (palvelupisteenTyyppi == PalvelupisteenTyyppi.SEUR) {
-			seurJonotukset.add(jonotusaika);
-		}*/
 		
 		tapahtumalista.lisaa(new Tapahtuma(skeduloitavanTapahtumanTyyppi, poistumisaika));
 		palveluajat.add(palveluaika);
 		asiakkaat++;
 		
 	}
-	
-	
-	/*public double getJonotusaika() {
-		return jonotusaika;
-	}*/
 	
 	
 	public boolean onVarattu() {
@@ -164,30 +150,10 @@ public class Palvelupiste {
 		return suoritusteho;
 	}
 	
-	
-	
-	
 	public String haeNimi() {
 		String nimi = this.id + " " + this.palvelupisteenTyyppi;
 		return nimi;
 	}
-	
-/*	public void luoJonolista() {
-		double alku = 0;
-		double loppu = 0;
-		double jonotusaika = 0;
-		
-		for (int i = 0; i < jonotusAlut.size(); i++) {
-			alku = jonotusLoput.get(i);
-			System.out.println("JONOTUKSEN ALKUAIKA "  + alku);
-			loppu = jonotusLoput.get(i);
-			System.out.println("JONOTUKSEN LOPPUAIKA "  + loppu);
-			jonotusaika = loppu-alku;
-			jonotusajat.add(jonotusaika);
-			System.out.println("!!!!!!!!!!!!!!!!JONOTUSAIKA YHTEENSÄ!!!!!!!!!!!" + jonotusaika);
-			
-		}
-	}*/
 	
 	public List getJonotusajat() {
 		return jonotusajat;
