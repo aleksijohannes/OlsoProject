@@ -225,6 +225,8 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 					
 					kontrolleri.kaynnistaSimulointi();
 							
+					naytto.visualisoiPalvelupisteet(getOviMaara(), getIlmoMaara(), getRokMaara());	
+					
 					System.out.println(getSaapumisjakauma());
 					System.out.println(getOviJakauma());
 					System.out.println(getIlmoJakauma());
