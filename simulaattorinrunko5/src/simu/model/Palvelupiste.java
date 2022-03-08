@@ -29,21 +29,9 @@ public class Palvelupiste {
 	private double jonotuksenAlku;
 	private double generoitu;
 	private List<Double> palveluajat = new ArrayList<Double>();
-	private List<Double> vasteajat = new ArrayList<Double>();
+	//private List<Double> vasteajat = new ArrayList<Double>();
 	
-	
-	//private List<Double> jonotusAlut = new ArrayList<Double>();
-	//private List<Double> jonotusLoput = new ArrayList<Double>();
 	private List<Double> jonotusajat = new ArrayList<Double>();
-	
-	//private HashMap<String, Double> jonotusAlut = new HashMap<String, Double>();
-	//private HashMap<String, Double> jonotusLoput = new HashMap<String, Double>();
-	
-	
-	//private List<Double> oviJonotukset = new ArrayList<Double>();
-	//private List<Double> ilmoJonotukset = new ArrayList<Double>();
-	//private List<Double> rokJonotukset = new ArrayList<Double>();
-	//private List<Double> seurJonotukset = new ArrayList<Double>();
 	
 	private int asiakkaat = 0;
 	private double jonotusaika;
@@ -95,11 +83,6 @@ public class Palvelupiste {
 		varattu = false;
 		return jono.poll();
 	}
-	
-	/*public double tallennaJonotus() {
-		jonotusaika = Kello.getInstance().getAika()-jonotuksenAlku;
-		return jonotusaika;
-	}*/
 
 	public void aloitaPalvelu() { // Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
 
@@ -155,26 +138,10 @@ public class Palvelupiste {
 		return nimi;
 	}
 	
-	public List getJonotusajat() {
+	public List<Double> getJonotusajat() {
 		return jonotusajat;
 	}
 
-	
-	/*public List<Double> getOviJonotukset(){
-		return oviJonotukset;
-	}
-	
-	public List<Double> getIlmoJonotukset(){
-		return ilmoJonotukset;
-	}
-	
-	public List<Double> getRokJonotukset(){
-		return rokJonotukset;
-	}
-	
-	public List<Double> getSeurJonotukset(){
-		return seurJonotukset;
-	}*/
 
 	/*public void vasteaikaTestaus() {
 		double palv;
