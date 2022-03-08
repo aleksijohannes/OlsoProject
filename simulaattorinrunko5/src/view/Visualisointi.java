@@ -46,31 +46,31 @@ public class Visualisointi extends Canvas implements IVisualisointi{
 	
 	public void uusiAsiakas(int jono) {
 		if(jono == 1) {
-		gc.setFill(Color.BLUE);
+		gc.setFill(Color.web("#2EC4B6"));
 		gc.fillOval(oviJonoX,oviJonoY,10,10);
 		oviJonoX = (oviJonoX + 12) % this.getWidth();
 		if (oviJonoX >= w) oviJonoY+=10;	
 		} 
 		else if(jono == 2) {
-			gc.setFill(Color.GREEN);
+			gc.setFill(Color.web("#009FB7"));
 			gc.fillOval(ilmJonoX,ilmJonoY,10,10);
 			ilmJonoX = (ilmJonoX + 12) % this.getWidth();
 			if (ilmJonoX >= w) ilmJonoY+=10;
 		}
 		else if(jono == 3) {
-			gc.setFill(Color.YELLOW);
+			gc.setFill(Color.web("#FF9F1C"));
 			gc.fillOval(rokJonoX,rokJonoY,10,10);
 			rokJonoX = (rokJonoX + 12) % this.getWidth();
 			if (rokJonoX >= w) rokJonoY+=10;
 		}
 		else if(jono == 4) {
-			gc.setFill(Color.PINK);
+			gc.setFill(Color.web("#5C5D8D"));
 			gc.fillOval(seurJonoX,seurJonoY,10,10);
 			seurJonoX = (seurJonoX + 12) % this.getWidth();
 			if (seurJonoX >= w) seurJonoY+=10;
 		}
 		else if(jono == 5) {
-			gc.setFill(Color.RED);
+			gc.setFill(Color.web("#D282A6"));
 			gc.fillOval(poistuneetX,poistuneetY,10,10);
 			poistuneetX = (poistuneetX + 12) % this.getWidth();
 			if (poistuneetX >= w) poistuneetY+=10;
@@ -106,24 +106,24 @@ public class Visualisointi extends Canvas implements IVisualisointi{
 	
 	public void visualisoiPalvelupisteet(int oviMaara, int ilmMaara, int rokMaara) {
 		for(int i = 0; i < oviMaara; i++) {
-			gc.setFill(Color.BLUE);
+			gc.setFill(Color.web("#2EC4B6"));
 			gc.fillRect(ovetPosX, ovetPosY, 50, 50);
 			
 			ovetPosX = (ovetPosX + 70);
 		}
 		for(int i = 0; i < ilmMaara; i++) {
-			gc.setFill(Color.GREEN);
+			gc.setFill(Color.web("#009FB7"));
 			gc.fillRect(ilmoPosX, ilmoPosY, 50, 50);
 			
 			ilmoPosX = (ilmoPosX + 70);
 		}
 		for(int i = 0; i < rokMaara; i++) {
-			gc.setFill(Color.YELLOW);
+			gc.setFill(Color.web("#FF9F1C"));
 			gc.fillRect(rokPosX, rokPosY, 50, 50);
 			
 			rokPosX = (rokPosX + 70);
 		}
-		gc.setFill(Color.PINK);
+		gc.setFill(Color.web("#5C5D8D"));
 		gc.fillRect(10, 330, 680, 50);
 	}
 	
