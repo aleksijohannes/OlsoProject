@@ -1,5 +1,8 @@
 package simu.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import simu.framework.Kello;
 import simu.framework.Trace;
 
@@ -9,10 +12,10 @@ import simu.framework.Trace;
 public class Asiakas {
 	private double saapumisaika;
 	private double poistumisaika;
+	private double lapimenoaika;
 	private int id;
 	private static int i = 1;
 	private static long sum = 0;
-	//tekstimuutos
 	
 	public Asiakas(){
 	    id = i++;
@@ -39,6 +42,16 @@ public class Asiakas {
 	
 	public int getId() {
 		return id;
+	}
+	
+	public String asiakasId() {
+		String idString = Integer.toString(id);
+		return idString;
+	}
+	
+	public double asiakkaanLapimeno() {
+		lapimenoaika = poistumisaika-saapumisaika;
+		return lapimenoaika;
 	}
 	
 	public void raportti(){

@@ -1,8 +1,12 @@
 package simu.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import eduni.distributions.ContinuousGenerator;
 import simu.framework.Kello;
@@ -22,11 +26,29 @@ public class Palvelupiste {
 	private int id;
 	private PalvelupisteenTyyppi palvelupisteenTyyppi;
 	private double poistumisaika;
-	private List<Double> palveluajat = new ArrayList<Double>();
 	private double jonotuksenAlku;
-	private List<Double> jonotusajat = new ArrayList<Double>();
+	private List<Double> palveluajat = new ArrayList<Double>();
 	private List<Double> vasteajat = new ArrayList<Double>();
+	
+	
+	//private List<Double> jonotusAlut = new ArrayList<Double>();
+	//private List<Double> jonotusLoput = new ArrayList<Double>();
+	private List<Double> jonotusajat = new ArrayList<Double>();
+	
+	//private HashMap<String, Double> jonotusAlut = new HashMap<String, Double>();
+	//private HashMap<String, Double> jonotusLoput = new HashMap<String, Double>();
+	
+	
+	//private List<Double> oviJonotukset = new ArrayList<Double>();
+	//private List<Double> ilmoJonotukset = new ArrayList<Double>();
+	//private List<Double> rokJonotukset = new ArrayList<Double>();
+	//private List<Double> seurJonotukset = new ArrayList<Double>();
+	
 	private int asiakkaat = 0;
+	private double jonotusaika;
+	
+	Queue<Double> alkuajat = new PriorityQueue<>();
+
 	
 
 	// JonoStartegia strategia; //optio: asiakkaiden järjestys
@@ -55,8 +77,10 @@ public class Palvelupiste {
 	public void lisaaJonoon(Asiakas a) { // Jonon 1. asiakas aina palvelussa
 		jono.add(a);
 		jonotuksenAlku = (Kello.getInstance().getAika());
+		alkuajat.add(jonotuksenAlku);
 		
 	}
+	
 	
 	public void lisaaPoistumisAika(Tapahtuma t) {
 		poistumisaika = t.getAika();
@@ -68,10 +92,13 @@ public class Palvelupiste {
 	
 	public Asiakas otaJonosta() { // Poistetaan palvelussa ollut
 		varattu = false;
-		double jonotusaika = Kello.getInstance().getAika()-jonotuksenAlku;
-		jonotusajat.add(jonotusaika);
 		return jono.poll();
 	}
+	
+	/*public double tallennaJonotus() {
+		jonotusaika = Kello.getInstance().getAika()-jonotuksenAlku;
+		return jonotusaika;
+	}*/
 
 	public void aloitaPalvelu() { // Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
 
@@ -80,13 +107,36 @@ public class Palvelupiste {
 		varattu = true;
 		double palveluaika = generator.sample();
 		poistumisaika = Kello.getInstance().getAika() + palveluaika;
+		jonotusaika = (Kello.getInstance().getAika()) - alkuajat.poll();
+		jonotusajat.add(jonotusaika);
+		
+		//jonotusaika = Kello.getInstance().getAika() - jonotuksenAlku;
+		
+		/*if (palvelupisteenTyyppi == PalvelupisteenTyyppi.OVI) {
+			oviJonotukset.add(jonotusaika);
+		}
+		if (palvelupisteenTyyppi == PalvelupisteenTyyppi.ILMO) {
+			ilmoJonotukset.add(jonotusaika);
+		}
+		if (palvelupisteenTyyppi == PalvelupisteenTyyppi.ROK) {
+			rokJonotukset.add(jonotusaika);
+		}
+		if (palvelupisteenTyyppi == PalvelupisteenTyyppi.SEUR) {
+			seurJonotukset.add(jonotusaika);
+		}*/
 		
 		tapahtumalista.lisaa(new Tapahtuma(skeduloitavanTapahtumanTyyppi, poistumisaika));
 		palveluajat.add(palveluaika);
 		asiakkaat++;
 		
 	}
-
+	
+	
+	/*public double getJonotusaika() {
+		return jonotusaika;
+	}*/
+	
+	
 	public boolean onVarattu() {
 		return varattu;
 	}
@@ -115,13 +165,52 @@ public class Palvelupiste {
 	}
 	
 	
+	
+	
 	public String haeNimi() {
 		String nimi = this.id + " " + this.palvelupisteenTyyppi;
 		return nimi;
 	}
 	
+/*	public void luoJonolista() {
+		double alku = 0;
+		double loppu = 0;
+		double jonotusaika = 0;
+		
+		for (int i = 0; i < jonotusAlut.size(); i++) {
+			alku = jonotusLoput.get(i);
+			System.out.println("JONOTUKSEN ALKUAIKA "  + alku);
+			loppu = jonotusLoput.get(i);
+			System.out.println("JONOTUKSEN LOPPUAIKA "  + loppu);
+			jonotusaika = loppu-alku;
+			jonotusajat.add(jonotusaika);
+			System.out.println("!!!!!!!!!!!!!!!!JONOTUSAIKA YHTEENSÄ!!!!!!!!!!!" + jonotusaika);
+			
+		}
+	}*/
 	
-	public void vasteaikaTestaus() {
+	public List getJonotusajat() {
+		return jonotusajat;
+	}
+
+	
+	/*public List<Double> getOviJonotukset(){
+		return oviJonotukset;
+	}
+	
+	public List<Double> getIlmoJonotukset(){
+		return ilmoJonotukset;
+	}
+	
+	public List<Double> getRokJonotukset(){
+		return rokJonotukset;
+	}
+	
+	public List<Double> getSeurJonotukset(){
+		return seurJonotukset;
+	}*/
+
+	/*public void vasteaikaTestaus() {
 		double palv;
 		double jono;
 		double vast = 0;
@@ -136,7 +225,6 @@ public class Palvelupiste {
 					}
 				}
 			vasteajat.add(vast);
-		}	
-	}
+		}*/	
 
 }

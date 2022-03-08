@@ -2,18 +2,24 @@ package view;
 
 import java.util.HashMap;
 
+/**
+ * Rajapinta sisältää tiedon metodeista, jotka toteutetaan käyttöliittymässä, ja joita kontrolleri kutsuu.
+ * 
+ * @author Jenni Javanainen
+ */
+
 public interface ISimulaattorinUI {
 	
 	// Syötteet, jotka kontrolleri hakee käyttöliittymästä ja välittää model-tasolle
 	public double getAika();
 	public long getViive();
 	
-	public String getSaapumisjakauma(); // Palauttaa jakauman merkkijonona: "normal"/"uniform"/"negexp"
-	public int getSaapumistiheys();		// Palauttaa tiheyden numerona 1-3 (1=hitain)
-	
-	public int getOviMaara();			// Palauttaa palvelupisteiden määrän väliltä 1-10
-	public String getOviJakauma();		// Palauttaa jakauman merkkijonona: "normal"/"uniform"/"negexp"
-	public int getOviPalvelunopeus();	// Palauttaa nopeuden numerona 1-3 (1=hitain)
+	public String getSaapumisjakauma(); 
+	public int getSaapumistiheys();		
+
+	public int getOviMaara();			
+	public String getOviJakauma();		
+	public int getOviPalvelunopeus();	
 	
 	public int getIlmoMaara();
 	public String getIlmoJakauma();
@@ -31,6 +37,18 @@ public interface ISimulaattorinUI {
 	public void setLapimenoaika(double aika);
 	public void setKayttoasteet(HashMap<String, Double> palvelupisteet);
 	public void setSuoritustehot(HashMap<String, Double> palvelupisteet);
+	public void setPieninAsiakas(double lapimenoaika);
+	public void setSuurinAsiakas(double lapimenoaika);
+	public void setSuurinOviJono(double jonotusaika);
+	public void setSuurinIlmoJono(double jonotusaika);
+	public void setSuurinRokJono(double jonotusaika);
+	public void setSuurinSeurJono(double jonotusaika);
+	public void setPalvellutAsiakkaat(int kpl);
+	public void setAvgOviJono(double jonotusaika);
+	public void setAvgIlmoJono(double jonotusaika);
+	public void setAvgRokJono(double jonotusaika);
+	public void setAvgSeurJono(double jonotusaika);
+
 	
 	// Kontrolleri tarvitsee  
 	public IVisualisointi getVisualisointi();
