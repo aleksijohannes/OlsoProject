@@ -231,7 +231,7 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 	
 
 	protected double avgLapimeno() {
-		double avg = lapimenoajat.stream().mapToDouble(Double::doubleValue).sum() / asiakasmaara;
+		double avg = asiakkaidenLapimenoajat.stream().mapToDouble(Double::doubleValue).sum() / asiakasmaara;
 		return avg;
 	}
 
@@ -493,5 +493,4 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		lapimenoajat.add(Kello.getInstance().getAika());
 	}
 
-	
 }
