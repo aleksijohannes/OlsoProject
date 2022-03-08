@@ -1,6 +1,7 @@
 package simu.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -122,22 +123,22 @@ public class OmaMoottori extends Moottori {
 		case ARR1:
 			pieninJono(ovihenkilot).lisaaJonoon(new Asiakas());
 			saapumisprosessi.generoiSeuraava();
-			oviJonotusAloitus = (Kello.getInstance().getAika());
+			//this.oviJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP1:
 			a = etsiValmis(ovihenkilot, t).otaJonosta();
 			pieninJono(ilmoittautumistiskit).lisaaJonoon(a);
-			ilmoJonotusAloitus = (Kello.getInstance().getAika());
+			//this.ilmoJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP2:
 			a = etsiValmis(ilmoittautumistiskit, t).otaJonosta();
 			pieninJono(rokottajat).lisaaJonoon(a);
-			rokJonotusAloitus = (Kello.getInstance().getAika());
+			//this.rokJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP3:
 			a = etsiValmis(rokottajat, t).otaJonosta();
 			pieninJono(jalkiseurannat).lisaaJonoon(a);
-			seurJonotusAloitus = (Kello.getInstance().getAika());
+			//this.seurJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP4:
 			a = etsiValmis(jalkiseurannat, t).otaJonosta();
@@ -172,32 +173,32 @@ public class OmaMoottori extends Moottori {
 		for (Palvelupiste p : ovihenkilot) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
-				oviJonotus = (Kello.getInstance().getAika()) - oviJonotusAloitus;
-				oviJonotukset.add(oviJonotus);
+				//oviJonotus = (Kello.getInstance().getAika()) - oviJonotusAloitus;
+				//oviJonotukset.add(oviJonotus);
 			}
 		}
 
 		for (Palvelupiste p : ilmoittautumistiskit) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
-				ilmoJonotus = (Kello.getInstance().getAika()) - ilmoJonotusAloitus;
-				ilmoJonotukset.add(ilmoJonotus);
+				//ilmoJonotus = (Kello.getInstance().getAika()) - ilmoJonotusAloitus;
+				//ilmoJonotukset.add(ilmoJonotus);
 			}
 		}
 
 		for (Palvelupiste p : rokottajat) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
-				rokJonotus = (Kello.getInstance().getAika()) - rokJonotusAloitus;
-				rokJonotukset.add(rokJonotus);
+				//rokJonotus = (Kello.getInstance().getAika()) - rokJonotusAloitus;
+				//rokJonotukset.add(rokJonotus);
 			}
 		}
 
 		for (Palvelupiste p : jalkiseurannat) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
-				seurJonotus = (Kello.getInstance().getAika()) - seurJonotusAloitus;
-				seurJonotukset.add(seurJonotus);
+				//seurJonotus = (Kello.getInstance().getAika()) - seurJonotusAloitus;
+				//seurJonotukset.add(seurJonotus);
 				
 				
 			}
@@ -230,9 +231,9 @@ public class OmaMoottori extends Moottori {
 		for (int i = 0; i < rokottajaMaara; i++) {
 			suoritustehot.put(rokottajat[i].haeNimi(), rokottajat[i].suoritusteho());
 		}
-		for (int i = 0; i < seurantaMaara; i++) {
+		/*for (int i = 0; i < seurantaMaara; i++) {
 			suoritustehot.put(jalkiseurannat[i].haeNimi(), jalkiseurannat[i].suoritusteho());
-		}
+		}*/
 	}
 
 	public HashMap<String, Double>getSuoritustehot() {
@@ -249,9 +250,9 @@ public class OmaMoottori extends Moottori {
 		for (int i = 0; i < rokottajaMaara; i++) {
 			kayttoasteet.put(rokottajat[i].haeNimi(), rokottajat[i].kayttoaste());
 		}
-		for (int i = 0; i < seurantaMaara; i++) {
+		/*for (int i = 0; i < seurantaMaara; i++) {
 			kayttoasteet.put(jalkiseurannat[i].haeNimi(), jalkiseurannat[i].kayttoaste());
-		}
+		}*/
 	}
 
 	public HashMap<String, Double> getKayttoasteet() {
@@ -267,8 +268,25 @@ public class OmaMoottori extends Moottori {
 		Collections.sort(asiakkaidenLapimenoajat);
 		return asiakkaidenLapimenoajat.get(asiakkaidenLapimenoajat.size() - 1);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void haeJonotukset() {
+		for (int i = 0; i < ovihenkiloMaara; i++) {
+			oviJonotukset.addAll(ovihenkilot[i].getJonotusajat());
+		}
+		for (int i = 0; i < ovihenkiloMaara; i++) {
+			ilmoJonotukset.addAll(ilmoittautumistiskit[i].getJonotusajat());
+		}
+		for (int i = 0; i < ovihenkiloMaara; i++) {
+			rokJonotukset.addAll(rokottajat[i].getJonotusajat());
+		}
+		for (int i = 0; i < ovihenkiloMaara; i++) {
+			seurJonotukset.addAll(jalkiseurannat[i].getJonotusajat());
+		}
+	}
 
 	protected void sorttaaJonot() {
+		 
 		Collections.sort(oviJonotukset);
 		Collections.sort(ilmoJonotukset);
 		Collections.sort(rokJonotukset);
@@ -291,8 +309,7 @@ public class OmaMoottori extends Moottori {
 		System.out.println("Max rok: " + rokJonotukset.get(rokJonotukset.size() - 1));
 
 		if (seurJonotukset.isEmpty()) {
-			System.out.println("Seurannassa ei jonoa");
-			
+			System.out.println("Seurannassa ei jonoa");	
 		}
 		else {
 			seurPieninJono = seurJonotukset.get(0);
@@ -404,7 +421,13 @@ public class OmaMoottori extends Moottori {
 	protected void tulokset() {
 		laskeSuoritustehot();
 		laskeKayttoasteet();
+		haeJonotukset();
 		sorttaaJonot();
+
+		System.out.println(Arrays.asList(kayttoasteet));
+		System.out.println(Arrays.asList(suoritustehot));
+		
+		
 		laskeJonojenKeskiarvot();
 		System.out.println("pienin asiakas" + pieninAsiakas());
 		System.out.println("suurin asiakas" + suurinAsiakas());

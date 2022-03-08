@@ -44,6 +44,11 @@ public class Asiakas {
 		return id;
 	}
 	
+	public String asiakasId() {
+		String idString = Integer.toString(id);
+		return idString;
+	}
+	
 	public double asiakkaanLapimeno() {
 		lapimenoaika = poistumisaika-saapumisaika;
 		return lapimenoaika;
