@@ -462,15 +462,33 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		laskeKayttoasteet();
 		haeJonotukset();
 		sorttaaJonot();
+		laskeJonojenKeskiarvot();
 
+
+		kontrolleri.naytaKayttoaste(getKayttoasteet());
+		kontrolleri.naytaSuoritusteho(getSuoritustehot());
 		System.out.println(Arrays.asList(kayttoasteet));
 		System.out.println(Arrays.asList(suoritustehot));
 		
+		kontrolleri.naytaAvgOviJono(getOviKeskiarvo());
+		kontrolleri.naytaAvgIlmoJono(getIlmoKeskiarvo());
+		kontrolleri.naytaAvgRokJono(getRokKeskiarvo());
+		kontrolleri.naytaAvgSeurJono(getSeurKeskiarvo());
 		
-		laskeJonojenKeskiarvot();
+		kontrolleri.naytaAvgLapimeno(getAvgLapimeno());
+		
+		kontrolleri.naytaPieninAsiakas(pieninAsiakas());
+		kontrolleri.naytaSuurinAsiakas(suurinAsiakas());
+		kontrolleri.naytaPalvellutAsiakkaat(getAsiakasmaara());
 		System.out.println("pienin asiakas" + pieninAsiakas());
 		System.out.println("suurin asiakas" + suurinAsiakas());
 		System.out.println("Simulaation läpi meni " + getAsiakasmaara() + " asiakasta");
+		
+		kontrolleri.naytaSuurinIlmoJono(getSuurinIlmoJono());
+		kontrolleri.naytaSuurinOviJono(getSuurinOviJono());
+		kontrolleri.naytaSuurinRokJono(getSuurinRokJono());
+		kontrolleri.naytaSuurinSeurJono(getSuurinSeurJono());
+		
 		kontrolleri.naytaLoppuaika(getLoppuaika());
 		lapimenoajat.add(Kello.getInstance().getAika());
 	}
