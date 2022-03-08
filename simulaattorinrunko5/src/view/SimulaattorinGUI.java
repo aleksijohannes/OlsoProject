@@ -22,6 +22,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 
 public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
@@ -182,6 +183,12 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private Text seurMaara;
 	private Text seurNopeus;
 	private Text seurJakauma;
+	
+	private Label palvelupisteetOvi;
+	private Label palvelupisteetIlm;
+	private Label palvelupisteetRok;
+	private Label palvelupisteetSeur;
+	private Label poistuneet;
 	
 	@Override
 	public void init() {
@@ -556,21 +563,21 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			// Palvelupisteiden määrät
 			
-			ovihenkiloMaara = new Slider(1, 3, 1);
+			ovihenkiloMaara = new Slider(1, 2, 1);
 
 			ovihenkiloMaara.setSnapToTicks(true);
 			ovihenkiloMaara.setMajorTickUnit(1);
 			ovihenkiloMaara.setMinorTickCount(1);
 			ovihenkiloMaara.setShowTickLabels(true);
 
-			ilmoittautuminenMaara = new Slider(1, 5, 1);
+			ilmoittautuminenMaara = new Slider(1, 3, 1);
 
 			ilmoittautuminenMaara.setSnapToTicks(true);
 			ilmoittautuminenMaara.setMajorTickUnit(1);
 			ilmoittautuminenMaara.setMinorTickCount(1);
 			ilmoittautuminenMaara.setShowTickLabels(true);
 
-			rokottajaMaara = new Slider(1, 10, 1);
+			rokottajaMaara = new Slider(1, 9, 1);
 
 			rokottajaMaara.setSnapToTicks(true);
 			rokottajaMaara.setMajorTickUnit(1);
@@ -602,18 +609,65 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			lapimenoaikaLabel.setPrefWidth(150);
 			lapimenoaika = new Label();
 			lapimenoaika.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-			lapimenoaika.setPrefWidth(150);
-
+			lapimenoaika.setPrefWidth(150);					
+			
 			saapuminenLabel = new Label("Saapuminen");
+			saapuminenLabel.setFont(Font.font("Tahoma", FontWeight.BOLD, 17));
+			saapuminenLabel.setPrefWidth(150);
+			saapuminenLabel.setTextFill(Color.web("#417B5A"));
 			oviLabel = new Label("Ovihenkilöt");
+			oviLabel.setFont(Font.font("Tahoma", FontWeight.BOLD, 17));
+			oviLabel.setPrefWidth(150);
+			oviLabel.setTextFill(Color.web("#2EC4B6"));
 			ilmLabel = new Label("Ilmoittautumispisteet");
+			ilmLabel.setFont(Font.font("Tahoma", FontWeight.BOLD, 17));
+			ilmLabel.setPrefWidth(150);
+			ilmLabel.setTextFill(Color.web("#009FB7"));
 			rokotusLabel = new Label("Rokottajat");
-			seurantaLabel = new Label("Jälkiseurannat");
+			rokotusLabel.setFont(Font.font("Tahoma", FontWeight.BOLD, 17));
+			rokotusLabel.setPrefWidth(150);
+			rokotusLabel.setTextFill(Color.web("#FF9F1C"));
+			seurantaLabel = new Label("Jälkiseuranta");
+			seurantaLabel.setFont(Font.font("Tahoma", FontWeight.BOLD, 17));
+			seurantaLabel.setPrefWidth(150);
+			seurantaLabel.setTextFill(Color.web("#5C5D8D"));
+			
 			maaraLabel = new Label("Määrä");
+			maaraLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+			maaraLabel.setPrefWidth(150);
 			nopeusLabel = new Label("Nopeus");
+			nopeusLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+			nopeusLabel.setPrefWidth(150);
 			jakaumaLabel = new Label("Jakauma");
+			jakaumaLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+			jakaumaLabel.setPrefWidth(150);
 			palvelupisteetLabel = new Label("Palvelupisteet");
+			palvelupisteetLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+			palvelupisteetLabel.setPrefWidth(150);
 			seurantaMaara = new Label("75 paikkaa");
+			seurantaMaara.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+			seurantaMaara.setPrefWidth(150);
+			
+			palvelupisteetOvi = new Label("Ovihenkilöt");
+			palvelupisteetOvi.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
+			palvelupisteetOvi.setPrefWidth(150);
+			palvelupisteetOvi.setTextFill(Color.web("#2EC4B6"));
+			palvelupisteetIlm = new Label("Ilmoittautumispisteet");
+			palvelupisteetIlm.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
+			palvelupisteetIlm.setPrefWidth(150);
+			palvelupisteetIlm.setTextFill(Color.web("009FB7"));
+			palvelupisteetRok = new Label("Rokottajat");
+			palvelupisteetRok.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
+			palvelupisteetRok.setPrefWidth(150);
+			palvelupisteetRok.setTextFill(Color.web("#FF9F1C"));
+			palvelupisteetSeur = new Label("Jälkiseuranta");
+			palvelupisteetSeur.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
+			palvelupisteetSeur.setPrefWidth(150);
+			palvelupisteetSeur.setTextFill(Color.web("#5C5D8D"));
+			poistuneet = new Label("Poistuneet asiakkaat");
+			poistuneet.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
+			poistuneet.setPrefWidth(150);
+			poistuneet.setTextFill(Color.web("#D282A6"));
 			
 			saapuminenLabel.setMaxWidth(Double.MAX_VALUE);
 			oviLabel.setMaxWidth(Double.MAX_VALUE);
@@ -707,7 +761,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			//Tallenna nappi
 			Button tallennaButton = new Button();
 			tallennaButton.setText("Tallenna tulokset");
-			//tallennaButton.setOnAction(e -> kontrolleri.tallennaSimulaatio());
+			tallennaButton.setOnAction(e -> kontrolleri.tallennaSimulaatio());
 
 			//Simulaation parametrit
 			Label parametritLabel = new Label();
@@ -827,12 +881,12 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			final Menu tuloksetMenu = new Menu("Tulokset");
 			
 			//tulokset
+			Scene secondScene = new Scene(tuloksetScrollPane, 1050, 600);
+			
 			MenuItem tuloksetItem = new MenuItem("Näytä tulokset");
 			tuloksetItem.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override 
-		    public void handle(ActionEvent e) {
-
-				Scene secondScene = new Scene(tuloksetScrollPane, 1050, 600);
+		    public void handle(ActionEvent e) {			
 
 				Stage newWindow = new Stage();
 				newWindow.setTitle("Tulokset");
@@ -909,18 +963,32 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			grid.add(kaynnistaButton, 0, 3); // sarake, rivi
 			grid.add(nopeutaButton, 0, 4); // sarake, rivi
 			grid.add(hidastaButton, 1, 4); // sarake, rivi
-			//grid.add(valinnat, 6, 0);
+			
+			GridPane palvelupisteet = new GridPane();
+			palvelupisteet.setVgap(80);
+			palvelupisteet.setAlignment(Pos.CENTER);
+			palvelupisteet.add(palvelupisteetOvi, 0, 0);
+			palvelupisteet.add(palvelupisteetIlm, 0, 1);
+			palvelupisteet.add(palvelupisteetRok, 0, 2);
+			palvelupisteet.add(palvelupisteetSeur, 0, 3);
+			palvelupisteet.add(poistuneet, 0, 4);
 
 			HBox canvas = new HBox();			
 			naytto = new Visualisointi(1310, 430, this);
-			canvas.getChildren().add((Node) naytto);
+			canvas.getChildren().addAll(palvelupisteet, (Node) naytto);
 			canvas.setPadding(new Insets(20, 20, 20, 20));
 
+			GridPane gridView = new GridPane();
+			
+			gridView.add(hBox, 0, 1);
+			gridView.add(menuBar, 0, 0);
+			
 			// Täytetään boxi:
 			hBox.getChildren().addAll(grid, valinnat);
 
-			mainGrid.add(hBox, 0, 0);
-			mainGrid.add(canvas, 0, 1);
+			mainGrid.add(gridView, 0, 0);
+			mainGrid.add(hBox, 0, 1);
+			mainGrid.add(canvas, 0, 2);
 			Scene scene = new Scene(mainGrid);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -944,6 +1012,10 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 		nopeusIlm = 2;
 		nopeusRokottaja = 2;
 		nopeusSeuranta = 2;
+		
+		ovihenkilot = 1;
+		ilmoittautumispisteet = 1;
+		rokottajat = 1;
 	}
 	
 	public void disableValinnat() {
@@ -1021,6 +1093,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 	public void setOviMaara() {
 		ovihenkilot = (int) ovihenkiloMaara.getValue();
+		ovMaara.setText(Integer.toString(ovihenkilot));
 	}
 	
 	public int getOviMaara() {
@@ -1037,6 +1110,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 	public void setIlmoMaara() {
 		ilmoittautumispisteet = (int) ilmoittautuminenMaara.getValue();
+		ilmoMaara.setText(Integer.toString(ilmoittautumispisteet));
 	}
 	
 	public int getIlmoMaara() {
@@ -1053,6 +1127,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	
 	public void setRokMaara() {
 		rokottajat = (int) rokottajaMaara.getValue();
+		rokMaara.setText(Integer.toString(rokottajat));
 	}
 	
 	public int getRokMaara() {
