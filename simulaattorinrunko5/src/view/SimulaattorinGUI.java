@@ -90,7 +90,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private ToggleGroup seurantaGroup;
 	private RadioButton seurantaNorm;
 	private RadioButton seurantaTasa;
-	private RadioButton seurantaExp;
+	//private RadioButton seurantaExp;
 
 	private TilePane saapuminenNopeus;
 	private ToggleGroup saapuminenNopeusGroup;
@@ -334,13 +334,13 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			seurantaTasa.setToggleGroup(seurantaGroup);
 			seurantaTasa.setUserData("uniform");
 
-			seurantaExp = new RadioButton("Exp");
-			seurantaExp.setToggleGroup(seurantaGroup);
-			seurantaExp.setUserData("negexp");
+			//seurantaExp = new RadioButton("Exp");
+			//seurantaExp.setToggleGroup(seurantaGroup);
+			//seurantaExp.setUserData("negexp");
 
 			jakaumatSeuranta.getChildren().add(seurantaNorm);
 			jakaumatSeuranta.getChildren().add(seurantaTasa);
-			jakaumatSeuranta.getChildren().add(seurantaExp);
+			//jakaumatSeuranta.getChildren().add(seurantaExp);
 			
 			seurantaGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			      public void changed(ObservableValue<? extends Toggle> ov,
