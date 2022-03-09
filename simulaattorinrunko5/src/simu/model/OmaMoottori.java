@@ -134,29 +134,32 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		case DEP1:
 			a = etsiValmis(ovihenkilot, t).otaJonosta();
 			pieninJono(ilmoittautumistiskit).lisaaJonoon(a);
-			kontrolleri.visualisoiAsiakas(2);
 			kontrolleri.poistaAsiakas(1);
+			kontrolleri.visualisoiAsiakas(2);
+			
 			//this.ilmoJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP2:
 			a = etsiValmis(ilmoittautumistiskit, t).otaJonosta();
 			pieninJono(rokottajat).lisaaJonoon(a);
-			kontrolleri.visualisoiAsiakas(3);
 			kontrolleri.poistaAsiakas(2);
+			kontrolleri.visualisoiAsiakas(3);
 			//this.rokJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP3:
 			a = etsiValmis(rokottajat, t).otaJonosta();
 			pieninJono(jalkiseurannat).lisaaJonoon(a);
-			kontrolleri.visualisoiAsiakas(4);
 			kontrolleri.poistaAsiakas(3);
+			kontrolleri.visualisoiAsiakas(4);
+			
 			//this.seurJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP4:
 			a = etsiValmis(jalkiseurannat, t).otaJonosta();
 			a.setPoistumisaika(Kello.getInstance().getAika());
-			kontrolleri.visualisoiAsiakas(5);
 			kontrolleri.poistaAsiakas(4);
+			kontrolleri.visualisoiAsiakas(5);
+			
 			asiakkaidenLapimenoajat.add(a.asiakkaanLapimeno());
 			
 			

@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -565,14 +566,14 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			// Palvelupisteiden määrät
 			
-			ovihenkiloMaara = new Slider(1, 2, 1);
+			ovihenkiloMaara = new Slider(1, 3, 1);
 
 			ovihenkiloMaara.setSnapToTicks(true);
 			ovihenkiloMaara.setMajorTickUnit(1);
 			ovihenkiloMaara.setMinorTickCount(1);
 			ovihenkiloMaara.setShowTickLabels(true);
 
-			ilmoittautuminenMaara = new Slider(1, 3, 1);
+			ilmoittautuminenMaara = new Slider(1, 4, 1);
 
 			ilmoittautuminenMaara.setSnapToTicks(true);
 			ilmoittautuminenMaara.setMajorTickUnit(1);
@@ -895,7 +896,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 				newWindow.setScene(secondScene);
 
 				newWindow.setX(primaryStage.getX() + 100);
-				newWindow.setY(primaryStage.getY() - 50);
+				newWindow.setY(primaryStage.getY() + 150);
 
 				newWindow.show();
 		    	} 
@@ -967,7 +968,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			grid.add(hidastaButton, 1, 4); // sarake, rivi
 			
 			GridPane palvelupisteet = new GridPane();
-			palvelupisteet.setVgap(80);
+			palvelupisteet.setVgap(100);
 			palvelupisteet.setAlignment(Pos.CENTER);
 			palvelupisteet.add(palvelupisteetOvi, 0, 0);
 			palvelupisteet.add(palvelupisteetIlm, 0, 1);
@@ -976,7 +977,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			palvelupisteet.add(poistuneet, 0, 4);
 
 			HBox canvas = new HBox();			
-			naytto = new Visualisointi(1310, 430, this);
+			naytto = new Visualisointi(1310, 600, this);
 			canvas.getChildren().addAll(palvelupisteet, (Node) naytto);
 			canvas.setPadding(new Insets(20, 20, 20, 20));
 
@@ -1156,12 +1157,13 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	@Override
 	public void setLoppuaika(double aika) {
 		DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.loppuaika.setText(formatter.format(aika));
 		this.tulos.setText(formatter.format(aika));
 	}
 	@Override
 	public void setLapimenoaika(double aika) {
 		DecimalFormat formatter = new DecimalFormat("#0.00");
-		this.lapimenoaika.setText(formatter.format(aika));
+		this.loppuaika.setText(formatter.format(aika));
 	}
 	@Override
 	public void setKayttoasteet(HashMap<String, Double> palvelupisteet) {
@@ -1177,11 +1179,11 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	}
     public void setPieninAsiakas(double lapimenoaika) {
     	DecimalFormat formatter = new DecimalFormat("#0.00");
-		this.pienin.setText(formatter.format(aika));
+		this.pienin.setText(formatter.format(lapimenoaika));
     }
     public void setSuurinAsiakas(double lapimenoaika) {
     	DecimalFormat formatter = new DecimalFormat("#0.00");
-		this.suurin.setText(formatter.format(aika));
+		this.suurin.setText(formatter.format(lapimenoaika));
     }
     public void setSuurinOviJono(double jonotusaika) {
     	DecimalFormat formatter = new DecimalFormat("#0.00");
