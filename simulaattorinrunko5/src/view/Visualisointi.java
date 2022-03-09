@@ -12,28 +12,30 @@ public class Visualisointi extends Canvas implements IVisualisointi{
 	private double oviJonoX;
 	private double oviJonoY = 10;
 	private double ilmJonoX;
-	private double ilmJonoY = 100;
+	private double ilmJonoY = 130;
 	private double rokJonoX;
-	private double rokJonoY = 200;
+	private double rokJonoY = 260;
 	private double seurJonoX;
-	private double seurJonoY = 300;
-	private double poistuneetX = 400;
-	private double poistuneetY = 10;
+	private double seurJonoY = 400;
+	private double poistuneetX = 10;
+	private double poistuneetY = 530;
 	private double oviPoistaAsiakas;
 	private double ilmPoistaAsiakas;
 	private double rokPoistaAsiakas;
 	private double seurPoistaAsiakas;
 	private double ovetPosX = 10;
-	private double ovetPosY = 30;
+	private double ovetPosY = 70;
 	private double ilmoPosX = 10;
-	private double ilmoPosY = 130;
+	private double ilmoPosY = 200;
 	private double rokPosX = 10;
-	private double rokPosY = 230;
-	private int w;
+	private double rokPosY = 330;
+	private double oviPoistoY = 10;
+	private double ilmPoistoY = 130;
+	private double rokPoistoY = 260;
+	private double seurPoistoY = 400;
 	
 	public Visualisointi(int w, int h, SimulaattorinGUI visualisointi) {
 		super(w, h);
-		this.w = w;
 		gc = this.getGraphicsContext2D();
 		tyhjennaNaytto();
 	}
@@ -49,58 +51,58 @@ public class Visualisointi extends Canvas implements IVisualisointi{
 		gc.setFill(Color.web("#2EC4B6"));
 		gc.fillOval(oviJonoX,oviJonoY,10,10);
 		oviJonoX = (oviJonoX + 12) % this.getWidth();
-		if (oviJonoX >= w) oviJonoY+=10;	
+		if (oviJonoX >= 1300) oviJonoY+=12;	
 		} 
 		else if(jono == 2) {
 			gc.setFill(Color.web("#009FB7"));
 			gc.fillOval(ilmJonoX,ilmJonoY,10,10);
 			ilmJonoX = (ilmJonoX + 12) % this.getWidth();
-			if (ilmJonoX >= w) ilmJonoY+=10;
+			if (ilmJonoX >= 1300) ilmJonoY+=12;
 		}
 		else if(jono == 3) {
 			gc.setFill(Color.web("#FF9F1C"));
 			gc.fillOval(rokJonoX,rokJonoY,10,10);
 			rokJonoX = (rokJonoX + 12) % this.getWidth();
-			if (rokJonoX >= w) rokJonoY+=10;
+			if (rokJonoX >= 1300) rokJonoY+=12;
 		}
 		else if(jono == 4) {
 			gc.setFill(Color.web("#5C5D8D"));
-			gc.fillOval(seurJonoX,seurJonoY,10,10);
+			gc.fillOval(seurJonoX,seurPoistoY,10,10);
 			seurJonoX = (seurJonoX + 12) % this.getWidth();
-			if (seurJonoX >= w) seurJonoY+=10;
+			if (seurJonoX >= 1300) seurPoistoY+=12;
 		}
 		else if(jono == 5) {
 			gc.setFill(Color.web("#D282A6"));
 			gc.fillOval(poistuneetX,poistuneetY,10,10);
 			poistuneetX = (poistuneetX + 12) % this.getWidth();
-			if (poistuneetX >= w) poistuneetY+=10;
+			if (poistuneetX >= 1300) poistuneetY+=12;
 		}
 	}
 	
 	public void poistaAsiakasJonosta(int poista) {
 		if(poista == 1) {
 		gc.setFill(Color.WHITE);
-		gc.fillOval(oviPoistaAsiakas, oviJonoY,10,10);
+		gc.fillOval(oviPoistaAsiakas, oviPoistoY,10,10);
 		oviPoistaAsiakas = (oviPoistaAsiakas + 12) % this.getWidth();
-		if (oviPoistaAsiakas >= w) oviJonoY+=12;			
+		if (oviPoistaAsiakas >= 1300) oviPoistoY+=12;			
 		}
 		else if (poista == 2) {
 		gc.setFill(Color.WHITE);
-		gc.fillOval(ilmPoistaAsiakas, ilmJonoY,10,10);
+		gc.fillOval(ilmPoistaAsiakas, ilmPoistoY,10,10);
 		ilmPoistaAsiakas = (ilmPoistaAsiakas + 12) % this.getWidth();
-		if (ilmPoistaAsiakas >= w) ilmJonoY+=12;			
+		if (ilmPoistaAsiakas >= 1300) ilmPoistoY+=12;			
 		}
 		else if (poista == 3) {
 			gc.setFill(Color.WHITE);
-			gc.fillOval(rokPoistaAsiakas, rokJonoY,10,10);
+			gc.fillOval(rokPoistaAsiakas, rokPoistoY,10,10);
 			rokPoistaAsiakas = (rokPoistaAsiakas + 12) % this.getWidth();
-			if (oviPoistaAsiakas >= w) rokJonoY+=12;			
+			if (oviPoistaAsiakas >= 1300) rokPoistoY+=12;			
 		}
 		else if (poista == 4) {
 			gc.setFill(Color.WHITE);
 			gc.fillOval(seurPoistaAsiakas, seurJonoY,10,10);
 			seurPoistaAsiakas = (seurPoistaAsiakas + 12) % this.getWidth();
-			if (seurPoistaAsiakas >= w) seurJonoY+=12;			
+			if (seurPoistaAsiakas >= 1300) seurJonoY+=12;			
 		}
 	}
 	
@@ -124,7 +126,7 @@ public class Visualisointi extends Canvas implements IVisualisointi{
 			rokPosX = (rokPosX + 70);
 		}
 		gc.setFill(Color.web("#5C5D8D"));
-		gc.fillRect(10, 330, 680, 50);
+		gc.fillRect(10, 460, 50, 50);
 	}
 	
 }

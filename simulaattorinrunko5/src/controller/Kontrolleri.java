@@ -318,16 +318,16 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		seurJakaumat.put("normal", seurNormal);
 		
 		HashMap<Integer, double[]> saapumisUniform = new HashMap<>();
-		saapumisUniform.put(1, new double[] {3, 6});
-		saapumisUniform.put(2, new double[] {1.5, 3});
-		saapumisUniform.put(3, new double[] {0.5, 1.5});
+		saapumisUniform.put(1, new double[] {4, 8});
+		saapumisUniform.put(2, new double[] {3.5, 5});
+		saapumisUniform.put(3, new double[] {0.5, 4.5});
 		HashMap<Integer, double[]> saapumisNormal = new HashMap<>();
-		saapumisNormal.put(1, new double[] {4, 2});
-		saapumisNormal.put(2, new double[] {3.5, 1.5});
+		saapumisNormal.put(1, new double[] {6, 2});
+		saapumisNormal.put(2, new double[] {4.5, 1.5});
 		saapumisNormal.put(3, new double[] {2, 1});
 		HashMap<Integer, double[]> saapumisExp = new HashMap<>();
-		saapumisExp.put(1, new double[] {3});
-		saapumisExp.put(2, new double[] {2});
+		saapumisExp.put(1, new double[] {5});
+		saapumisExp.put(2, new double[] {3});
 		saapumisExp.put(3, new double[] {1});
 		saapumisJakaumat = new HashMap<>();
 		saapumisJakaumat.put("uniform", saapumisUniform);
