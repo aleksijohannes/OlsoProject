@@ -223,6 +223,16 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 					setOviMaara();
 					setIlmoMaara();
 					setRokMaara();
+					saapJakauma.setText(jakaumaSaapuminen);
+                    ovJakauma.setText(jakaumaOvi);
+                    ilmoJakauma.setText(jakaumaIlm);
+                    rokJakauma.setText(jakaumaRokottaja);
+                    seurJakauma.setText(jakaumaSeuranta);
+                    saapNopeus.setText(Integer.toString(nopeusSaapuminen));
+                    ovNopeus.setText(Integer.toString(nopeusOvi));
+                    ilmoNopeus.setText(Integer.toString(nopeusIlm));
+                    rokNopeus.setText(Integer.toString(nopeusRokottaja));
+                    seurNopeus.setText(Integer.toString(nopeusSeuranta));
 					
 					kontrolleri.kaynnistaSimulointi();
 							
@@ -588,6 +598,17 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			rokottajaMaara.setShowTickLabels(true);
 
 			// Asettelu
+			saapJakauma = new Text();
+            ovJakauma = new Text();
+            ilmoJakauma = new Text();
+            rokJakauma = new Text();
+            seurJakauma = new Text();
+
+            saapNopeus = new Text();
+            ovNopeus = new Text();
+            ilmoNopeus = new Text();
+            rokNopeus = new Text();
+            seurNopeus = new Text();
 			
 			aikaLabel = new Label("Simulointiaika:");
 			aikaLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -808,10 +829,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			rokMaara = new Text();
 			seurMaara = new Text("1");
 			
-			//testi
-			oviKesk.setText("11");
-			oviSuur.setText("21");
-			
 			GridPane tulokset = new GridPane();
 			tulokset.setAlignment(Pos.CENTER);
 			tulokset.setVgap(20);
@@ -825,10 +842,10 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			tulokset.add(pienin, 2, 2);
 			tulokset.add(suoritustehotLabel, 0,3);
 			tulokset.add(kayttoasteetLabel, 1, 3);
-			tulokset.add(keskimLabel, 2, 3);
+			//tulokset.add(keskimLabel, 2, 3);
 			tulokset.add(suoritustehotScrollPane, 0, 4);
 			tulokset.add(kayttoasteetScrollPane, 1, 4);
-			tulokset.add(keskimScrollPane, 2, 4);
+			//tulokset.add(keskimScrollPane, 2, 4);
 			tulokset.add(tallennaButton, 1, 0);
 			tulokset.add(palvellutAsiakkaat, 2, 0);
 			
@@ -866,6 +883,20 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			tulokset1.add(seurMaara, 3, 6);
 			//tulokset1.add(rokMaara, 1, 4);
 			//tulokset1.add(seurMaara, 1, 5);
+			
+			//Jakauma
+            tulokset1.add(saapJakauma, 5, 2);
+            tulokset1.add(ovJakauma, 5, 3);
+            tulokset1.add(ilmoJakauma, 5, 4);
+            tulokset1.add(rokJakauma, 5, 5);
+            tulokset1.add(seurJakauma, 5, 6);
+
+            //Nopeus
+            tulokset1.add(saapNopeus, 4, 2);
+            tulokset1.add(ovNopeus, 4, 3);
+            tulokset1.add(ilmoNopeus, 4, 4);
+            tulokset1.add(rokNopeus, 4, 5);
+            tulokset1.add(seurNopeus, 4, 6);
 		
 			VBox tuloksetHBox = new VBox();
 			tuloksetHBox.setPadding(new Insets(15, 12, 15, 12));
@@ -907,9 +938,9 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			ListView<String> simulaatiotList = new ListView<String>();
 			
 			ArrayList<String> testi = new ArrayList<String>();
-			testi.add("mirri");
+			/*testi.add("mirri");
 			testi.add("mouku");
-			testi.add("matti");
+			testi.add("matti");*/
 			
 			for (int i = 0; i < testi.size(); i++) {
 				simulaatiotList.getItems().add(testi.get(i));

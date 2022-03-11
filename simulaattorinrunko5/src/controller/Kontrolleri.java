@@ -39,6 +39,10 @@ public class Kontrolleri implements IKontrolleriVtoM, IKontrolleriMtoV{
 		dao = new SimulaatioDAO();
 		alustaJakaumat();
 	}
+	
+	public Kontrolleri() {
+
+	}
 		
 	/**
 	 * Käynnistää simulaation luomalla uuden OmaMoottori-säikeen ja starttaamalla sen. Samalla aktivoidaan myös visualisointi.
