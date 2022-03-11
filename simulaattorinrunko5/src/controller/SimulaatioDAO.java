@@ -15,7 +15,8 @@ import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
 /**
- * Hoitaa yhteydenpidon tietokannan ja kontrollerin välillä.
+ * Hoitaa yhteydenpidon tietokannan ja kontrollerin välillä. Toteuttaa
+ * rajapinnan ISimulaatioDAO.
  * 
  * @author Jenni Javanainen
  *
@@ -52,9 +53,11 @@ public class SimulaatioDAO implements ISimulaatioDAO {
 	}
 
 	/**
-	 * Luo istunnon ja tallentaa parametrina annetun Simulaatio-olion tietokantaan. Mikäli oliota ei pystytä tallentamaan kokonaan, ei tallenneta mitään.
-	 * Heittää poikkeuksen, jos tallennus ei onnistu.
-	 * @param simulaatio tallennettava simulaatio-olio 
+	 * Luo istunnon ja tallentaa parametrina annetun Simulaatio-olion tietokantaan.
+	 * Mikäli oliota ei pystytä tallentamaan kokonaan, ei tallenneta mitään. Heittää
+	 * poikkeuksen, jos tallennus ei onnistu.
+	 * 
+	 * @param simulaatio tallennettava simulaatio-olio
 	 * @return palauttaa true mikäli tallennus onnistui
 	 */
 	@Override
@@ -75,8 +78,10 @@ public class SimulaatioDAO implements ISimulaatioDAO {
 	}
 
 	/**
-	 * Luo istunnon ja hakee tietokannasta kaikki Simulaatio-oliot ja palauttaa ne listamuodossa. Mikäli haku ei onnistu kokonaan, ei haeta mitään.
-	 * Heittää poikkeuksen, jos haku ei onnistu.
+	 * Luo istunnon ja hakee tietokannasta kaikki Simulaatio-oliot ja palauttaa ne
+	 * listamuodossa. Mikäli haku ei onnistu kokonaan, ei haeta mitään. Heittää
+	 * poikkeuksen, jos haku ei onnistu.
+	 * 
 	 * @return palauttaa Simulaatio-oliot sisälätävän ArrayListin
 	 */
 	@Override
