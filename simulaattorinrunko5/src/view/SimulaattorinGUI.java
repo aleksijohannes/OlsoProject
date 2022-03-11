@@ -583,14 +583,14 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			ovihenkiloMaara.setMinorTickCount(1);
 			ovihenkiloMaara.setShowTickLabels(true);
 
-			ilmoittautuminenMaara = new Slider(1, 4, 1);
+			ilmoittautuminenMaara = new Slider(1, 4, 2);
 
 			ilmoittautuminenMaara.setSnapToTicks(true);
 			ilmoittautuminenMaara.setMajorTickUnit(1);
 			ilmoittautuminenMaara.setMinorTickCount(1);
 			ilmoittautuminenMaara.setShowTickLabels(true);
 
-			rokottajaMaara = new Slider(1, 9, 1);
+			rokottajaMaara = new Slider(1, 9, 5);
 
 			rokottajaMaara.setSnapToTicks(true);
 			rokottajaMaara.setMajorTickUnit(1);
