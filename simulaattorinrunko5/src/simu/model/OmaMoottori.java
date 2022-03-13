@@ -14,6 +14,15 @@ import simu.framework.Moottori;
 import simu.framework.Saapumisprosessi;
 import simu.framework.Tapahtuma;
 
+/**
+ * Luokka, joka toimii simulaattorin tiedon käsittelijänä ja suorittaa keskeisimmät laskutoimenpiteet
+ * ja palauttaa tuloksensa simulaattorin kontrollerille
+ * 
+ * Perii luokan Moottori
+ *
+ * @author Jenni Tynkkynen
+ */
+
 public class OmaMoottori extends Moottori implements IOmaMoottori{
 
 	private Saapumisprosessi saapumisprosessi;
@@ -113,12 +122,24 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		
 		System.out.println("jälkiseurantojen määrä" + jalkiseurannat.length);
 	}
-
+	
+	/**
+     * Luo uuden saapumisprosessin järjestelmään
+     */
 	@Override
 	protected void alustukset() {
 		saapumisprosessi.generoiSeuraava(); // Ensimmäinen saapuminen järjestelmään
 	}
-
+	
+	/**
+     * Suorittaa B-vaiheen tapahtumat simulaattorissa
+     * Antaa asiakkaan visualisointikäskyn kontrollerille, joka välittää sen näkymälle.
+     * 
+     * Lopuksi tulostaa B-tapahtumien läpi kulkeneen asiakkaan asiakasraportin ja korottaa simulaattorin kokonaisasiakasmäärää yhdellä
+     *
+     * @param t tapahtuma, joka tyyppistään riippuen luo, lisää tai poistaa Asiakas-luokan asiakkaita eri palvelupisteiden välillä
+     * FIFO-periaatteen mukaan 
+     */
 	@Override
 	protected void suoritaTapahtuma(Tapahtuma t) { // B-vaiheen tapahtumat
 
@@ -129,30 +150,24 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 			pieninJono(ovihenkilot).lisaaJonoon(new Asiakas());
 			saapumisprosessi.generoiSeuraava();
 			kontrolleri.visualisoiAsiakas(1);
-			//this.oviJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP1:
 			a = etsiValmis(ovihenkilot, t).otaJonosta();
 			pieninJono(ilmoittautumistiskit).lisaaJonoon(a);
 			kontrolleri.poistaAsiakas(1);
 			kontrolleri.visualisoiAsiakas(2);
-			
-			//this.ilmoJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP2:
 			a = etsiValmis(ilmoittautumistiskit, t).otaJonosta();
 			pieninJono(rokottajat).lisaaJonoon(a);
 			kontrolleri.poistaAsiakas(2);
 			kontrolleri.visualisoiAsiakas(3);
-			//this.rokJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP3:
 			a = etsiValmis(rokottajat, t).otaJonosta();
 			pieninJono(jalkiseurannat).lisaaJonoon(a);
 			kontrolleri.poistaAsiakas(3);
 			kontrolleri.visualisoiAsiakas(4);
-			
-			//this.seurJonotusAloitus = (Kello.getInstance().getAika());
 			break;
 		case DEP4:
 			a = etsiValmis(jalkiseurannat, t).otaJonosta();
@@ -167,6 +182,14 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 			asiakasmaara++;
 		}
 	}
+	
+	/**
+     * Etsii valmiin palvelupisteen palvelupistetaulukosta 
+     *
+     * @param taulukko Palvelupisteitä sisältävä taulukko
+     * @param t käsittelyssä oleva tapahtuma
+     * @return palvelupiste
+     */
 
 	protected Palvelupiste etsiValmis(Palvelupiste[] taulukko, Tapahtuma t) {
 		for (int i = 0; i < taulukko.length; i++) {
@@ -178,50 +201,54 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		return null;
 	}
 
+	/**
+     * Kutsutaan, kun halutaan suorittaa tapahtumalistassa olevalle tapahtumalle B-tyypin tapahtumat simulaattorissa
+     * Poistaa lopuksi tapahtumalistasta simulaattorissa seuraavana vuorossa olevan tapahtuman 
+     */
 	@Override
 	protected void suoritaBTapahtumat() {
 		while (tapahtumalista.getSeuraavanAika() == Kello.getInstance().getAika()) {
 			suoritaTapahtuma(tapahtumalista.poista());
 		}
 	}
-
+	
+	/**
+     * Kutsutaan, kun halutaan yrittää suorittaa C-tyypin tapahtumat simulaattorissa
+     * Aloittaa palvelun palvelupisteessä, jos palvelupiste ei ole varattu ja palvelupisteelle on tulossa asiakas
+     */
 	@Override
 	protected void yritaCTapahtumat() {
 		for (Palvelupiste p : ovihenkilot) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
-				//oviJonotus = (Kello.getInstance().getAika()) - oviJonotusAloitus;
-				//oviJonotukset.add(oviJonotus);
 			}
 		}
 
 		for (Palvelupiste p : ilmoittautumistiskit) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
-				//ilmoJonotus = (Kello.getInstance().getAika()) - ilmoJonotusAloitus;
-				//ilmoJonotukset.add(ilmoJonotus);
 			}
 		}
 
 		for (Palvelupiste p : rokottajat) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
-				//rokJonotus = (Kello.getInstance().getAika()) - rokJonotusAloitus;
-				//rokJonotukset.add(rokJonotus);
 			}
 		}
 
 		for (Palvelupiste p : jalkiseurannat) {
 			if (!p.onVarattu() && p.onJonossa()) {
 				p.aloitaPalvelu();
-				//seurJonotus = (Kello.getInstance().getAika()) - seurJonotusAloitus;
-				//seurJonotukset.add(seurJonotus);
-				
-				
 			}
 		}
 	}
-
+	
+	/**
+     * Etsii palvelupistetaulukosta palvelupisteen, jolla on pienin jono
+     * 
+     * @param taulukko Palvelupistetaulukko
+     * @return pienimmän jonon omaava palvelupiste
+     */
 	protected Palvelupiste pieninJono(Palvelupiste[] taulukko) {
 		Palvelupiste pienin = taulukko[0];
 		for (int i = 0; i < taulukko.length; i++) {
@@ -232,12 +259,17 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		return pienin;
 	}
 	
-
+	/**
+     * Laskee keskimääräisen läpimenoajan
+     */
 	protected double avgLapimeno() {
 		double avg = asiakkaidenLapimenoajat.stream().mapToDouble(Double::doubleValue).sum() / asiakasmaara;
 		return avg;
 	}
 
+	/**
+     * Laskee palvelupisteille suoritustehot ja asettaa ne hajautustauluolioon
+     */
 	public void laskeSuoritustehot() {
 		for (int i = 0; i < ovihenkiloMaara; i++) {
 			suoritustehot.put(ovihenkilot[i].haeNimi(), ovihenkilot[i].suoritusteho());
@@ -248,15 +280,15 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		for (int i = 0; i < rokottajaMaara; i++) {
 			suoritustehot.put(rokottajat[i].haeNimi(), rokottajat[i].suoritusteho());
 		}
-		/*for (int i = 0; i < seurantaMaara; i++) {
-			suoritustehot.put(jalkiseurannat[i].haeNimi(), jalkiseurannat[i].suoritusteho());
-		}*/
 	}
 
 	public HashMap<String, Double>getSuoritustehot() {
 		return suoritustehot;
 	}
-
+	
+	/**
+     * Laskee palvelupisteille käyttöasteet ja asettaa ne hajautustauluolioon
+     */
 	public void laskeKayttoasteet() {
 		for (int i = 0; i < ovihenkiloMaara; i++) {
 			kayttoasteet.put(ovihenkilot[i].haeNimi(), ovihenkilot[i].kayttoaste());
@@ -276,16 +308,33 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		return kayttoasteet;
 	}
 	
+	/**
+     * Lajittelee asiakkaiden läpimenoaikojen listan alkiot suuruusjärjestykseen ja palauttaa
+     * listan pienimmän arvon
+     * 
+     * @return pienin asiakkaiden läpimenoaika
+     */
 	protected double pieninAsiakas() {
 		Collections.sort(asiakkaidenLapimenoajat);
 		return asiakkaidenLapimenoajat.get(0);
 	}
 	
+	/**
+     * Lajittelee asiakkaiden läpimenoaikojen listan alkiot suuruusjärjestykseen ja palauttaa
+     * listan suurimman arvon
+     * 
+     * @return suurin asiakkaiden läpimenoaika
+     */
 	protected double suurinAsiakas() {
 		Collections.sort(asiakkaidenLapimenoajat);
 		return asiakkaidenLapimenoajat.get(asiakkaidenLapimenoajat.size() - 1);
 	}
 	
+	
+	
+	/**
+     * Lisää palvelupistekohtaiset jonotusajat omiin listoihinsa
+     */
 	@SuppressWarnings("unchecked")
 	public void haeJonotukset() {
 		for (int i = 0; i < ovihenkiloMaara; i++) {
@@ -302,6 +351,11 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		}
 	}
 
+	/**
+     * Lajittelee palvelupisteiden jonotusaikojen listojen alkiot suuruusjärjestykseen.
+     * Tallentaa listojen pienimmät ja suurimmat arvon niille varattuihin muuttujiin ja
+     * tulostaa konsoliin nuo tallennetut arvot
+     */
 	protected void sorttaaJonot() {
 		 
 		Collections.sort(oviJonotukset);
@@ -335,7 +389,10 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 			System.out.println("Max seur: " + seurJonotukset.get(seurJonotukset.size() - 1));	
 		}
 	}
-	
+	/**
+     * Laskee jokaisen palvelupistetyypin keskimääräisen jonotusajan. 
+     * Tallentaa keskiarvot niille varattuihin muuttujiin ja tulostaa arvot konsoliin
+     */
 	protected void laskeJonojenKeskiarvot() {
 		double oviSumma = 0;
 		double ilmoSumma = 0;
@@ -434,31 +491,48 @@ public class OmaMoottori extends Moottori implements IOmaMoottori{
 		return asiakasmaara;
 	}
 	
+	/**
+     * Asettaa muuttujaan loppuajan ja palauttaa sen
+     */
 	@Override
 	public double getLoppuaika() {
 		loppuaika = Kello.getInstance().getAika();
 		return loppuaika;
 	}
-
+	
+	/**
+     * Asettaa muuttujaan metodilla avgLapimeno(); haetun yhden asiakkaan keskimääräisen läpimenoajan koko simulaation läpi ja palauttaa sen
+     */
 	@Override
 	public double getAvgLapimeno() {
 		avgLapimeno = avgLapimeno();
 		return avgLapimeno;
 	}
 
+	/**
+     * Asettaa muuttujaan metodilla pieninAsiakas(); haetun pienimmän asiakkaan läpimenoajan ja palauttaa sen
+     */
 	@Override
 	public double getPieninAsiakas() {
 		pieninAsiakas = pieninAsiakas();
 		return pieninAsiakas;
 	}
 
+	/**
+     * Asettaa muuttujaan metodilla suurinAsiakas(); haetun suurimman asiakkaan läpimenoajan ja palauttaa sen
+     */
 	@Override
 	public double getSuurinAsiakas() {
 		suurinAsiakas = suurinAsiakas();
 		return suurinAsiakas;
 	}
 
-
+	/**
+     * Kutsuu kaikkia simulaattorin lopputuloksia luovia metodeja ja lähettää ne kontrollerille, sekä 
+     * tulostaa tulokset konsoliin. 
+     * Ilmoittaa kontrollerille, että näkymän tulee näyttää simuloinnin tulokset.
+     * Lisää myös simlaation loppuajan simulaatioaikojen listaan.
+     */
 	@Override
 	protected void tulokset() {
 		laskeSuoritustehot();

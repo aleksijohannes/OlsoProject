@@ -7,8 +7,12 @@ import simu.framework.Kello;
 import simu.framework.Trace;
 
 
-// TODO:
-// Asiakas koodataan simulointimallin edellyttämällä tavalla (data!)
+/**
+ * Luokka, joka määrittää simulaattorin läpi kulkevan asiakkaan 
+ *
+ * @author Jenni Tynkkynen
+ */
+
 public class Asiakas {
 	private double saapumisaika;
 	private double poistumisaika;
@@ -44,15 +48,34 @@ public class Asiakas {
 		return id;
 	}
 	
+	/**
+     * Kutsutaan, kun halutaan palauttaa asiakkaan id-numero String-muodossa
+     * @return idString String, palauttaa asiakkaan id:n String-muodossa
+     */
+	
 	public String asiakasId() {
 		String idString = Integer.toString(id);
 		return idString;
 	}
 	
+	/**
+     * Tallentaa asiakkaan läpimenoajan vähentämällä asiakakaan poistumisajan asiakkaan saapumisajasta
+     * @return lapimenoaika int, palauttaa asiakkaan läpmenoajan
+     */
+	
 	public double asiakkaanLapimeno() {
 		lapimenoaika = poistumisaika-saapumisaika;
 		return lapimenoaika;
 	}
+	
+	/**
+     * Asiakasraportti asiakkaan toimista, kutsutaan kun asiakas on mennyt yhden palvelupiseen läpi:
+     * Trace.out kirjoittaa konsoliin yhden asiakkaan toiminnot aina, kun raporttia kutsutaan.
+     * 
+     * Raportti ilmoittaa asiakkaan saapumis-, poistumis- ja läpimenoajan ja laskee kaikkien 
+     * palvelupisteistä läpi menneiden asiakkaiden keskiarvoisen läpimenoajan.
+     * 
+     */
 	
 	public void raportti(){
 		Trace.out(Trace.Level.INFO, "\nAsiakas "+id+ " valmis! ");
