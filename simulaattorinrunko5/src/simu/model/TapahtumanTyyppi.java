@@ -1,7 +1,10 @@
 package simu.model;
 
-// TODO:
-// Tapahtumien tyypit määritellään simulointimallin vaatimusten perusteella
+/**
+ * Enum-luokka, jossa määritellään eri tapahtumatyypit
+ *
+ * @author Jenni Tynkkynen
+ */
 public enum TapahtumanTyyppi {
 	ARR1,
 	DEP1,

@@ -14,8 +14,11 @@ import simu.framework.Tapahtuma;
 import simu.framework.Tapahtumalista;
 import simu.framework.Trace;
 
-// TODO:
-// Palvelupistekohtaiset toiminnallisuudet, laskutoimitukset (+ tarvittavat muuttujat) ja raportointi koodattava
+/**
+ * Luokka, jossa määritellään palvelupisteiden runko 
+ *
+ * @author Jenni Tynkkynen
+ */
 public class Palvelupiste {
 
 	private LinkedList<Asiakas> jono = new LinkedList<Asiakas>(); // Tietorakennetoteutus
@@ -29,7 +32,7 @@ public class Palvelupiste {
 	private double jonotuksenAlku;
 	private double generoitu;
 	private List<Double> palveluajat = new ArrayList<Double>();
-	//private List<Double> vasteajat = new ArrayList<Double>();
+	
 	
 	private List<Double> jonotusajat = new ArrayList<Double>();
 	
@@ -53,7 +56,12 @@ public class Palvelupiste {
 		this.palvelupisteenTyyppi = palvelupisteenTyyppi;
 
 	}
-
+	
+	/**
+     * Palauttaa palvelupisteen jonon pituuden kokonaislukuna
+     * 
+     * @return jonon koko
+     */
 	public int jononKoko() {
 		if(jono.size() <= 0) {
 			return 0;
@@ -63,6 +71,11 @@ public class Palvelupiste {
 
 	}
 
+	/**
+     * Lisää palvelupisteen jonooon uuden asiakkaan
+     * 
+     * @param a Lisättävä asiakas
+     */
 	public void lisaaJonoon(Asiakas a) { // Jonon 1. asiakas aina palvelussa
 		jono.add(a);
 		jonotuksenAlku = (Kello.getInstance().getAika());
@@ -70,7 +83,11 @@ public class Palvelupiste {
 		
 	}
 	
-	
+	/**
+     * Asettaa tapahtumalle poistumisajan sille varattuun muuttujaan
+     * 
+     * @param t Käsittelyssä oleva tapahtuma
+     */
 	public void lisaaPoistumisAika(Tapahtuma t) {
 		poistumisaika = t.getAika();
 	}
@@ -79,11 +96,20 @@ public class Palvelupiste {
 		return poistumisaika;
 	}
 	
+	/**
+     * Poistaa jonosta palvelussa olleen asiakkaan
+     * 
+     * @return poistettava asiakas
+     */
 	public Asiakas otaJonosta() { // Poistetaan palvelussa ollut
 		varattu = false;
 		return jono.poll();
 	}
 
+	/**
+     * Aloittaa uuden palvelun, jonottaneen asiakkaan jonotusajan jonotusajat-listaan, lisää uuden tapahtuman tapahtumalistaan, tallentaa palveluajan 
+     * palveluaikalistaan ja korottaa palvelupisteen asiakasmäärää yhdellä
+     */
 	public void aloitaPalvelu() { // Aloitetaan uusi palvelu, asiakas on jonossa palvelun aikana
 
 		Trace.out(Trace.Level.INFO, "Aloitetaan uusi palvelu asiakkaalle " + jono.peek().getId() + " palvelupisteessä " + palvelupisteenTyyppi + id);
@@ -110,10 +136,20 @@ public class Palvelupiste {
 		return varattu;
 	}
 
+	/**
+     * Palauttaa jonossa olevien asiakkaiden määrän
+     * 
+     * @return jonossa olevien asiakkaiden määrä
+     */
 	public boolean onJonossa() {
 		return jono.size() != 0;
 	}
 	
+	/**
+     * Laskee palvelupisteen palveluaikojen summan
+     * 
+     * @return palveluaikojen summa
+     */
 	public double palvelutYht() {
 		double summa = 0;
 	    for (int i = 0; i < palveluajat.size(); i++) {
@@ -123,16 +159,31 @@ public class Palvelupiste {
 	    return summa;
 	}
 	
+	/**
+     * Laskee käyttöasteen, eli palvelupisteen palveluaikojen (aktiiviajan) summan suhteessa simulaation kokonaiskestoon
+     * 
+     * @return käyttöaste
+     */
 	public double kayttoaste() {
 		double kayttoaste = palvelutYht()/Kello.getInstance().getAika();
 		return kayttoaste;	
 	}
 	
+	/**
+     * Laskee suoritustehon, eli palveltujen asiakkaiden määrän suhteessa simulaation kokonaisaikaan 
+     * 
+     * @return suoritusteho
+     */
 	public double suoritusteho() {
 		double suoritusteho = Kello.getInstance().getAika()/asiakkaat;
 		return suoritusteho;
 	}
 	
+	/**
+     * Palauttaa palvelupisteen nimen merkkijonomuodossa, joka kootaan palvelupisteen id:stä ja tyypistä 
+     * 
+     * @return nimi
+     */
 	public String haeNimi() {
 		String nimi = this.id + " " + this.palvelupisteenTyyppi;
 		return nimi;
@@ -141,23 +192,4 @@ public class Palvelupiste {
 	public List<Double> getJonotusajat() {
 		return jonotusajat;
 	}
-
-
-	/*public void vasteaikaTestaus() {
-		double palv;
-		double jono;
-		double vast = 0;
-		
-		for (int i = 0; i < palveluajat.size(); i++) {
-			for (i = 0; i < palveluajat.size(); i++) {
-				palv = palveluajat.get(i);
-				vast =+ palv;
-				for (i = 0; i < jonotusajat.size(); i++) {
-					jono = jonotusajat.get(i);
-					vast=+ jono;
-					}
-				}
-			vasteajat.add(vast);
-		}*/	
-
 }
