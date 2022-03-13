@@ -26,6 +26,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 
+/**
+ * Simulaattorin käyttöliittymä
+ * 
+ * @author Aleksi Alanko, Teemu Pennanen
+ */
+
 public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 	// Kontrollerin esittely (tarvitaan käyttöliittymässä)
@@ -94,7 +100,6 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private ToggleGroup seurantaGroup;
 	private RadioButton seurantaNorm;
 	private RadioButton seurantaTasa;
-	//private RadioButton seurantaExp;
 
 	private TilePane saapuminenNopeus;
 	private ToggleGroup saapuminenNopeusGroup;
@@ -129,7 +134,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private Slider ovihenkiloMaara;
 	private Slider ilmoittautuminenMaara;
 	private Slider rokottajaMaara;
-	
+
 	private Label saapuminenLabel;
 	private Label oviLabel;
 	private Label ilmLabel;
@@ -140,7 +145,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private Label jakaumaLabel;
 	private Label palvelupisteetLabel;
 	private Label seurantaMaara;
-	
+
 	private Text kayttoasteet;
 	private Text suoritustehot;
 	private Label palvellutAsiakkaat;
@@ -157,7 +162,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private Text maara;
 	private Text nopeus;
 	private Text jakauma;
-	
+
 	private Text saapKesk;
 	private Text ilmKesk;
 	private Text oviKesk;
@@ -168,7 +173,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private Text oviSuur;
 	private Text rokSuur;
 	private Text seurSuur;
-	
+
 	private Text saapMaara;
 	private Text saapNopeus;
 	private Text saapJakauma;
@@ -184,13 +189,18 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	private Text seurMaara;
 	private Text seurNopeus;
 	private Text seurJakauma;
-	
+
 	private Label palvelupisteetOvi;
 	private Label palvelupisteetIlm;
 	private Label palvelupisteetRok;
 	private Label palvelupisteetSeur;
 	private Label poistuneet;
-	
+
+	/**
+	 * Luo kontolleri-olion ilmentymän ja alustaa palvelupisteiden nopeudet ja
+	 * jakaumat.
+	 */
+
 	@Override
 	public void init() {
 
@@ -200,9 +210,13 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 		setAlkuarvot();
 	}
 
+	/**
+	 * Käyttöliittymän rakentaminen ja asettelu.
+	 */
+
 	@Override
 	public void start(Stage primaryStage) {
-		// Käyttöliittymän rakentaminen
+
 		try {
 
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -215,44 +229,46 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 
 			primaryStage.setTitle("Simulaattori");
 
+			/**
+			 * Käynnistä-napin luominen ja toiminnallisuus. Nappia painaessa asetetaan
+			 * palvelupisteiden määrä ja visualisoidaan ne, asetetaan palvelupisteiden
+			 * määrät, nopeudet ja jakaumat Tulokset-sivulle, poistetaan käyttöliittymän
+			 * valintakomponentit käytöstä sekä käynnistetään simulaatio.
+			 */
+
 			kaynnistaButton = new Button();
 			kaynnistaButton.setText("Käynnistä simulointi");
+
 			kaynnistaButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
-				public void handle(ActionEvent event) {					
+				public void handle(ActionEvent event) {
 					setOviMaara();
 					setIlmoMaara();
 					setRokMaara();
+
 					saapJakauma.setText(jakaumaSaapuminen);
-                    ovJakauma.setText(jakaumaOvi);
-                    ilmoJakauma.setText(jakaumaIlm);
-                    rokJakauma.setText(jakaumaRokottaja);
-                    seurJakauma.setText(jakaumaSeuranta);
-                    saapNopeus.setText(Integer.toString(nopeusSaapuminen));
-                    ovNopeus.setText(Integer.toString(nopeusOvi));
-                    ilmoNopeus.setText(Integer.toString(nopeusIlm));
-                    rokNopeus.setText(Integer.toString(nopeusRokottaja));
-                    seurNopeus.setText(Integer.toString(nopeusSeuranta));
-					
+					ovJakauma.setText(jakaumaOvi);
+					ilmoJakauma.setText(jakaumaIlm);
+					rokJakauma.setText(jakaumaRokottaja);
+					seurJakauma.setText(jakaumaSeuranta);
+					saapNopeus.setText(Integer.toString(nopeusSaapuminen));
+					ovNopeus.setText(Integer.toString(nopeusOvi));
+					ilmoNopeus.setText(Integer.toString(nopeusIlm));
+					rokNopeus.setText(Integer.toString(nopeusRokottaja));
+					seurNopeus.setText(Integer.toString(nopeusSeuranta));
+
 					kontrolleri.kaynnistaSimulointi();
-							
-					naytto.visualisoiPalvelupisteet(getOviMaara(), getIlmoMaara(), getRokMaara());	
-					
-					System.out.println(getSaapumisjakauma());
-					System.out.println(getOviJakauma());
-					System.out.println(getIlmoJakauma());
-					System.out.println(getRokJakauma());
-					System.out.println(getSeurJakauma());
-										
-					System.out.println(getOviMaara());
-					System.out.println(getIlmoMaara());
-					System.out.println(getRokMaara());
+
+					naytto.visualisoiPalvelupisteet(getOviMaara(), getIlmoMaara(), getRokMaara());
+
 					disableValinnat();
 				}
 			});
 
-			// Napit
-			
+			/**
+			 * Luo Hidasta- ja Nopeuta-napit.
+			 */
+
 			hidastaButton = new Button();
 			hidastaButton.setText("Hidasta");
 			hidastaButton.setOnAction(e -> kontrolleri.hidasta());
@@ -261,8 +277,10 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			nopeutaButton.setText("Nopeuta");
 			nopeutaButton.setOnAction(e -> kontrolleri.nopeuta());
 
-			// Jakaumat
-			
+			/**
+			 * Luo RadioButtonit saapumisjakauman valitsemiselle, sekä lukee valitun arvon.
+			 */
+
 			jakaumatSaapuminen = new TilePane();
 
 			saapuminenGroup = new ToggleGroup();
@@ -270,7 +288,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			saapuminenNorm.setToggleGroup(saapuminenGroup);
 
 			saapuminenNorm.setUserData("normal");
-		
+
 			saapuminenTasa = new RadioButton("Tasa");
 			saapuminenTasa.setToggleGroup(saapuminenGroup);
 			saapuminenTasa.setUserData("uniform");
@@ -283,16 +301,20 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			jakaumatSaapuminen.getChildren().add(saapuminenNorm);
 			jakaumatSaapuminen.getChildren().add(saapuminenTasa);
 			jakaumatSaapuminen.getChildren().add(saapuminenExp);
-			
+
 			saapuminenGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			          Toggle old_toggle, Toggle new_toggle) {
-			        if (saapuminenGroup.getSelectedToggle() != null) {
-			          jakaumaSaapuminen = saapuminenGroup.getSelectedToggle().getUserData().toString();
-			          System.out.println(jakaumaSaapuminen + "testi 1");
-			        }
-			      }
-			    });
+				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+					if (saapuminenGroup.getSelectedToggle() != null) {
+						jakaumaSaapuminen = saapuminenGroup.getSelectedToggle().getUserData().toString();
+						System.out.println(jakaumaSaapuminen + "testi 1");
+					}
+				}
+			});
+
+			/**
+			 * Luo RadioButtonit ovihenkilöjakauman valitsemiselle, sekä lukee valitun
+			 * arvon.
+			 */
 
 			jakaumatOvi = new TilePane();
 
@@ -314,16 +336,20 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			jakaumatOvi.getChildren().add(oviNorm);
 			jakaumatOvi.getChildren().add(oviTasa);
 			jakaumatOvi.getChildren().add(oviExp);
-			
+
 			oviGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			          Toggle old_toggle, Toggle new_toggle) {
-			        if (oviGroup.getSelectedToggle() != null) {
-			          jakaumaOvi = oviGroup.getSelectedToggle().getUserData().toString();
-			          System.out.println(jakaumaOvi + "testi 1");
-			        }
-			      }
-			    });
+				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+					if (oviGroup.getSelectedToggle() != null) {
+						jakaumaOvi = oviGroup.getSelectedToggle().getUserData().toString();
+						System.out.println(jakaumaOvi + "testi 1");
+					}
+				}
+			});
+
+			/**
+			 * Luo RadioButtonit ilmoittautumispistejakauman valitsemiselle, sekä lukee
+			 * valitun arvon.
+			 */
 
 			jakaumatIlm = new TilePane();
 
@@ -345,16 +371,20 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			jakaumatIlm.getChildren().add(ilmNorm);
 			jakaumatIlm.getChildren().add(ilmTasa);
 			jakaumatIlm.getChildren().add(ilmExp);
-			
+
 			ilmGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			          Toggle old_toggle, Toggle new_toggle) {
-			        if (ilmGroup.getSelectedToggle() != null) {
-			          jakaumaIlm = ilmGroup.getSelectedToggle().getUserData().toString();
-			          System.out.println(jakaumaIlm + "testi 1");
-			        }
-			      }
-			    });
+				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+					if (ilmGroup.getSelectedToggle() != null) {
+						jakaumaIlm = ilmGroup.getSelectedToggle().getUserData().toString();
+						System.out.println(jakaumaIlm + "testi 1");
+					}
+				}
+			});
+
+			/**
+			 * Luo RadioButtonit rokottajajakauman valitsemiselle, sekä luekee valitun
+			 * arvon.
+			 */
 
 			jakaumatRokottaja = new TilePane();
 
@@ -376,16 +406,20 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			jakaumatRokottaja.getChildren().add(rokottajaNorm);
 			jakaumatRokottaja.getChildren().add(rokottajaTasa);
 			jakaumatRokottaja.getChildren().add(rokottajaExp);
-			
+
 			rokottajaGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			          Toggle old_toggle, Toggle new_toggle) {
-			        if (rokottajaGroup.getSelectedToggle() != null) {
-			          jakaumaRokottaja = rokottajaGroup.getSelectedToggle().getUserData().toString();
-			          System.out.println(jakaumaRokottaja + "testi 1");
-			        }
-			      }
-			    });
+				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+					if (rokottajaGroup.getSelectedToggle() != null) {
+						jakaumaRokottaja = rokottajaGroup.getSelectedToggle().getUserData().toString();
+						System.out.println(jakaumaRokottaja + "testi 1");
+					}
+				}
+			});
+
+			/**
+			 * Luo RadioButtonit jälkiseurantajakauman valitsemiselle, sekä lukee valitun
+			 * arvon.
+			 */
 
 			jakaumatSeuranta = new TilePane();
 
@@ -400,39 +434,35 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			seurantaTasa.setToggleGroup(seurantaGroup);
 			seurantaTasa.setUserData("uniform");
 
-			//seurantaExp = new RadioButton("Exp");
-			//seurantaExp.setToggleGroup(seurantaGroup);
-			//seurantaExp.setUserData("negexp");
-
 			jakaumatSeuranta.getChildren().add(seurantaNorm);
 			jakaumatSeuranta.getChildren().add(seurantaTasa);
-			//jakaumatSeuranta.getChildren().add(seurantaExp);
-			
-			seurantaGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			          Toggle old_toggle, Toggle new_toggle) {
-			        if (seurantaGroup.getSelectedToggle() != null) {
-			          jakaumaSeuranta = seurantaGroup.getSelectedToggle().getUserData().toString();
-			          System.out.println(jakaumaSeuranta + "testi 1");
-			        }
-			      }
-			    });
 
-			// Nopeudet
-			
+			seurantaGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+					if (seurantaGroup.getSelectedToggle() != null) {
+						jakaumaSeuranta = seurantaGroup.getSelectedToggle().getUserData().toString();
+						System.out.println(jakaumaSeuranta + "testi 1");
+					}
+				}
+			});
+
+			/**
+			 * Luo RadioButtonit saapumisnopeuden valitsemiselle, sekä lukee valitun arvon.
+			 */
+
 			saapuminenNopeus = new TilePane();
 
 			saapuminenNopeusGroup = new ToggleGroup();
 
 			saapuminenHidas = new RadioButton("Hidas");
-			saapuminenHidas.setToggleGroup(saapuminenNopeusGroup);			
+			saapuminenHidas.setToggleGroup(saapuminenNopeusGroup);
 			saapuminenHidas.setUserData(1);
 
 			saapuminenNormaali = new RadioButton("Normaali");
 			saapuminenNormaali.setToggleGroup(saapuminenNopeusGroup);
 			saapuminenNormaali.setUserData(2);
 			saapuminenNormaali.setSelected(true);
-			
+
 			saapuminenNopea = new RadioButton("Nopea");
 			saapuminenNopea.setToggleGroup(saapuminenNopeusGroup);
 			saapuminenNopea.setUserData(3);
@@ -440,29 +470,33 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			saapuminenNopeus.getChildren().add(saapuminenHidas);
 			saapuminenNopeus.getChildren().add(saapuminenNormaali);
 			saapuminenNopeus.getChildren().add(saapuminenNopea);
-			
+
 			saapuminenNopeusGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			          Toggle old_toggle, Toggle new_toggle) {
-			        if (saapuminenNopeusGroup.getSelectedToggle() != null) {
-			          nopeusSaapuminen = (int)saapuminenNopeusGroup.getSelectedToggle().getUserData();
-			        }
-			      }
-			    });
+				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+					if (saapuminenNopeusGroup.getSelectedToggle() != null) {
+						nopeusSaapuminen = (int) saapuminenNopeusGroup.getSelectedToggle().getUserData();
+					}
+				}
+			});
+
+			/**
+			 * Luo RadioButtonit ovihenkilönopeuden valitsemiselle, sekä lukee valitun
+			 * arvon.
+			 */
 
 			oviNopeus = new TilePane();
 
 			oviNopeusGroup = new ToggleGroup();
 
 			oviHidas = new RadioButton("Hidas");
-			oviHidas.setToggleGroup(oviNopeusGroup);			
+			oviHidas.setToggleGroup(oviNopeusGroup);
 			oviHidas.setUserData(1);
 
 			oviNormaali = new RadioButton("Normaali");
 			oviNormaali.setToggleGroup(oviNopeusGroup);
 			oviNormaali.setUserData(2);
 			oviNormaali.setSelected(true);
-			
+
 			oviNopea = new RadioButton("Nopea");
 			oviNopea.setToggleGroup(oviNopeusGroup);
 			oviNopea.setUserData(3);
@@ -470,22 +504,26 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			oviNopeus.getChildren().add(oviHidas);
 			oviNopeus.getChildren().add(oviNormaali);
 			oviNopeus.getChildren().add(oviNopea);
-			
+
 			oviNopeusGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			          Toggle old_toggle, Toggle new_toggle) {
-			        if (oviNopeusGroup.getSelectedToggle() != null) {
-			          nopeusOvi = (int)oviNopeusGroup.getSelectedToggle().getUserData();
-			        }
-			      }
-			    });
+				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+					if (oviNopeusGroup.getSelectedToggle() != null) {
+						nopeusOvi = (int) oviNopeusGroup.getSelectedToggle().getUserData();
+					}
+				}
+			});
+
+			/**
+			 * Luo RadioButtonit ilmoittautumispistenopeuden valitsemiselle, sekä lukee
+			 * valitun arvon.
+			 */
 
 			ilmNopeus = new TilePane();
 
 			ilmNopeusGroup = new ToggleGroup();
 
 			ilmHidas = new RadioButton("Hidas");
-			ilmHidas.setToggleGroup(ilmNopeusGroup);			
+			ilmHidas.setToggleGroup(ilmNopeusGroup);
 			ilmHidas.setUserData(1);
 
 			ilmNormaali = new RadioButton("Normaali");
@@ -500,22 +538,25 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			ilmNopeus.getChildren().add(ilmHidas);
 			ilmNopeus.getChildren().add(ilmNormaali);
 			ilmNopeus.getChildren().add(ilmNopea);
-			
+
 			ilmNopeusGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			          Toggle old_toggle, Toggle new_toggle) {
-			        if (ilmNopeusGroup.getSelectedToggle() != null) {
-			          nopeusIlm = (int)ilmNopeusGroup.getSelectedToggle().getUserData();
-			        }
-			      }
-			    });
+				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+					if (ilmNopeusGroup.getSelectedToggle() != null) {
+						nopeusIlm = (int) ilmNopeusGroup.getSelectedToggle().getUserData();
+					}
+				}
+			});
+
+			/**
+			 * Luo RadioButtonit rokottajanopeuden valitsemiselle, sekä lukee valitun arvon.
+			 */
 
 			rokottajaNopeus = new TilePane();
 
 			rokottajaNopeusGroup = new ToggleGroup();
 
 			rokottajaHidas = new RadioButton("Hidas");
-			rokottajaHidas.setToggleGroup(rokottajaNopeusGroup);			
+			rokottajaHidas.setToggleGroup(rokottajaNopeusGroup);
 			rokottajaHidas.setUserData(1);
 
 			rokottajaNormaali = new RadioButton("Normaali");
@@ -543,12 +584,17 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 				}
 			});
 
+			/**
+			 * Luo RadioButtonit jälkiseurantanopeuden valitsemiselle, sekä lukee valitun
+			 * arvon.
+			 */
+
 			seurantaNopeus = new TilePane();
 
 			seurantaNopeusGroup = new ToggleGroup();
 
 			seurantaHidas = new RadioButton("Hidas");
-			seurantaHidas.setToggleGroup(seurantaNopeusGroup);			
+			seurantaHidas.setToggleGroup(seurantaNopeusGroup);
 			seurantaHidas.setUserData(1);
 
 			seurantaNormaali = new RadioButton("Normaali");
@@ -563,19 +609,19 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			seurantaNopeus.getChildren().add(seurantaHidas);
 			seurantaNopeus.getChildren().add(seurantaNormaali);
 			seurantaNopeus.getChildren().add(seurantaNopea);
-			
+
 			seurantaNopeusGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			          Toggle old_toggle, Toggle new_toggle) {
-			        if (seurantaNopeusGroup.getSelectedToggle() != null) {
-			          nopeusSeuranta = (int)seurantaNopeusGroup.getSelectedToggle().getUserData();
-			        }
-			      }
-			    });
+				public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+					if (seurantaNopeusGroup.getSelectedToggle() != null) {
+						nopeusSeuranta = (int) seurantaNopeusGroup.getSelectedToggle().getUserData();
+					}
+				}
+			});
 
+			/**
+			 * Luo Sliderit palvelupisteiden määrän valitsemiselle.
+			 */
 
-			// Palvelupisteiden määrät
-			
 			ovihenkiloMaara = new Slider(1, 3, 1);
 
 			ovihenkiloMaara.setSnapToTicks(true);
@@ -597,19 +643,22 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			rokottajaMaara.setMinorTickCount(1);
 			rokottajaMaara.setShowTickLabels(true);
 
-			// Asettelu
-			saapJakauma = new Text();
-            ovJakauma = new Text();
-            ilmoJakauma = new Text();
-            rokJakauma = new Text();
-            seurJakauma = new Text();
+			/**
+			 * Luo käyttöliittymän tekstikentät ja niiden tyylin.
+			 */
 
-            saapNopeus = new Text();
-            ovNopeus = new Text();
-            ilmoNopeus = new Text();
-            rokNopeus = new Text();
-            seurNopeus = new Text();
-			
+			saapJakauma = new Text();
+			ovJakauma = new Text();
+			ilmoJakauma = new Text();
+			rokJakauma = new Text();
+			seurJakauma = new Text();
+
+			saapNopeus = new Text();
+			ovNopeus = new Text();
+			ilmoNopeus = new Text();
+			rokNopeus = new Text();
+			seurNopeus = new Text();
+
 			aikaLabel = new Label("Simulointiaika:");
 			aikaLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 			aika = new TextField("Syötä aika");
@@ -627,14 +676,14 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			tulos = new Label();
 			tulos.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 			tulos.setPrefWidth(150);
-			
+
 			lapimenoaikaLabel = new Label("Läpimenoaika");
 			lapimenoaikaLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 			lapimenoaikaLabel.setPrefWidth(150);
 			lapimenoaika = new Label();
 			lapimenoaika.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-			lapimenoaika.setPrefWidth(150);					
-			
+			lapimenoaika.setPrefWidth(150);
+
 			saapuminenLabel = new Label("Saapuminen");
 			saapuminenLabel.setFont(Font.font("Tahoma", FontWeight.BOLD, 17));
 			saapuminenLabel.setPrefWidth(150);
@@ -655,7 +704,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			seurantaLabel.setFont(Font.font("Tahoma", FontWeight.BOLD, 17));
 			seurantaLabel.setPrefWidth(150);
 			seurantaLabel.setTextFill(Color.web("#5C5D8D"));
-			
+
 			maaraLabel = new Label("Määrä");
 			maaraLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 			maaraLabel.setPrefWidth(150);
@@ -671,7 +720,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			seurantaMaara = new Label("75 paikkaa");
 			seurantaMaara.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
 			seurantaMaara.setPrefWidth(150);
-			
+
 			palvelupisteetOvi = new Label("Ovihenkilöt");
 			palvelupisteetOvi.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
 			palvelupisteetOvi.setPrefWidth(150);
@@ -692,13 +741,17 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			poistuneet.setFont(Font.font("Tahoma", FontWeight.BOLD, 15));
 			poistuneet.setPrefWidth(150);
 			poistuneet.setTextFill(Color.web("#D282A6"));
-			
+
 			saapuminenLabel.setMaxWidth(Double.MAX_VALUE);
 			oviLabel.setMaxWidth(Double.MAX_VALUE);
 			ilmLabel.setMaxWidth(Double.MAX_VALUE);
 			rokotusLabel.setMaxWidth(Double.MAX_VALUE);
 			seurantaLabel.setMaxWidth(Double.MAX_VALUE);
-			
+
+			/**
+			 * Asettaa käyttöliittymän valintakomponentit yhteen GridPane-näkymään.
+			 */
+
 			GridPane valinnat = new GridPane();
 			valinnat.setAlignment(Pos.CENTER);
 			valinnat.setVgap(20);
@@ -712,43 +765,56 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			valinnat.add(ilmLabel, 0, 3);
 			valinnat.add(rokotusLabel, 0, 4);
 			valinnat.add(seurantaLabel, 0, 5);
-			
+
 			valinnat.add(ovihenkiloMaara, 1, 2);
 			valinnat.add(ilmoittautuminenMaara, 1, 3);
 			valinnat.add(rokottajaMaara, 1, 4);
 			valinnat.add(seurantaMaara, 1, 5);
-			
+
 			valinnat.add(saapuminenNopeus, 2, 1);
 			valinnat.add(oviNopeus, 2, 2);
 			valinnat.add(ilmNopeus, 2, 3);
 			valinnat.add(rokottajaNopeus, 2, 4);
 			valinnat.add(seurantaNopeus, 2, 5);
-			
+
 			valinnat.add(jakaumatSaapuminen, 3, 1);
 			valinnat.add(jakaumatOvi, 3, 2);
 			valinnat.add(jakaumatIlm, 3, 3);
 			valinnat.add(jakaumatRokottaja, 3, 4);
 			valinnat.add(jakaumatSeuranta, 3, 5);
 
-			/*
-			 * Tulokset
+			/**
+			 * Luodaan otsikko tulokset-näkymälle. Asetetaan marginaalit ja fontti.
 			 */
-			
+
 			Label tuloksetLabel = new Label();
 			tuloksetLabel.setText("Tulokset");
 			tuloksetLabel.setStyle("-fx-font: 24 arial;");
-			
-			//suoritustehot
+
+			/**
+			 * Luodaan tekstikenttä suoritustehoille. Luodaan otsikko suoritustehojen
+			 * tekstikentälle.
+			 */
+
 			suoritustehot = new Text();
 			Label suoritustehotLabel = new Label();
 			suoritustehotLabel.setText("Suoritustehot:");
+
+			/**
+			 * Luodaan rullaava näkymä suoritustehoille. Asetetaan tekstikenttä näkymän
+			 * sisään. Asetetaan näkymän koko
+			 */
+
 			ScrollPane suoritustehotScrollPane = new ScrollPane();
 			suoritustehotScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 			suoritustehotScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 			suoritustehotScrollPane.setContent(suoritustehot);
 			suoritustehotScrollPane.setPrefSize(400, 200);
-			
-			//käyttöasteet
+
+			/**
+			 * Luodaan tekstikenttä ja otsikko käyttöasteille.
+			 */
+
 			kayttoasteet = new Text();
 			Label kayttoasteetLabel = new Label();
 			kayttoasteetLabel.setText("Käyttöasteet:");
@@ -757,78 +823,125 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			kayttoasteetScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 			kayttoasteetScrollPane.setContent(kayttoasteet);
 			kayttoasteetScrollPane.setPrefSize(400, 200);
-			
-			//keskimääräinen jonotusaika
+
+			/**
+			 * Luodaan rullaava näkymä käyttöasteille. Asetetaan tekstikenttä näkymän
+			 * sisään. Asetetaan näkymän koko.
+			 */
+
 			Label keskimLabel = new Label();
 			keskimLabel.setText("Keskimääräinen jonotusaika:");
 			ScrollPane keskimScrollPane = new ScrollPane();
 			keskimScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 			keskimScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-			//keskimScrollPane.setContent();
 			keskimScrollPane.setPrefSize(400, 200);
-		
-			//Loppuaika
+
+			/**
+			 * Luodaan tekstikenttä ja otsikko loppuajalle. Nimetään otsikko.
+			 */
+
 			loppuaika = new Text();
 			Label loppuaikaLabel = new Label();
 			loppuaikaLabel.setText("Loppuaika:");
-			
-			//Suurin asiakas
+
+			/**
+			 * Luodaan tekstikenttä ja otsikko psuurimmalle jonotusajalle. Nimetään otsikko.
+			 */
+
 			Label suurinLabel = new Label();
 			suurinLabel.setText("Pisin aika:");
 			suurin = new Text();
-			
-			//Pienin asiakas
+
+			/**
+			 * Luodaan tekstikenttä ja otsikko pienimmälle jonotusajalle. Nimetään otsikko.
+			 */
+
 			Label pieninLabel = new Label();
 			pieninLabel.setText("Lyhin aika:");
 			pienin = new Text();
-			
-			//Tallenna nappi
+
+			/**
+			 * Luodaan nappi tietojen tallennukselle. Asetetaan teksti ja toiminto.
+			 */
+
 			Button tallennaButton = new Button();
 			tallennaButton.setText("Tallenna tulokset");
 			tallennaButton.setOnAction(e -> kontrolleri.tallennaSimulaatio());
 
-			//Simulaation parametrit
+			/**
+			 * Luodaan otsikko simulaation parametreille.
+			 */
+
 			Label parametritLabel = new Label();
 			parametritLabel.setText("Parametrit");
 			parametritLabel.setStyle("-fx-font: 24 arial;");
-			
-			//Jonotusajat
+
+			/**
+			 * Luodaan otsikko jonotusajoille.
+			 */
+
 			Label jonotusajatLabel = new Label();
-			//jonotusajatLabel.setText("Jonotusajat");
+			// jonotusajatLabel.setText("Jonotusajat");
 			jonotusajatLabel.setStyle("-fx-font: 24 arial;");
-			
+
+			/**
+			 * Luodaan otsikko palvelluille asiakkaille.
+			 */
+
 			palvellutAsiakkaat = new Label();
-			
+
+			/**
+			 * Luodaan tekstikentät simulaation palvelupisteille.
+			 */
+
 			saap = new Text("Saapuminen");
 			ovi = new Text("Ovi");
 			ilm = new Text("Ilmoittautuminen");
 			rok = new Text("Rokottajat");
 			seur = new Text("Seurannat");
+
+			/**
+			 * Luodaan tekstikentät suurimmalle-ja pienimmälle jonotusajalle ja simulaation
+			 * parametreille.
+			 */
+
 			avg = new Text("Keskim. jonotusaika");
 			max = new Text("Suurin jonotusaika");
 			maara = new Text("Määrä");
 			nopeus = new Text("Nopeus");
 			jakauma = new Text("Jakauma");
-			
-			//saapKesk = new Text();
+
+			/**
+			 * Luodaan tekstikentät keskimääräisille jonotusajoille
+			 */
+
 			oviKesk = new Text();
-			
+
 			ilmKesk = new Text();
 			rokKesk = new Text();
 			seurKesk = new Text();
-			
-			//saapSuur = new Text();
+
+			/**
+			 * Luodaan tekstikentät suurimmille jootusajoile
+			 */
+
 			oviSuur = new Text();
 			ilmSuur = new Text();
 			rokSuur = new Text();
 			seurSuur = new Text();
-			
-			saapMaara = new Text("1");
+
+			/**
+			 * Luodaan tekstikentät palvelupisteiden määrille
+			 */
+
 			ovMaara = new Text();
 			ilmoMaara = new Text();
 			rokMaara = new Text();
-			seurMaara = new Text("1");
-			
+
+			/**
+			 * Luodaan ruudukkonäkymä tuloksille ja asetetaan sen sisältö.
+			 */
+
 			GridPane tulokset = new GridPane();
 			tulokset.setAlignment(Pos.CENTER);
 			tulokset.setVgap(20);
@@ -840,19 +953,16 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			tulokset.add(suurin, 1, 2);
 			tulokset.add(pieninLabel, 2, 1);
 			tulokset.add(pienin, 2, 2);
-			tulokset.add(suoritustehotLabel, 0,3);
+			tulokset.add(suoritustehotLabel, 0, 3);
 			tulokset.add(kayttoasteetLabel, 1, 3);
-			//tulokset.add(keskimLabel, 2, 3);
 			tulokset.add(suoritustehotScrollPane, 0, 4);
 			tulokset.add(kayttoasteetScrollPane, 1, 4);
-			//tulokset.add(keskimScrollPane, 2, 4);
 			tulokset.add(tallennaButton, 1, 0);
 			tulokset.add(palvellutAsiakkaat, 2, 0);
-			
+
 			GridPane tulokset1 = new GridPane();
 			tulokset1.setVgap(20);
 			tulokset1.setHgap(100);
-			//tulokset1.add(jonotusajatLabel, 0, 0);
 			tulokset1.add(avg, 1, 1);
 			tulokset1.add(max, 2, 1);
 			tulokset1.add(maara, 3, 1);
@@ -863,90 +973,113 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			tulokset1.add(ilm, 0, 4);
 			tulokset1.add(rok, 0, 5);
 			tulokset1.add(seur, 0, 6);
-			
-			//tulokset1.add(saapKesk, 1, 2);
+
 			tulokset1.add(oviKesk, 1, 3);
 			tulokset1.add(ilmKesk, 1, 4);
 			tulokset1.add(rokKesk, 1, 5);
 			tulokset1.add(seurKesk, 1, 6);
-			
-			//tulokset1.add(saapSuur, 2, 2);
+
 			tulokset1.add(oviSuur, 2, 3);
 			tulokset1.add(ilmSuur, 2, 4);
 			tulokset1.add(rokSuur, 2, 5);
 			tulokset1.add(seurSuur, 2, 6);
-			
+
 			tulokset1.add(saapMaara, 3, 2);
 			tulokset1.add(ovMaara, 3, 3);
 			tulokset1.add(ilmoMaara, 3, 4);
 			tulokset1.add(rokMaara, 3, 5);
 			tulokset1.add(seurMaara, 3, 6);
-			//tulokset1.add(rokMaara, 1, 4);
-			//tulokset1.add(seurMaara, 1, 5);
-			
-			//Jakauma
-            tulokset1.add(saapJakauma, 5, 2);
-            tulokset1.add(ovJakauma, 5, 3);
-            tulokset1.add(ilmoJakauma, 5, 4);
-            tulokset1.add(rokJakauma, 5, 5);
-            tulokset1.add(seurJakauma, 5, 6);
 
-            //Nopeus
-            tulokset1.add(saapNopeus, 4, 2);
-            tulokset1.add(ovNopeus, 4, 3);
-            tulokset1.add(ilmoNopeus, 4, 4);
-            tulokset1.add(rokNopeus, 4, 5);
-            tulokset1.add(seurNopeus, 4, 6);
-		
+			// Jakauma
+			tulokset1.add(saapJakauma, 5, 2);
+			tulokset1.add(ovJakauma, 5, 3);
+			tulokset1.add(ilmoJakauma, 5, 4);
+			tulokset1.add(rokJakauma, 5, 5);
+			tulokset1.add(seurJakauma, 5, 6);
+
+			// Nopeus
+			tulokset1.add(saapNopeus, 4, 2);
+			tulokset1.add(ovNopeus, 4, 3);
+			tulokset1.add(ilmoNopeus, 4, 4);
+			tulokset1.add(rokNopeus, 4, 5);
+			tulokset1.add(seurNopeus, 4, 6);
+
+			/**
+			 * Luodaan pystysuuntainen laatikkonäkymä tulosten ruudukkonäkymille ja
+			 * asetetaan sen sisältö.
+			 */
+
 			VBox tuloksetHBox = new VBox();
 			tuloksetHBox.setPadding(new Insets(15, 12, 15, 12));
 			tuloksetHBox.setSpacing(10);
 			tuloksetHBox.getChildren().addAll(tulokset);
 			tuloksetHBox.getChildren().addAll(tulokset1);
 			tuloksetHBox.setPrefSize(1000, 600);
-			
+
+			/**
+			 * Luodaan rullattava näkymä ja asetetaan siihen tulokset sisältävä
+			 * pystysuuntainen laatikkonäkymä.
+			 */
+
 			ScrollPane tuloksetScrollPane = new ScrollPane();
 			tuloksetScrollPane.setContent(tuloksetHBox);
-			
-			/*
-			 * Menu
+
+			/**
+			 * Luodaan pudotusvalikko ajetun simulaation tuloksille ja tallennetuille
+			 * tuloksille.
 			 */
+
 			final Menu menu = new Menu("Simulaatiot");
 			final Menu tuloksetMenu = new Menu("Tulokset");
-			
-			//tulokset
+
+			/**
+			 * Luodaan uusi ikkuna tuloksille. Asetetaan tulosten rullattava näkymä ikkunan
+			 * sisällöksi.
+			 */
+
 			Scene secondScene = new Scene(tuloksetScrollPane, 1050, 600);
-			
+
+			/**
+			 * Luodaan pudotusvalikon valinta ajetun simulaation tuloksille. Lisätään
+			 * toiminto, jotta tulosten ikkuna avautuu valintaa klikkaamalla.
+			 */
+
 			MenuItem tuloksetItem = new MenuItem("Näytä tulokset");
 			tuloksetItem.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override 
-		    public void handle(ActionEvent e) {			
+				@Override
+				public void handle(ActionEvent e) {
 
-				Stage newWindow = new Stage();
-				newWindow.setTitle("Tulokset");
-				newWindow.setScene(secondScene);
+					Stage newWindow = new Stage();
+					newWindow.setTitle("Tulokset");
+					newWindow.setScene(secondScene);
 
-				newWindow.setX(primaryStage.getX() + 100);
-				newWindow.setY(primaryStage.getY() + 150);
+					newWindow.setX(primaryStage.getX() + 100);
+					newWindow.setY(primaryStage.getY() + 150);
 
-				newWindow.show();
-		    	} 
+					newWindow.show();
+				}
 			});
-			
+
+			/**
+			 * Lisätään valinta pudotusvalikkoon.
+			 */
+
 			tuloksetMenu.getItems().add(tuloksetItem);
-		    
+
 			ListView<String> simulaatiotList = new ListView<String>();
-			
+
 			ArrayList<String> testi = new ArrayList<String>();
-			/*testi.add("mirri");
-			testi.add("mouku");
-			testi.add("matti");*/
-			
+
 			for (int i = 0; i < testi.size(); i++) {
 				simulaatiotList.getItems().add(testi.get(i));
-			    }
-			      
-			//tietokanta
+			}
+
+			/**
+			 * Luodaan pudotusvalikon valinta tallennettujen simulaatioiden tuloksille.
+			 * Lisätään toiminto, jotta tallennettujen simulaatioiden ikkuna avautuu
+			 * valintaa klikkaamalla.
+			 */
+
 			MenuItem simulaatiot = new MenuItem("Tallennetut simulaatiot");
 			simulaatiot.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -955,9 +1088,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 					ScrollPane simulaatiotLayout = new ScrollPane();
 
 					simulaatiotLayout.setContent(simulaatiotList);
-						
-					
-					
+
 					Scene secondScene = new Scene(simulaatiotLayout, 600, 400);
 
 					Stage simulaatiotWindow = new Stage();
@@ -973,16 +1104,37 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			});
 
 			menu.getItems().add(simulaatiot);
-			
+
+			/**
+			 * Luodaan yläpalkki ja lisätään siihen ajetun simulaation tulosten ja
+			 * tallennettujen tulosten pudotusvalikot.
+			 */
+
 			MenuBar menuBar = new MenuBar();
 			menuBar.getMenus().addAll(tuloksetMenu);
 			menuBar.getMenus().addAll(menu);
-			
+
+			/**
+			 * Luo HBox-näkymän hbox, jonka sisälle asetetaan GridPanet, jotka sisältävät
+			 * käyttöliittymään valintakomponentit sekä simulaation keston ja viiveen
+			 * asettamisen ja Käynnistä-, Hidasta-ja Nopeuta-napit.
+			 */
+
 			HBox hBox = new HBox();
 			hBox.setPadding(new Insets(15, 12, 15, 12)); // marginaalit ylä, oikea, ala, vasen
 			hBox.setSpacing(10); // noodien välimatka 10 pikseliä
 
+			/**
+			 * Luo GridPane-näkymän mainGrid, jonka sisälle asetetaan ylävalikko sekä
+			 * molemmat HBox-näkymät hbox ja canvas.
+			 */
+
 			GridPane mainGrid = new GridPane();
+
+			/**
+			 * Luo GridPane-näkymän, jonka sisälle asetetaan simulaation keston ja viiveen
+			 * asettaminen, sekä Käynnistä-, Hidasta- ja Nopeuta-napit.
+			 */
 
 			GridPane grid = new GridPane();
 			grid.setAlignment(Pos.CENTER);
@@ -997,7 +1149,11 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			grid.add(kaynnistaButton, 0, 3); // sarake, rivi
 			grid.add(nopeutaButton, 0, 4); // sarake, rivi
 			grid.add(hidastaButton, 1, 4); // sarake, rivi
-			
+
+			/**
+			 * Luo GridPane-näkymän, jonka sisälle asetetaan palvelupisteiden nimet.
+			 */
+
 			GridPane palvelupisteet = new GridPane();
 			palvelupisteet.setVgap(100);
 			palvelupisteet.setAlignment(Pos.CENTER);
@@ -1007,16 +1163,21 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			palvelupisteet.add(palvelupisteetSeur, 0, 3);
 			palvelupisteet.add(poistuneet, 0, 4);
 
-			HBox canvas = new HBox();			
+			/**
+			 * Luo HBox-näkymän canvas, jonka sisälle asetetaan palvelupisteiden nimet
+			 * sisältävä GridPane sekä Javafx Canvas näytto.
+			 */
+
+			HBox canvas = new HBox();
 			naytto = new Visualisointi(1310, 600, this);
 			canvas.getChildren().addAll(palvelupisteet, (Node) naytto);
 			canvas.setPadding(new Insets(20, 20, 20, 20));
 
 			GridPane gridView = new GridPane();
-			
+
 			gridView.add(hBox, 0, 1);
 			gridView.add(menuBar, 0, 0);
-			
+
 			// Täytetään boxi:
 			hBox.getChildren().addAll(grid, valinnat);
 
@@ -1032,74 +1193,83 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 		}
 	}
 
-	// GUI Metodit
-	
+	/**
+	 * Asettaa palvelupisteiden määrien, nopeuksien ja jakaumien oletusarvot.
+	 */
+
 	public void setAlkuarvot() {
 		jakaumaSaapuminen = "negexp";
 		jakaumaOvi = "normal";
 		jakaumaIlm = "normal";
 		jakaumaRokottaja = "normal";
 		jakaumaSeuranta = "normal";
-		
+
 		nopeusSaapuminen = 2;
 		nopeusOvi = 2;
 		nopeusIlm = 2;
 		nopeusRokottaja = 2;
 		nopeusSeuranta = 2;
-		
+
 		ovihenkilot = 1;
-		ilmoittautumispisteet = 1;
-		rokottajat = 1;
+		ilmoittautumispisteet = 3;
+		rokottajat = 5;
 	}
-	
+
+	/**
+	 * Poistaa käyttöliittymän valintakomponentit käytöstä
+	 */
+
 	public void disableValinnat() {
 		kaynnistaButton.setDisable(true);
 		ovihenkiloMaara.setDisable(true);
 		ilmoittautuminenMaara.setDisable(true);
 		rokottajaMaara.setDisable(true);
-		
+		aika.setDisable(true);
+		viive.setDisable(true);
+		kaynnistaButton.setDisable(true);
+
 		saapuminenGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 		oviGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 		ilmGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 		rokottajaGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 		seurantaGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 		saapuminenNopeusGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 		oviNopeusGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 		ilmNopeusGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 		rokottajaNopeusGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 		seurantaNopeusGroup.getToggles().forEach(toggle -> {
-		    Node node = (Node) toggle ;
-		    node.setDisable(true);
+			Node node = (Node) toggle;
+			node.setDisable(true);
 		});
 	}
-	
+
 	// Käyttöliittymän rajapintametodit (kutsutaan kontrollerista)
 
 	@Override
@@ -1116,7 +1286,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public IVisualisointi getVisualisointi() {
 		return naytto;
 	}
-	
+
 	public String getSaapumisjakauma() {
 		return jakaumaSaapuminen;
 	}
@@ -1129,7 +1299,7 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 		ovihenkilot = (int) ovihenkiloMaara.getValue();
 		ovMaara.setText(Integer.toString(ovihenkilot));
 	}
-	
+
 	public int getOviMaara() {
 		return ovihenkilot;
 	}
@@ -1146,11 +1316,11 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 		ilmoittautumispisteet = (int) ilmoittautuminenMaara.getValue();
 		ilmoMaara.setText(Integer.toString(ilmoittautumispisteet));
 	}
-	
+
 	public int getIlmoMaara() {
 		return ilmoittautumispisteet;
 	}
-	
+
 	public String getIlmoJakauma() {
 		return jakaumaIlm;
 	}
@@ -1158,16 +1328,16 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public int getIlmoPalvelunopeus() {
 		return nopeusIlm;
 	}
-	
+
 	public void setRokMaara() {
 		rokottajat = (int) rokottajaMaara.getValue();
 		rokMaara.setText(Integer.toString(rokottajat));
 	}
-	
+
 	public int getRokMaara() {
 		return rokottajat;
 	}
-	
+
 	public String getRokJakauma() {
 		return jakaumaRokottaja;
 	}
@@ -1175,15 +1345,14 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 	public int getRokPalvelunopeus() {
 		return nopeusRokottaja;
 	}
-	
+
 	public String getSeurJakauma() {
 		return jakaumaSeuranta;
 	}
 
 	public int getSeurPalvelunopeus() {
 		return nopeusSeuranta;
-	}	
-	
+	}
 
 	@Override
 	public void setLoppuaika(double aika) {
@@ -1191,67 +1360,82 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 		this.loppuaika.setText(formatter.format(aika));
 		this.tulos.setText(formatter.format(aika));
 	}
+
 	@Override
 	public void setLapimenoaika(double aika) {
 		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.loppuaika.setText(formatter.format(aika));
 	}
+
 	@Override
 	public void setKayttoasteet(HashMap<String, Double> palvelupisteet) {
 		for (String i : palvelupisteet.keySet()) {
 			this.kayttoasteet.setText(i + " " + palvelupisteet.get(i));
-			}
+		}
 	}
+
 	@Override
 	public void setSuoritustehot(HashMap<String, Double> palvelupisteet) {
 		for (String i : palvelupisteet.keySet()) {
 			this.suoritustehot.setText(i + " " + palvelupisteet.get(i));
-			}
+		}
 	}
-    public void setPieninAsiakas(double lapimenoaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
+
+	public void setPieninAsiakas(double lapimenoaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.pienin.setText(formatter.format(lapimenoaika));
-    }
-    public void setSuurinAsiakas(double lapimenoaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
+	}
+
+	public void setSuurinAsiakas(double lapimenoaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.suurin.setText(formatter.format(lapimenoaika));
-    }
-    public void setSuurinOviJono(double jonotusaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
+	}
+
+	public void setSuurinOviJono(double jonotusaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.oviSuur.setText(formatter.format(jonotusaika));
-    }
-    public void setSuurinIlmoJono(double jonotusaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
+	}
+
+	public void setSuurinIlmoJono(double jonotusaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.ilmSuur.setText(formatter.format(jonotusaika));
-    }
-    public void setSuurinRokJono(double jonotusaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
+	}
+
+	public void setSuurinRokJono(double jonotusaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.rokSuur.setText(formatter.format(jonotusaika));
-    }
-    public void setSuurinSeurJono(double jonotusaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
+	}
+
+	public void setSuurinSeurJono(double jonotusaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.seurSuur.setText(formatter.format(jonotusaika));
-    }
-    public void setPalvellutAsiakkaat(int kpl) {
-    	palvellutAsiakkaat.setText("Palvellut asiakkaat: " + kpl);
-    }
-    public void setAvgOviJono(double jonotusaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
+	}
+
+	public void setPalvellutAsiakkaat(int kpl) {
+		palvellutAsiakkaat.setText("Palvellut asiakkaat: " + kpl);
+	}
+
+	public void setAvgOviJono(double jonotusaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.oviKesk.setText(formatter.format(jonotusaika));
-    }
-    public void setAvgIlmoJono(double jonotusaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
+	}
+
+	public void setAvgIlmoJono(double jonotusaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.ilmKesk.setText(formatter.format(jonotusaika));
-    }
-    public void setAvgRokJono(double jonotusaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
-		this.rokKesk.setText(formatter.format(jonotusaika));;
-    }
-    public void setAvgSeurJono(double jonotusaika) {
-    	DecimalFormat formatter = new DecimalFormat("#0.00");
+	}
+
+	public void setAvgRokJono(double jonotusaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
+		this.rokKesk.setText(formatter.format(jonotusaika));
+		;
+	}
+
+	public void setAvgSeurJono(double jonotusaika) {
+		DecimalFormat formatter = new DecimalFormat("#0.00");
 		this.seurKesk.setText(formatter.format(jonotusaika));
-    }
-	
+	}
+
 	// JavaFX-sovelluksen (käyttöliittymän) käynnistäminen
 
 	public static void main(String[] args) {
