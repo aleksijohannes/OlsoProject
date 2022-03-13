@@ -984,11 +984,11 @@ public class SimulaattorinGUI extends Application implements ISimulaattorinUI {
 			tulokset1.add(rokSuur, 2, 5);
 			tulokset1.add(seurSuur, 2, 6);
 
-			tulokset1.add(saapMaara, 3, 2);
+			//tulokset1.add(saapMaara, 3, 2);
 			tulokset1.add(ovMaara, 3, 3);
 			tulokset1.add(ilmoMaara, 3, 4);
 			tulokset1.add(rokMaara, 3, 5);
-			tulokset1.add(seurMaara, 3, 6);
+			//tulokset1.add(seurMaara, 3, 6);
 
 			// Jakauma
 			tulokset1.add(saapJakauma, 5, 2);
